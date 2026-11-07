@@ -1,0 +1,1600 @@
+{
+  "schemaVersion": 1,
+  "gridUnit": 70,
+  "gridSubdivision": 2,
+  "nodes": [
+    {
+      "id": "n2",
+      "name": "Bahnhof",
+      "lat": 49.794747649306295,
+      "lng": 12.165029250776852,
+      "gx": 18,
+      "gy": 10.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788099415829",
+      "name": "Stachus",
+      "lat": 49.79871754892532,
+      "lng": 12.158582887843473,
+      "gx": 14.5,
+      "gy": 7.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788099451950",
+      "name": "Hanslsteig",
+      "lat": 49.79933122139302,
+      "lng": 12.157924328975595,
+      "gx": 13,
+      "gy": 6,
+      "hidden": false
+    },
+    {
+      "id": "n1788099475245",
+      "name": "Eigenheimstufen",
+      "lat": 49.80063637212088,
+      "lng": 12.156746343394087,
+      "gx": 9.5,
+      "gy": 2.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788099527589",
+      "name": "Schusterweg",
+      "lat": 49.80195944773293,
+      "lng": 12.155758505090992,
+      "gx": 7,
+      "gy": 0,
+      "hidden": false
+    },
+    {
+      "id": "n1788099563573",
+      "name": "Stadtplatz",
+      "lat": 49.80307286469388,
+      "lng": 12.154816401015625,
+      "gx": 3.5,
+      "gy": -3.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788099680665",
+      "name": "Frühlingsstrasse",
+      "lat": 49.79978877663179,
+      "lng": 12.158372373251256,
+      "gx": 14,
+      "gy": 4,
+      "hidden": false
+    },
+    {
+      "id": "n1788099942265",
+      "name": "Frühlingsstrasse",
+      "lat": 49.801061963774636,
+      "lng": 12.157270065228028,
+      "gx": 12.5,
+      "gy": 0.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788118068650",
+      "name": "Geschw.-Scholl-Strasse",
+      "lat": 49.80226656427947,
+      "lng": 12.15652220436407,
+      "gx": 9,
+      "gy": -3,
+      "hidden": false
+    },
+    {
+      "id": "n1788118180067",
+      "name": "SchusterwegTreppe",
+      "lat": 49.802093823578744,
+      "lng": 12.156158325001861,
+      "gx": 8.5,
+      "gy": -1.5,
+      "hidden": true
+    },
+    {
+      "id": "n1788119563821",
+      "name": "Parrplatz",
+      "lat": 49.80266896096643,
+      "lng": 12.15605623629772,
+      "gx": 8.5,
+      "gy": -3.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788119726045",
+      "name": "Lehnerberg",
+      "lat": 49.80240662634883,
+      "lng": 12.155414158000115,
+      "gx": 6,
+      "gy": -1,
+      "hidden": false
+    },
+    {
+      "id": "n1788119935548",
+      "name": "Geschw.-Scholl-Strasse",
+      "lat": 49.803241212802845,
+      "lng": 12.155581031510978,
+      "gx": 7,
+      "gy": -5,
+      "hidden": false
+    },
+    {
+      "id": "n1788120275500",
+      "name": "Schwanerweg",
+      "lat": 49.803000554563845,
+      "lng": 12.155803893907175,
+      "gx": 8,
+      "gy": -4,
+      "hidden": false
+    },
+    {
+      "id": "n1788120421096",
+      "name": "An der alten Post",
+      "lat": 49.8031801258658,
+      "lng": 12.156271085708239,
+      "gx": 9.5,
+      "gy": -5.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788120569710",
+      "name": "Stadtbrunnen",
+      "lat": 49.80343419047937,
+      "lng": 12.15609337164776,
+      "gx": 8.5,
+      "gy": -6.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788152339000",
+      "name": "Stadtplatz",
+      "lat": 49.80304325296631,
+      "lng": 12.154116800050208,
+      "gx": 1,
+      "gy": -1,
+      "hidden": false
+    },
+    {
+      "id": "n1788152516381",
+      "name": "Dammststrasse",
+      "lat": 49.802679600219484,
+      "lng": 12.154321228583338,
+      "gx": 2.5,
+      "gy": 0.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788152681057",
+      "name": "Dammweg",
+      "lat": 49.80221659431437,
+      "lng": 12.154405105631918,
+      "gx": 3.5,
+      "gy": 1.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788153011969",
+      "name": "Zwischen den Stodln",
+      "lat": 49.80283122589916,
+      "lng": 12.154966664885869,
+      "gx": 5,
+      "gy": -2,
+      "hidden": false
+    },
+    {
+      "id": "n1788153164420",
+      "name": "Braugasse",
+      "lat": 49.802231893097286,
+      "lng": 12.15497706724309,
+      "gx": 5,
+      "gy": 0,
+      "hidden": false
+    },
+    {
+      "id": "n1788153396935",
+      "name": "Brauhaus/Zoiglskulptur",
+      "lat": 49.801669250165,
+      "lng": 12.15534088959158,
+      "gx": 6.5,
+      "gy": 1.5,
+      "hidden": true
+    },
+    {
+      "id": "n1788153495011",
+      "name": "Braugasse",
+      "lat": 49.80175855218511,
+      "lng": 12.155816846149737,
+      "gx": 7.5,
+      "gy": 0.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788153650600",
+      "name": "Zwischen den Stodln",
+      "lat": 49.80274631230983,
+      "lng": 12.154602757455756,
+      "gx": 4,
+      "gy": -1,
+      "hidden": true
+    },
+    {
+      "id": "n1788153988450",
+      "name": "Naznsteig",
+      "lat": 49.80311574401541,
+      "lng": 12.15406264313135,
+      "gx": 1.5,
+      "gy": -1.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788154061081",
+      "name": "Naznsteig",
+      "lat": 49.804333651148866,
+      "lng": 12.153974728847919,
+      "gx": 1.5,
+      "gy": -7.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788154448013",
+      "name": "Bergstrasse",
+      "lat": 49.804346668763976,
+      "lng": 12.155640229929483,
+      "gx": 8,
+      "gy": -7.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788154725495",
+      "name": "Dammweg",
+      "lat": 49.80297314282226,
+      "lng": 12.153476590185077,
+      "gx": 0,
+      "gy": -1,
+      "hidden": false
+    },
+    {
+      "id": "n1788154861983",
+      "name": "Wasserschloss",
+      "lat": 49.80255841277312,
+      "lng": 12.152728021240643,
+      "gx": -2,
+      "gy": 0.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788154975568",
+      "name": "Dammweg",
+      "lat": 49.80256702198184,
+      "lng": 12.153802849744256,
+      "gx": 1,
+      "gy": 0.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788155353769",
+      "name": "Wasserschloss",
+      "lat": 49.802554733596345,
+      "lng": 12.15092734485978,
+      "gx": -6,
+      "gy": 0.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788155456589",
+      "name": "Zentinariumsweg",
+      "lat": 49.80307026805102,
+      "lng": 12.150804372982153,
+      "gx": -6,
+      "gy": -1,
+      "hidden": false
+    },
+    {
+      "id": "n1788155708338",
+      "name": "Zentinariumsweg",
+      "lat": 49.80197328487192,
+      "lng": 12.150796543131968,
+      "gx": -6,
+      "gy": 3,
+      "hidden": true
+    },
+    {
+      "id": "n1788155909388",
+      "name": "Zentinariumsweg",
+      "lat": 49.80175366857913,
+      "lng": 12.150686767268022,
+      "gx": -6,
+      "gy": 3.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788156081126",
+      "name": "Schnurrenackerweg",
+      "lat": 49.803089273405604,
+      "lng": 12.151069922696443,
+      "gx": -5,
+      "gy": -1,
+      "hidden": false
+    },
+    {
+      "id": "n1788156206183",
+      "name": "Schnurrenackerweg",
+      "lat": 49.80384589651781,
+      "lng": 12.1503075110995,
+      "gx": -6.5,
+      "gy": -4,
+      "hidden": false
+    },
+    {
+      "id": "n1788242245365",
+      "name": "Stadlmanngasse",
+      "lat": 49.80150618886613,
+      "lng": 12.15600933502244,
+      "gx": 8,
+      "gy": 1,
+      "hidden": false
+    },
+    {
+      "id": "n1788242441932",
+      "name": "Stadlmanngasse",
+      "lat": 49.80116226457227,
+      "lng": 12.154444057387993,
+      "gx": 3.5,
+      "gy": 3,
+      "hidden": false
+    },
+    {
+      "id": "n1788242591592",
+      "name": "Furt",
+      "lat": 49.80114142868235,
+      "lng": 12.155605592012122,
+      "gx": 6.5,
+      "gy": 2.5,
+      "hidden": true
+    },
+    {
+      "id": "n1788243067042",
+      "name": "Oberer Anger",
+      "lat": 49.80106380164279,
+      "lng": 12.154952139329744,
+      "gx": 4.5,
+      "gy": 3,
+      "hidden": false
+    },
+    {
+      "id": "n1788243199567",
+      "name": "Oberer Anger",
+      "lat": 49.800252525738806,
+      "lng": 12.156302250091638,
+      "gx": 7.5,
+      "gy": 5.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788243341197",
+      "name": "Oberer Anger",
+      "lat": 49.80040830410452,
+      "lng": 12.15682795693032,
+      "gx": 10,
+      "gy": 3,
+      "hidden": false
+    },
+    {
+      "id": "n1788287598317",
+      "name": "Oberer Anger",
+      "lat": 49.79962691055142,
+      "lng": 12.156905503137583,
+      "gx": 10,
+      "gy": 6,
+      "hidden": true
+    },
+    {
+      "id": "n1788287702719",
+      "name": "Am Anger",
+      "lat": 49.798543127533115,
+      "lng": 12.158116051539738,
+      "gx": 13.5,
+      "gy": 8.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788288144975",
+      "name": "Sternbrunnen",
+      "lat": 49.79955125309237,
+      "lng": 12.157591815408662,
+      "gx": 12.5,
+      "gy": 5.5,
+      "hidden": true
+    },
+    {
+      "id": "n1788288275516",
+      "name": "Am Anger",
+      "lat": 49.7994171663613,
+      "lng": 12.157460098249333,
+      "gx": 11.5,
+      "gy": 6.5,
+      "hidden": true
+    },
+    {
+      "id": "n1788288563974",
+      "name": "Schulweg",
+      "lat": 49.79967348323904,
+      "lng": 12.156615813551825,
+      "gx": 8.5,
+      "gy": 6.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788288603880",
+      "name": "Schulweg",
+      "lat": 49.79923527203084,
+      "lng": 12.15620335071836,
+      "gx": 6.5,
+      "gy": 9,
+      "hidden": false
+    },
+    {
+      "id": "n1788288867993",
+      "name": "Goethestrasse",
+      "lat": 49.798888581593005,
+      "lng": 12.155079988408515,
+      "gx": 3.5,
+      "gy": 12,
+      "hidden": false
+    },
+    {
+      "id": "n1788289241655",
+      "name": "Bergweg",
+      "lat": 49.8050409374068,
+      "lng": 12.153367770373032,
+      "gx": 1,
+      "gy": -9.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788289486401",
+      "name": "Vogelweg",
+      "lat": 49.80544329981583,
+      "lng": 12.153333648101551,
+      "gx": 1,
+      "gy": -10.5,
+      "hidden": true
+    },
+    {
+      "id": "n1788289525034",
+      "name": "Vogelweg",
+      "lat": 49.80548659026003,
+      "lng": 12.152042987569594,
+      "gx": -1.5,
+      "gy": -10.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788289557779",
+      "name": "Vogelweg",
+      "lat": 49.80597713762566,
+      "lng": 12.153282582143103,
+      "gx": 1,
+      "gy": -12,
+      "hidden": false
+    },
+    {
+      "id": "n1788289728473",
+      "name": "Bussardweg",
+      "lat": 49.80594015239903,
+      "lng": 12.152052373890653,
+      "gx": -1.5,
+      "gy": -12,
+      "hidden": true
+    },
+    {
+      "id": "n1788289836758",
+      "name": "Loipenweg",
+      "lat": 49.80533113091355,
+      "lng": 12.1507280885787,
+      "gx": -4.5,
+      "gy": -9.5,
+      "hidden": false
+    },
+    {
+      "id": "n1788289944786",
+      "name": "Forellenstrasse",
+      "lat": 49.805078030022024,
+      "lng": 12.151339149765452,
+      "gx": -3.5,
+      "gy": -8.5,
+      "hidden": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1788099651000",
+      "type": "strasse",
+      "name": "",
+      "from": "n1788099415829",
+      "to": "n1788099451950",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788099768166",
+      "type": "steig",
+      "name": "Hanslsteig",
+      "from": "n1788099451950",
+      "to": "n1788099680665",
+      "timeMin": 5,
+      "accessible": false,
+      "steep": true,
+      "surface": "Schotter",
+      "info": "",
+      "points": [
+        {
+          "gx": 14,
+          "gy": 5
+        },
+        {
+          "gx": 16,
+          "gy": 6
+        }
+      ]
+    },
+    {
+      "id": "e1788099872398",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788243341197",
+      "to": "n1788099475245",
+      "timeMin": 4,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788100101903",
+      "type": "weg",
+      "name": "Eigenheimstufen",
+      "from": "n1788099475245",
+      "to": "n1788099942265",
+      "timeMin": 4,
+      "accessible": false,
+      "steep": true,
+      "surface": "Treppe",
+      "info": "",
+      "points": [
+        {
+          "gx": 11.5,
+          "gy": 1.5
+        },
+        {
+          "gx": 11.5,
+          "gy": 0.5
+        }
+      ]
+    },
+    {
+      "id": "e1788100168270",
+      "type": "strasse",
+      "name": "",
+      "from": "n1788099680665",
+      "to": "n1788099942265",
+      "timeMin": 4,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788117834575",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788099475245",
+      "to": "n1788242245365",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788117949391",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788119726045",
+      "to": "n1788153011969",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788118237620",
+      "type": "strasse",
+      "name": "",
+      "from": "n1788099527589",
+      "to": "n1788118180067",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788118408932",
+      "type": "weg",
+      "name": "alte Schultreppe",
+      "from": "n1788118068650",
+      "to": "n1788118180067",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": false,
+      "surface": "Treppe",
+      "info": "",
+      "points": [
+        {
+          "gx": 8.5,
+          "gy": -2.5
+        },
+        {
+          "gx": 9,
+          "gy": -2
+        }
+      ]
+    },
+    {
+      "id": "e1788119016621",
+      "type": "strasse",
+      "name": "Frühling-Geschw-Scholl-Str",
+      "from": "n1788099942265",
+      "to": "n1788118068650",
+      "timeMin": 4,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788119635143",
+      "type": "strasse",
+      "name": "Geschwister-Scholl-Str.",
+      "from": "n1788118068650",
+      "to": "n1788119563821",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788119778942",
+      "type": "strasse",
+      "name": "Lehnerberg",
+      "from": "n1788119726045",
+      "to": "n1788119563821",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788120011470",
+      "type": "strasse",
+      "name": "Geschwister-Scholl-Str.",
+      "from": "n1788119935548",
+      "to": "n1788120275500",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788120127893",
+      "type": "strasse",
+      "name": "Stadtplatz",
+      "from": "n1788119935548",
+      "to": "n1788099563573",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788120489389",
+      "type": "weg",
+      "name": "Schwanerweg",
+      "from": "n1788120275500",
+      "to": "n1788120421096",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788120618334",
+      "type": "strasse",
+      "name": "An der alten Post",
+      "from": "n1788120569710",
+      "to": "n1788120421096",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788120710314",
+      "type": "strasse",
+      "name": "Kleau",
+      "from": "n1788120569710",
+      "to": "n1788119935548",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788122507174",
+      "type": "strasse",
+      "name": "Geschwister-Scholl-Str.",
+      "from": "n1788119563821",
+      "to": "n1788120275500",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788124139016",
+      "type": "strasse",
+      "name": "Bahnhofstrasse",
+      "from": "n2",
+      "to": "n1788099415829",
+      "timeMin": 9,
+      "accessible": false,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 16.5,
+          "gy": 9.5
+        }
+      ]
+    },
+    {
+      "id": "e1788152208994",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788119726045",
+      "to": "n1788099527589",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788152396758",
+      "type": "strasse",
+      "name": "",
+      "from": "n1788153988450",
+      "to": "n1788099563573",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788152590621",
+      "type": "strasse",
+      "name": "Bgm-Gierisch-Strasse",
+      "from": "n1788153164420",
+      "to": "n1788152681057",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788152622988",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1788152339000",
+      "to": "n1788152516381",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788152966220",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1788152516381",
+      "to": "n1788152681057",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788153077805",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788153011969",
+      "to": "n1788099563573",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788153106377",
+      "type": "strasse",
+      "name": "Zwischen den Stodln",
+      "from": "n1788153011969",
+      "to": "n1788153650600",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788153228816",
+      "type": "strasse",
+      "name": "Bgm-Gierisch-Strasse",
+      "from": "n1788153164420",
+      "to": "n1788119726045",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788153453195",
+      "type": "weg",
+      "name": "Braugasse",
+      "from": "n1788153164420",
+      "to": "n1788153396935",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788153525498",
+      "type": "weg",
+      "name": "Braugasse",
+      "from": "n1788153495011",
+      "to": "n1788153396935",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788153697264",
+      "type": "weg",
+      "name": "Zwischen den Stodln",
+      "from": "n1788153650600",
+      "to": "n1788153164420",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788154127752",
+      "type": "weg",
+      "name": "Naznsteig",
+      "from": "n1788153988450",
+      "to": "n1788154061081",
+      "timeMin": 2,
+      "accessible": false,
+      "steep": false,
+      "surface": "Treppe",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788154301518",
+      "type": "strasse",
+      "name": "Stadtplatz",
+      "from": "n1788153988450",
+      "to": "n1788152339000",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788154509854",
+      "type": "strasse",
+      "name": "Bergstrasse",
+      "from": "n1788154061081",
+      "to": "n1788154448013",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788154576801",
+      "type": "strasse",
+      "name": "Bernsteiner Strasse",
+      "from": "n1788120569710",
+      "to": "n1788154448013",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788154795369",
+      "type": "strasse",
+      "name": "Gleissenthaler Strasse",
+      "from": "n1788152339000",
+      "to": "n1788154725495",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788155034993",
+      "type": "strasse",
+      "name": "Dammstrasse",
+      "from": "n1788152516381",
+      "to": "n1788154975568",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788155096095",
+      "type": "weg",
+      "name": "Dammweg",
+      "from": "n1788152681057",
+      "to": "n1788154975568",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": [
+        {
+          "gx": 2,
+          "gy": 1.5
+        }
+      ]
+    },
+    {
+      "id": "e1788155204478",
+      "type": "weg",
+      "name": "Dammweg",
+      "from": "n1788154725495",
+      "to": "n1788154975568",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": [
+        {
+          "gx": 0,
+          "gy": 0
+        },
+        {
+          "gx": 0.5,
+          "gy": 0
+        }
+      ]
+    },
+    {
+      "id": "e1788155304702",
+      "type": "strasse",
+      "name": "Dammstrasse",
+      "from": "n1788154861983",
+      "to": "n1788154975568",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788155503550",
+      "type": "weg",
+      "name": "Wasserschloss",
+      "from": "n1788154861983",
+      "to": "n1788155353769",
+      "timeMin": 2,
+      "accessible": false,
+      "steep": false,
+      "surface": "Wurzeln/Fels",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788155571392",
+      "type": "weg",
+      "name": "Zentinariumsweg",
+      "from": "n1788155456589",
+      "to": "n1788155353769",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788155813807",
+      "type": "weg",
+      "name": "Zentinariumsweg",
+      "from": "n1788155708338",
+      "to": "n1788155353769",
+      "timeMin": 2,
+      "accessible": false,
+      "steep": true,
+      "surface": "Schotter",
+      "info": "",
+      "points": [
+        {
+          "gx": -5.5,
+          "gy": 2.5
+        },
+        {
+          "gx": -6,
+          "gy": 2
+        },
+        {
+          "gx": -5.5,
+          "gy": 1.5
+        }
+      ]
+    },
+    {
+      "id": "e1788155961321",
+      "type": "weg",
+      "name": "Zentinariumsweg",
+      "from": "n1788155708338",
+      "to": "n1788155909388",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": true,
+      "surface": "Schotter",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788156008355",
+      "type": "strasse",
+      "name": "Gleissenthaler Strasse",
+      "from": "n1788156081126",
+      "to": "n1788154725495",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788156150221",
+      "type": "strasse",
+      "name": "Gleissenthaler Strasse",
+      "from": "n1788156081126",
+      "to": "n1788155456589",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788156285486",
+      "type": "weg",
+      "name": "Schnurrenackerweg",
+      "from": "n1788156081126",
+      "to": "n1788156206183",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": [
+        {
+          "gx": -5,
+          "gy": -1.5
+        }
+      ]
+    },
+    {
+      "id": "e1788198073236",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788099527589",
+      "to": "n1788153495011",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788198136423",
+      "type": "strasse",
+      "name": "Zwischen den Stodln",
+      "from": "n1788153650600",
+      "to": "n1788152516381",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788242380129",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788153495011",
+      "to": "n1788242245365",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788242681683",
+      "type": "strasse",
+      "name": "Stadlmanngasse",
+      "from": "n1788242591592",
+      "to": "n1788242245365",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788242742119",
+      "type": "strasse",
+      "name": "Stadlmanngasse",
+      "from": "n1788242591592",
+      "to": "n1788243067042",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788242937381",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1788152681057",
+      "to": "n1788242441932",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788243137429",
+      "type": "strasse",
+      "name": "Stadlmanngasse",
+      "from": "n1788242441932",
+      "to": "n1788243067042",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788243263161",
+      "type": "steig",
+      "name": "Schopperweg",
+      "from": "n1788243199567",
+      "to": "n1788243067042",
+      "timeMin": 3,
+      "accessible": false,
+      "steep": true,
+      "surface": "Pflaster",
+      "info": "",
+      "points": [
+        {
+          "gx": 5,
+          "gy": 3.5
+        }
+      ]
+    },
+    {
+      "id": "e1788243407495",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788288144975",
+      "to": "n1788099451950",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788243438352",
+      "type": "strasse",
+      "name": "Oberer Anger",
+      "from": "n1788243341197",
+      "to": "n1788243199567",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788287777330",
+      "type": "strasse",
+      "name": "Angerpointstrasse",
+      "from": "n1788099415829",
+      "to": "n1788287702719",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788287825259",
+      "type": "strasse",
+      "name": "Oberer Anger",
+      "from": "n1788243199567",
+      "to": "n1788288563974",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 9.5,
+          "gy": 6.5
+        }
+      ]
+    },
+    {
+      "id": "e1788287861597",
+      "type": "strasse",
+      "name": "Oberer Anger",
+      "from": "n1788243199567",
+      "to": "n1788287598317",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 8.5,
+          "gy": 4.5
+        }
+      ]
+    },
+    {
+      "id": "e1788287894011",
+      "type": "strasse",
+      "name": "Am Anger",
+      "from": "n1788287702719",
+      "to": "n1788287598317",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 10.5,
+          "gy": 6.5
+        }
+      ]
+    },
+    {
+      "id": "e1788288224738",
+      "type": "strasse",
+      "name": "Hauptstrasse",
+      "from": "n1788288144975",
+      "to": "n1788243341197",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788288335502",
+      "type": "strasse",
+      "name": "Angerbrücke",
+      "from": "n1788288144975",
+      "to": "n1788288275516",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788288675435",
+      "type": "weg",
+      "name": "Schulweg",
+      "from": "n1788288563974",
+      "to": "n1788288603880",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": true,
+      "surface": "Treppe",
+      "info": "",
+      "points": [
+        {
+          "gx": 7.5,
+          "gy": 7.5
+        },
+        {
+          "gx": 7.5,
+          "gy": 8
+        }
+      ]
+    },
+    {
+      "id": "e1788288940108",
+      "type": "strasse",
+      "name": "Goethestrasse",
+      "from": "n1788288867993",
+      "to": "n1788288603880",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788289065825",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1788242441932",
+      "to": "n1788288867993",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788289324314",
+      "type": "strasse",
+      "name": "Bergstrasse",
+      "from": "n1788154061081",
+      "to": "n1788289241655",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 0,
+          "gy": -7.5
+        },
+        {
+          "gx": 0,
+          "gy": -9.5
+        }
+      ]
+    },
+    {
+      "id": "e1788289618102",
+      "type": "weg",
+      "name": "Vogelweg",
+      "from": "n1788289525034",
+      "to": "n1788289486401",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788289644838",
+      "type": "weg",
+      "name": "Vogelweg",
+      "from": "n1788289557779",
+      "to": "n1788289486401",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788289669048",
+      "type": "weg",
+      "name": "Bergweg",
+      "from": "n1788289241655",
+      "to": "n1788289486401",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788289770539",
+      "type": "strasse",
+      "name": "Bussardweg",
+      "from": "n1788289557779",
+      "to": "n1788289728473",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788289791260",
+      "type": "strasse",
+      "name": "",
+      "from": "n1788289525034",
+      "to": "n1788289728473",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788290007012",
+      "type": "strasse",
+      "name": "Forellenstrasse/Kiebitzweg",
+      "from": "n1788289525034",
+      "to": "n1788289944786",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788290030773",
+      "type": "strasse",
+      "name": "Forellenstrasse",
+      "from": "n1788289836758",
+      "to": "n1788289944786",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1788290081591",
+      "type": "strasse",
+      "name": "Schnurrenacker",
+      "from": "n1788156206183",
+      "to": "n1788289836758",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": -6.5,
+          "gy": -7.5
+        }
+      ]
+    },
+    {
+      "id": "e1788291638575",
+      "type": "strasse",
+      "name": "Oberer Anger",
+      "from": "n1788288563974",
+      "to": "n1788287598317",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 9.5,
+          "gy": 6.5
+        }
+      ]
+    }
+  ]
+}
