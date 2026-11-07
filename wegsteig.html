@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Wegenetz Windischeschenbach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f2f1ec;
+    --panel:#ffffff;
+    --ink:#1e2a30;
+    --ink-soft:#5b6a70;
+    --hairline:#d8d5cb;
+    --strasse:#a9a49470;
+    --strasse-line:#8f8a7a;
+    --accent:#c3402b;
+    --accessible:#2f6b4f;
+    --required:#c98b2e;
+    --edit-select:#3b6e8c;
+    --route-highlight:#e6007a;
+    --steig-hatch:#f2f1ec;
+    --line-1:#2f6b4f;
+    --line-2:#c98b2e;
+    --line-3:#3b6e8c;
+    --line-4:#7a4b6d;
+    --line-5:#4c6b3c;
+    --line-6:#a13d4c;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    overflow:hidden;
+  }
+  .topbar{
+    position:fixed;
+    top:0; left:0; right:0;
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    padding:10px 14px;
+    background:rgba(242,241,236,0.88);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hairline);
+    z-index:40;
+    pointer-events:none;
+  }
+  .topbar h1{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    letter-spacing:0.3px;
+    margin:0;
+    text-transform:uppercase;
+  }
+  .topbar .sub{
+    font-size:11px;
+    color:var(--ink-soft);
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .layout{
+    position:fixed;
+    inset:0;
+    display:flex;
+  }
+
+  /* --- floating action buttons --- */
+  .fab{
+    position:fixed;
+    right:16px;
+    bottom:22px;
+    z-index:45;
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    border-radius:30px;
+    padding:13px 20px;
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.25);
+    cursor:pointer;
+  }
+  .fab:hover{background:#354349;}
+  .fab .dot{
+    width:8px;height:8px;border-radius:50%;background:var(--accent);
+    display:none;
+  }
+  .fab.has-route .dot{display:inline-block;}
+
+  .map-hint{
+    position:fixed;
+    right:16px;
+    bottom:76px;
+    z-index:44;
+    max-width:220px;
+    background:var(--panel);
+    border:1px solid var(--hairline);
+    border-radius:8px;
+    padding:7px 11px;
+    font-size:12px;
+    color:var(--ink-soft);
+    box-shadow:0 3px 10px rgba(0,0,0,0.12);
+  }
+
+  .zoom-controls{
+    position:fixed;
+    left:14px;
+    bottom:46px;
+    z-index:44;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .zoom-controls button{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    border:1px solid var(--hairline);
+    background:var(--panel);
+    color:var(--ink);
+    font-size:20px;
+    font-weight:600;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(0,0,0,0.15);
+  }
+  .zoom-controls button:active{background:var(--paper);}
+  #zoomReset{font-size:17px;}
+  #zoomFitRoute{font-size:19px;color:var(--accent);border-color:var(--accent);}
+  #locateMe{font-size:19px;}
+
+  .route-corner{
+    position:fixed;
+    top:62px;
+    right:14px;
+    z-index:46;
+    background:var(--panel);
+    border:1px solid var(--hairline);
+    border-radius:10px;
+    padding:10px 12px;
+    min-width:150px;
+    max-width:220px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+  }
+
+  .path-info{
+    position:fixed;
+    top:62px;
+    left:14px;
+    z-index:46;
+    background:var(--panel);
+    border:1px solid var(--hairline);
+    border-left:4px solid var(--edit-select);
+    border-radius:10px;
+    padding:10px 12px;
+    min-width:180px;
+    max-width:250px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+  }
+  .path-info-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:8px;
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:15px;
+    font-weight:700;
+    color:var(--edit-select);
+  }
+  .path-info-meta{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:4px 0 6px 0;
+    line-height:1.5;
+  }
+  .path-info-text{
+    font-size:12.5px;
+    line-height:1.4;
+    border-top:1px dashed var(--hairline);
+    padding-top:6px;
+    margin-top:4px;
+    white-space:pre-wrap;
+  }
+  .route-corner-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+    color:var(--ink-soft);
+  }
+  .corner-close{
+    background:none;border:none;color:var(--ink-soft);
+    font-size:14px;cursor:pointer;padding:0 0 0 8px;line-height:1;
+  }
+  .route-corner-time{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:24px;
+    font-weight:700;
+    margin:2px 0 8px 0;
+  }
+  .route-corner-actions{display:flex;gap:6px;}
+  .route-corner-actions .btn-small{flex:1;}
+
+  /* --- bottom sheet (route popup) --- */
+  .sheet-backdrop{
+    position:fixed;inset:0;
+    background:rgba(20,25,28,0.35);
+    z-index:60;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.2s ease;
+  }
+  .sheet-backdrop.open{opacity:1;pointer-events:auto;}
+  .sheet{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    max-width:480px;
+    margin:0 auto;
+    background:var(--panel);
+    border-radius:16px 16px 0 0;
+    z-index:61;
+    padding:10px 18px 22px 18px;
+    max-height:82vh;
+    overflow-y:auto;
+    box-shadow:0 -6px 24px rgba(0,0,0,0.18);
+    transform:translateY(105%);
+    transition:transform 0.28s cubic-bezier(.32,.72,0,1);
+  }
+  .sheet.open{transform:translateY(0);}
+  .sheet-handle{
+    width:38px;height:4px;border-radius:3px;background:var(--hairline);
+    margin:6px auto 12px auto;
+  }
+  .sheet-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .sheet-header h2{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:17px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin:0;
+  }
+  .sheet-close{
+    background:none;border:none;color:var(--ink-soft);
+    font-size:20px;line-height:1;padding:4px 6px;cursor:pointer;
+  }
+  .sidebar h2{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+    color:var(--ink-soft);
+    margin:20px 0 8px 0;
+    border-bottom:1px solid var(--hairline);
+    padding-bottom:4px;
+  }
+  .sidebar h2:first-of-type{margin-top:0;}
+  details.legend-details{margin-top:16px;}
+  details.legend-details summary{
+    cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:var(--ink-soft);
+    padding:6px 0;
+  }
+  label{
+    display:block;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin:8px 0 3px 0;
+    font-family:'IBM Plex Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+  }
+  select, input, button{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:13.5px;
+  }
+  select, input[type=text], input[type=number], input[type=password]{
+    width:100%;
+    padding:11px 10px;
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    background:#fff;
+    color:var(--ink);
+    font-size:15px;
+  }
+  .checkrow{display:flex;align-items:center;gap:9px;margin:9px 0;font-size:14px;}
+  .checkrow input{width:auto;transform:scale(1.3);transform-origin:left center;}
+  .checkrow label{padding:6px 0;}
+  button{
+    cursor:pointer;
+    border:none;
+    border-radius:var(--radius);
+    padding:12px 14px;
+    font-weight:600;
+  }
+  .btn-primary{
+    background:var(--ink);
+    color:#fff;
+    width:100%;
+    margin-top:12px;
+  }
+  .btn-primary:hover{background:#354349;}
+  .btn-ghost{
+    background:transparent;
+    border:1px solid var(--hairline);
+    color:var(--ink);
+  }
+  .btn-ghost:hover{background:var(--paper);}
+  .btn-small{padding:4px 8px;font-size:11px;}
+  .btn-small.picking-active{
+    background:var(--edit-select);
+    color:#fff;
+    border-color:var(--edit-select);
+  }
+  .result{
+    margin-top:14px;
+    font-size:13px;
+  }
+  .result .total{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .result ol{margin:6px 0 0 0;padding-left:18px;}
+  .result li{margin-bottom:4px;}
+  .warn{color:var(--accent);font-size:12px;margin-top:6px;}
+  .route-option{
+    background:var(--paper);
+    border-radius:var(--radius);
+    border:1px solid var(--hairline);
+    padding:10px 12px;
+    margin-bottom:8px;
+    cursor:pointer;
+  }
+  .route-option:hover{border-color:#b9b6ac;}
+  .route-option.active{
+    border-color:var(--accent);
+    border-width:2px;
+    background:#fff;
+  }
+  .route-option-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:15px;
+    font-weight:700;
+  }
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:12.5px;margin:5px 0;}
+  .legend-swatch{width:22px;height:4px;border-radius:2px;flex-shrink:0;}
+  .legend-swatch.dashed{
+    height:0;border-top:2px dashed var(--strasse-line);width:22px;
+  }
+  .map-wrap{
+    flex:1;
+    min-width:0;
+    height:100%;
+    position:relative;
+    overflow:auto;
+    padding-top:52px;
+    --grid-unit:70px;
+    touch-action:pan-x pan-y;
+    background:
+      linear-gradient(var(--hairline) 1px, transparent 1px) 0 0/var(--grid-unit) var(--grid-unit),
+      linear-gradient(90deg, var(--hairline) 1px, transparent 1px) 0 0/var(--grid-unit) var(--grid-unit),
+      var(--paper);
+  }
+  svg{display:block;}
+  .node-label{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    fill:var(--ink);
+  }
+  svg.hide-labels .map-label{display:none;}
+  .edge-time{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    fill:var(--ink-soft);
+  }
+  .node-circle{
+    fill:#fff;
+    stroke:var(--ink);
+    stroke-width:2.5;
+    cursor:default;
+  }
+  .node-circle.editable{cursor:grab;}
+  .node-circle.editable:active{cursor:grabbing;}
+  .node-circle.selected{stroke:var(--accent);stroke-width:3.5;}
+  .node-circle.route-start{fill:var(--accessible);stroke:var(--accessible);}
+  .node-circle.route-end{fill:var(--accent);stroke:var(--accent);}
+  .node-circle.edge-endpoint{stroke:var(--edit-select);stroke-width:4;}
+  .node-circle.node-hidden-marker{
+    fill:var(--paper);
+    stroke:var(--ink-soft);
+    stroke-width:1.5;
+    stroke-dasharray:2,2;
+  }
+  .node-label-hidden{
+    fill:var(--ink-soft);
+    font-style:italic;
+    font-size:11px;
+  }
+  .route-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:700;
+    font-size:11px;
+    fill:var(--ink);
+  }
+  .bend-point{
+    fill:#fff;
+    stroke:var(--accent);
+    stroke-width:2;
+    cursor:grab;
+  }
+  .bend-point:active{cursor:grabbing;}
+
+  /* editor gate */
+  .editor-toggle{
+    position:fixed;
+    bottom:10px;
+    left:10px;
+    font-size:10.5px;
+    color:#b9b6ac;
+    background:none;
+    border:none;
+    padding:4px 6px;
+    cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+    z-index:50;
+  }
+  .editor-toggle:hover{color:var(--ink-soft);}
+
+  .gate-backdrop{
+    position:fixed; inset:0;
+    background:rgba(20,25,28,0.4);
+    z-index:80;
+  }
+  .gate-card{
+    position:fixed;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    z-index:81;
+    background:var(--panel);
+    border-radius:12px;
+    padding:20px 22px;
+    width:260px;
+    max-width:calc(100vw - 40px);
+    box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  }
+  .gate-card h2{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:16px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+    margin:0 0 12px 0;
+  }
+  .gate-card input{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--hairline);
+    border-radius:var(--radius);
+    font-size:14px;
+  }
+  .gate-actions{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+  }
+  .gate-actions button{flex:1;}
+
+  .toast{
+    position:fixed;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:90;
+    background:var(--ink);
+    color:#fff;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:13px;
+    max-width:min(320px, calc(100vw - 32px));
+    text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,0.25);
+    cursor:pointer;
+  }
+
+  .editor-panel{
+    width:380px;
+    flex-shrink:0;
+    height:100%;
+    border-left:1px solid var(--hairline);
+    background:var(--panel);
+    padding:16px 18px 40px 18px;
+    overflow-y:auto;
+  }
+  .editor-panel-inner{max-width:none;margin:0;}
+  .editor-header{
+    position:sticky;
+    top:-16px;
+    background:var(--panel);
+    margin:-16px -18px 6px -18px;
+    padding:14px 18px 10px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--hairline);
+    z-index:2;
+  }
+  .editor-header h1{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:15px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:var(--accent);
+    margin:0;
+  }
+  .editor-header button{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    border-radius:20px;
+    padding:6px 14px;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .editor-panel h2{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+    color:var(--accent);
+    margin:18px 0 8px 0;
+    border-bottom:1px solid var(--hairline);
+    padding-bottom:4px;
+  }
+  .editor-panel h2:first-child{margin-top:0;}
+
+  .editor-section{
+    margin:16px -18px 0 -18px;
+    padding:14px 18px 18px 18px;
+    border-left:4px solid transparent;
+  }
+  .editor-section h2{margin-top:0 !important;}
+  .section-nodes{
+    background:rgba(47,107,79,0.16);
+    border-left-color:var(--accessible);
+  }
+  .section-nodes h2{color:var(--accessible);}
+  .section-edges{
+    background:rgba(59,110,140,0.16);
+    border-left-color:var(--edit-select);
+  }
+  .section-edges h2{color:var(--edit-select);}
+  .hint{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    background:var(--paper);
+    border-left:3px solid var(--line-3);
+    padding:6px 8px;
+    margin:6px 0;
+    border-radius:2px;
+  }
+  table.list{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  table.list th, table.list td{
+    text-align:left;
+    padding:5px 4px;
+    border-bottom:1px solid var(--hairline);
+  }
+  table.list th{color:var(--ink-soft);font-weight:500;font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;}
+  .del-btn{background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;padding:0 4px;}
+  .field-row{display:flex;gap:6px;}
+  .field-row > div{flex:1;}
+  .storage-note{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    margin-top:16px;
+    padding-top:10px;
+    border-top:1px dashed var(--hairline);
+    line-height:1.4;
+  }
+  .backup-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:6px 0;
+    border-bottom:1px solid var(--hairline);
+    font-size:12.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>Wegenetz Windischeschenbach</h1>
+  <div class="sub">schematische Wanderkarte</div>
+</div>
+
+<div class="layout">
+  <div class="map-wrap" id="mapWrap">
+    <svg id="map"></svg>
+  </div>
+
+  <div class="editor-panel" id="editorPanel" style="display:none;">
+  <div class="editor-panel-inner">
+  <div class="editor-header">
+    <h1>Redaktionsmodus</h1>
+    <button id="exitEditor">Fertig</button>
+  </div>
+    <h2>Darstellung</h2>
+    <label>Zoom / Größe der Darstellung <span id="gridUnitLabel">70 px</span></label>
+    <input type="range" id="gridUnitSlider" min="30" max="110" step="5" value="70" style="width:100%;">
+    <div class="hint">Ändert nur, wie groß alles auf dem Bildschirm dargestellt wird — nicht den Abstand der Einrastpunkte.</div>
+
+    <label style="margin-top:12px;">Rasterfeinheit (Abstand der Einrastpunkte)</label>
+    <select id="gridSubdivisionSelect">
+      <option value="1">Grob — ganze Einheiten</option>
+      <option value="2">Fein — halbe Einheiten</option>
+      <option value="4">Sehr fein — viertel Einheiten</option>
+    </select>
+    <div class="hint">Bestimmt, wie eng Knoten und Biegepunkte beieinander einrasten können. Feiner = mehr mögliche Positionen zwischen zwei Punkten, unabhängig vom Zoom oben.</div>
+
+    <div class="editor-section section-nodes">
+    <h2>Redaktion — Knoten (Orte)</h2>
+    <label>Name</label>
+    <input type="text" id="nodeName" placeholder="z. B. Fahrenberg">
+    <label>Koordinaten (aus Google Maps kopiert)</label>
+    <input type="text" id="nodeCoords" placeholder="49.8103, 12.1497">
+    <div class="hint">In Google Maps mit Rechtsklick auf den Punkt die Koordinaten kopieren und hier direkt einfügen.</div>
+    <div class="checkrow"><input type="checkbox" id="nodeHidden"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Unsichtbarer Verbindungsknoten (kein eigener Ort)</label></div>
+    <div class="hint">Für Stellen, an denen sich innerhalb eines Weges nur die Eigenschaften ändern (z. B. Oberfläche, oder Steig→Weg), ohne dass dort ein echter, für Nutzer:innen sichtbarer Punkt liegt.</div>
+    <button class="btn-ghost" style="width:100%;margin-top:8px;" id="addNode">+ Knoten anlegen</button>
+    <button class="btn-ghost" style="width:100%;margin-top:6px;display:none;" id="cancelNodeEdit">Bearbeitung abbrechen</button>
+    <div class="hint">Knoten werden mittig ins Raster gesetzt und lassen sich per Ziehen auf dem Raster ausrichten.</div>
+    <input type="text" id="nodeFilterInput" placeholder="Knoten durchsuchen…" style="margin-top:10px;">
+    <table class="list" id="nodeTable"><thead><tr><th>Name</th><th></th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <div class="editor-section section-edges">
+    <h2>Redaktion — Weg / Steig / Straße</h2>
+    <div class="hint">Zum Nachzeichnen: In der Karte auf den eingezeichneten Strich klicken → dort entsteht ein Biegepunkt (roter Punkt), der sich per Ziehen verschieben lässt. Doppelklick auf einen Biegepunkt entfernt ihn wieder.</div>
+    <label>Typ</label>
+    <select id="edgeType">
+      <option value="weg">Weg</option>
+      <option value="steig">Steig (steil / anspruchsvoll)</option>
+      <option value="strasse">Straße (nur Verbindung)</option>
+    </select>
+    <label>Bezeichnung (optional bei Straße)</label>
+    <input type="text" id="edgeName" placeholder="z. B. Naabtalweg">
+    <div class="field-row">
+      <div><label>Von Knoten</label><select id="edgeFrom"></select></div>
+      <div><label>Nach Knoten</label><select id="edgeTo"></select></div>
+    </div>
+    <div class="field-row" style="margin-top:4px;">
+      <button class="btn-ghost btn-small" id="pickFromMap" style="flex:1;">Von: auf Karte wählen</button>
+      <button class="btn-ghost btn-small" id="pickToMap" style="flex:1;">Nach: auf Karte wählen</button>
+    </div>
+    <div class="hint" id="bearingHint">Richtung wird nach Auswahl beider Knoten berechnet.</div>
+    <button class="btn-ghost btn-small" id="applyBearing" style="width:100%;margin-top:4px;">Ausrichtung im Raster übernehmen →</button>
+    <div class="field-row" style="margin-top:8px;">
+      <div><label>Gehzeit (Min.)</label><input type="number" id="edgeTime" min="1" value="10"></div>
+      <div><label>Distanz (m, optional)</label><input type="number" id="edgeDist" placeholder="auto"></div>
+    </div>
+    <button class="btn-ghost btn-small" id="estimateTime" style="margin-top:4px;">Zeit aus Koordinaten schätzen</button>
+    <label>Oberfläche</label>
+    <select id="edgeSurface">
+      <option>Asphalt</option>
+      <option>Pflaster</option>
+      <option>Schotter</option>
+      <option>Waldweg</option>
+      <option>Wiese</option>
+      <option>Wurzeln/Fels</option>
+      <option>Treppe</option>
+      <option>unbekannt</option>
+    </select>
+    <div class="checkrow"><input type="checkbox" id="edgeAccessible"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">barrierefrei</label></div>
+    <div class="checkrow"><input type="checkbox" id="edgeSteepFlag"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">steil / erschwert</label></div>
+    <label>Zusätzliche Informationen (optional)</label>
+    <textarea id="edgeInfo" rows="3" placeholder="z. B. Aussichtspunkt, Beschreibung, Hinweise…" style="width:100%;padding:9px 10px;border:1px solid var(--hairline);border-radius:var(--radius);font-family:inherit;font-size:14px;resize:vertical;"></textarea>
+    <div class="hint">Wird beim Antippen des Weges in der normalen Kartenansicht angezeigt. Platz für alles, was du später noch ergänzen möchtest.</div>
+    <button class="btn-ghost" style="width:100%;margin-top:8px;" id="addEdge">+ Verbindung anlegen</button>
+    <button class="btn-ghost" style="width:100%;margin-top:6px;display:none;" id="cancelEdgeEdit">Bearbeitung abbrechen</button>
+    <input type="text" id="edgeFilterInput" placeholder="Wege/Steige/Straßen durchsuchen…" style="margin-top:10px;">
+    <table class="list" id="edgeTable"><thead><tr><th>Verbindung</th><th>Min</th><th></th></tr></thead><tbody></tbody></table>
+    </div>
+
+    <div class="storage-note">Alle Änderungen werden geräteübergreifend gespeichert und sind für alle Nutzer:innen dieser App sichtbar. Der „Redaktion"-Zugang ist nur eine einfache Sperre in der Oberfläche, keine echte Zugriffskontrolle.</div>
+
+    <h2>Daten sichern</h2>
+    <button class="btn-ghost" style="width:100%;" id="exportData">⭳ Als Datei exportieren (JSON)</button>
+    <label style="margin-top:12px;">Datei importieren</label>
+    <input type="file" id="importFile" accept="application/json,.json">
+    <div class="hint">Beim Import werden alle aktuellen Knoten und Wege durch den Inhalt der Datei ersetzt. Vorher unbedingt exportieren, falls du den aktuellen Stand behalten möchtest.</div>
+
+    <label style="margin-top:16px;">Automatische Sicherungen</label>
+    <div class="hint">Bei jeder Änderung wird höchstens einmal pro Minute automatisch eine Sicherung angelegt (die letzten 6 Stände). Damit lässt sich ein Fehlklick rückgängig machen, ganz ohne eigenes Hosting.</div>
+    <button class="btn-ghost" style="width:100%;" id="showBackups">Sicherungen anzeigen</button>
+    <div id="backupList"></div>
+  </div>
+  </div>
+</div>
+
+<div class="map-hint" id="mapHint" style="display:none;"></div>
+<div class="route-corner" id="routeCorner" style="display:none;"></div>
+<div class="path-info" id="pathInfo" style="display:none;"></div>
+<div class="zoom-controls" id="zoomControls">
+  <button id="locateMe" title="Meinen Standort als Start verwenden">📍</button>
+  <button id="zoomIn" title="Vergrößern">+</button>
+  <button id="zoomOut" title="Verkleinern">−</button>
+  <button id="zoomFitRoute" title="Gesamte Route anzeigen" style="display:none;">⛶</button>
+  <button id="zoomReset" title="Gesamte Karte anzeigen">⤢</button>
+</div>
+<button class="fab" id="openSheet"><span class="dot" id="fabDot"></span><span class="fab-text">Start wählen</span></button>
+
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet" id="routeSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <h2>Route planen</h2>
+    <button class="sheet-close" id="closeSheet">✕</button>
+  </div>
+  <div class="hint">Start und Ziel lassen sich direkt auf der Karte antippen (grüner Punkt = Start, roter Punkt = Ziel). Wege/Steige antippen, um sie als Pflichtabschnitt (★) einzuplanen. Die Auswahllisten unten dienen nur als Alternative.</div>
+  <label>Von</label>
+  <select id="routeFrom"></select>
+  <label>Nach</label>
+  <select id="routeTo"></select>
+  <div class="checkrow"><input type="checkbox" id="prefAccess"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Nur barrierefreie Wege</label></div>
+  <div class="checkrow"><input type="checkbox" id="avoidSteep"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Steige vermeiden</label></div>
+  <button class="btn-primary" id="calcRoute">Route berechnen</button>
+  <button class="btn-ghost" style="width:100%;margin-top:8px;" id="resetRoute">Auswahl zurücksetzen</button>
+  <div class="result" id="routeResult" style="display:none;"></div>
+  <button class="btn-ghost" id="sheetNavigate" style="width:100%;margin-top:8px;display:none;">🧭 In Google Maps öffnen</button>
+
+  <details class="legend-details">
+    <summary>Zeichenerklärung anzeigen</summary>
+    <div id="legendLines"></div>
+    <div class="legend-item"><div class="legend-swatch dashed"></div> Verbindungsstraße (nur Zeit)</div>
+    <div class="legend-item">♿ = barrierefrei &nbsp; ▲ = Steig (steil) &nbsp; ★ = muss dabei sein</div>
+  </details>
+</div>
+
+<button class="editor-toggle" id="editorToggle">Redaktion</button>
+
+<div class="gate-backdrop" id="gateBackdrop" style="display:none;"></div>
+<div class="gate-card" id="gateCard" style="display:none;">
+  <h2>Redaktions-Zugang</h2>
+  <input type="password" id="gateInput" placeholder="Passwort (Demo: redaktion)">
+  <div class="warn" id="gateError" style="display:none;">Falsches Passwort.</div>
+  <div class="gate-actions">
+    <button class="btn-ghost" id="gateCancel">Abbrechen</button>
+    <button class="btn-primary" id="gateConfirm" style="margin-top:0;">Bestätigen</button>
+  </div>
+</div>
+
+<div class="gate-backdrop" id="confirmBackdrop" style="display:none;"></div>
+<div class="gate-card" id="confirmCard" style="display:none;">
+  <h2 id="confirmTitle">Bestätigen</h2>
+  <p id="confirmMessage" style="font-size:13px;line-height:1.4;margin:0 0 14px 0;color:var(--ink);"></p>
+  <div class="gate-actions">
+    <button class="btn-ghost" id="confirmNo">Abbrechen</button>
+    <button class="btn-primary" id="confirmYes" style="margin-top:0;">Bestätigen</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" style="display:none;"></div>
+
+<script>
+// window.storage only exists inside the Claude.ai artifact preview. When this
+// file is opened anywhere else (e.g. self-hosted on a NAS), fall back to the
+// browser's own localStorage so the app still works and saves data — just
+// locally to that one browser/device instead of shared across everyone.
+if(!window.storage){
+  window.storage = {
+    async get(key){
+      const raw = localStorage.getItem('wegenetz:'+key);
+      if(raw===null) throw new Error('not found');
+      return { key, value: raw };
+    },
+    async set(key, value){
+      localStorage.setItem('wegenetz:'+key, value);
+      return { key, value };
+    },
+    async delete(key){
+      localStorage.removeItem('wegenetz:'+key);
+      return { key, deleted:true };
+    },
+    async list(prefix){
+      const keys = [];
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(k && k.startsWith('wegenetz:')){
+          const short = k.slice('wegenetz:'.length);
+          if(!prefix || short.startsWith(prefix)) keys.push(short);
+        }
+      }
+      return { keys };
+    }
+  };
+}
+
+let UNIT = 70;
+let lastMinGx = 0, lastMinGy = 0; // remembers the last render's grid offset, so other code (e.g. placing a new node) can convert screen positions back to grid coordinates
+
+// converts a raw pixel offset into a grid coordinate, snapped to the current
+// subdivision (1 = whole units, 2 = half units, 4 = quarter units, ...)
+function snapToGrid(pxOffset){
+  const step = 1 / (state.gridSubdivision || 1);
+  return Math.round((pxOffset/UNIT) / step) * step;
+}
+const LINE_COLORS = ['var(--line-1)','var(--line-2)','var(--line-3)','var(--line-4)','var(--line-5)','var(--line-6)'];
+
+let state = { nodes: [], edges: [] };
+let editing = false;
+let selectedNodeId = null;
+let selectedEdgeId = null;
+let mapZoom = 1;
+const ZOOM_MIN = 0.4, ZOOM_MAX = 3, ZOOM_STEP = 1.25;
+const LABEL_ZOOM_THRESHOLD = 0.65; // below this zoom, hide text labels and show only the line graphics
+let pickingTarget = null; // 'from' | 'to' | null — used while picking an edge endpoint on the map
+let routeFromId = null;
+let routeToId = null;
+let requiredEdgeIds = new Set();
+
+// ---------- seed data (example — replace/extend via Redaktion) ----------
+function seedData(){
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    gridUnit: 70,
+    gridSubdivision: 1,
+    nodes: [
+      {id:'n1', name:'Marktplatz', lat:49.8103, lng:12.1497, gx:0, gy:0},
+      {id:'n2', name:'Bahnhof', lat:49.8145, lng:12.1462, gx:0, gy:-2},
+      {id:'n3', name:'KTB-Infozentrum', lat:49.8215, lng:12.1735, gx:2, gy:-3},
+      {id:'n4', name:'Fahrenberg', lat:49.7838, lng:12.1180, gx:-2, gy:3},
+      {id:'n5', name:'Naabtal-Steg', lat:49.8050, lng:12.1610, gx:1, gy:1},
+      {id:'n6', name:'Godas', lat:49.8260, lng:12.1400, gx:-1, gy:-3},
+    ],
+    edges: [
+      {id:'e1', type:'weg', name:'Marktweg', from:'n1', to:'n5', timeMin:14, accessible:true, steep:false, surface:'Asphalt', info:'', points:[]},
+      {id:'e2', type:'steig', name:'Fahrenberg-Steig', from:'n5', to:'n4', timeMin:55, accessible:false, steep:true, surface:'Wurzeln/Fels', info:'', points:[]},
+      {id:'e3', type:'weg', name:'Bahnhofweg', from:'n1', to:'n2', timeMin:9, accessible:true, steep:false, surface:'Asphalt', info:'', points:[]},
+      {id:'e4', type:'strasse', name:'', from:'n2', to:'n6', timeMin:20, accessible:true, steep:false, surface:'Asphalt', info:'', points:[]},
+      {id:'e5', type:'weg', name:'KTB-Panoramaweg', from:'n2', to:'n3', timeMin:38, accessible:false, steep:false, surface:'Schotter', info:'', points:[]},
+      {id:'e6', type:'strasse', name:'', from:'n3', to:'n6', timeMin:25, accessible:true, steep:false, surface:'Asphalt', info:'', points:[]},
+    ]
+  };
+}
+
+// ---------- persistence ----------
+const STORAGE_KEY = 'windischeschenbach-wegenetz';
+const SCHEMA_VERSION = 1;
+const BACKUP_INDEX_KEY = 'wegenetz-backups-index';
+const BACKUP_PREFIX = 'wegenetz-backup-';
+const MAX_BACKUPS = 6;
+const MIN_BACKUP_INTERVAL_MS = 60000;
+let lastBackupTime = 0;
+
+// Checks that a loaded object has the shape we expect, fills in anything
+// missing (older saves / hand-edited imports), and drops anything broken
+// instead of letting the app crash. Returns null if the data is unusable.
+function migrateState(raw){
+  if(!raw || typeof raw !== 'object') return null;
+  if(!Array.isArray(raw.nodes) || !Array.isArray(raw.edges)) return null;
+
+  const nodes = raw.nodes
+    .filter(n => n && typeof n.id==='string' && typeof n.name==='string'
+                 && typeof n.lat==='number' && typeof n.lng==='number')
+    .map(n => ({
+      id:n.id, name:n.name, lat:n.lat, lng:n.lng,
+      gx: Number.isFinite(n.gx) ? n.gx : 0,
+      gy: Number.isFinite(n.gy) ? n.gy : 0,
+      hidden: !!n.hidden,
+    }));
+  const nodeIds = new Set(nodes.map(n=>n.id));
+
+  const edges = raw.edges
+    .filter(e => e && typeof e.id==='string' && nodeIds.has(e.from) && nodeIds.has(e.to)
+                 && ['weg','steig','strasse'].includes(e.type))
+    .map(e => ({
+      id:e.id, type:e.type, name: typeof e.name==='string' ? e.name : '',
+      from:e.from, to:e.to,
+      timeMin: Number.isFinite(e.timeMin) ? e.timeMin : 1,
+      accessible: !!e.accessible, steep: !!e.steep,
+      surface: typeof e.surface==='string' ? e.surface : 'unbekannt',
+      info: typeof e.info==='string' ? e.info : '',
+      points: Array.isArray(e.points)
+        ? e.points.filter(p=>p && Number.isFinite(p.gx) && Number.isFinite(p.gy))
+        : []
+    }));
+
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    gridUnit: Number.isFinite(raw.gridUnit) ? raw.gridUnit : 70,
+    gridSubdivision: [1,2,4].includes(raw.gridSubdivision) ? raw.gridSubdivision : 1,
+    nodes, edges
+  };
+}
+
+async function load(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, true);
+    if(res && res.value){
+      const migrated = migrateState(JSON.parse(res.value));
+      if(migrated){ state = migrated; return; }
+      console.error('Gespeicherte Daten hatten ein unerwartetes Format — Ausgangsdaten werden geladen.');
+    }
+  }catch(e){ /* noch keine Daten vorhanden */ }
+  state = seedData();
+  await save();
+}
+
+async function save(){
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state), true);
+    maybeBackup(); // fire-and-forget, must not slow down the main save
+  }
+  catch(e){ console.error('Speichern fehlgeschlagen', e); }
+}
+
+// keeps a rolling window of automatic snapshots (max once per minute) so an
+// accidental deletion or bad edit can be undone without any server/backend
+async function maybeBackup(){
+  const now = Date.now();
+  if(now - lastBackupTime < MIN_BACKUP_INTERVAL_MS) return;
+  lastBackupTime = now;
+  const ts = new Date().toISOString();
+  try{
+    await window.storage.set(BACKUP_PREFIX+ts, JSON.stringify(state), true);
+    let list = [];
+    try{
+      const idx = await window.storage.get(BACKUP_INDEX_KEY, true);
+      if(idx && idx.value) list = JSON.parse(idx.value);
+    }catch(e){ /* noch kein Index */ }
+    list.push(ts);
+    while(list.length > MAX_BACKUPS){
+      const old = list.shift();
+      try{ await window.storage.delete(BACKUP_PREFIX+old, true); }catch(e){ /* schon weg */ }
+    }
+    await window.storage.set(BACKUP_INDEX_KEY, JSON.stringify(list), true);
+  }catch(e){ console.error('Automatische Sicherung fehlgeschlagen', e); }
+}
+
+async function listBackups(){
+  try{
+    const idx = await window.storage.get(BACKUP_INDEX_KEY, true);
+    return idx && idx.value ? JSON.parse(idx.value).slice().reverse() : [];
+  }catch(e){ return []; }
+}
+
+async function restoreBackup(ts){
+  try{
+    const res = await window.storage.get(BACKUP_PREFIX+ts, true);
+    if(!res || !res.value){ showToast('Diese Sicherung konnte nicht gefunden werden.'); return; }
+    const migrated = migrateState(JSON.parse(res.value));
+    if(!migrated){ showToast('Diese Sicherung ist beschädigt.'); return; }
+    const ok = await showConfirm('Aktuellen Stand durch die Sicherung vom ' + formatBackupTime(ts) + ' ersetzen?');
+    if(!ok) return;
+    state = migrated;
+    document.getElementById('gridUnitSlider').value = state.gridUnit;
+    document.getElementById('gridUnitLabel').textContent = state.gridUnit + ' px';
+    document.getElementById('gridSubdivisionSelect').value = state.gridSubdivision;
+    await save();
+    render();
+    renderBackupList();
+    showToast('Sicherung wiederhergestellt.');
+  }catch(e){ showToast('Wiederherstellen fehlgeschlagen.'); console.error(e); }
+}
+
+function formatBackupTime(ts){
+  const d = new Date(ts);
+  return d.toLocaleString('de-DE', {dateStyle:'medium', timeStyle:'short'});
+}
+
+// ---------- geometry helpers ----------
+function bearing(lat1, lon1, lat2, lon2){
+  const toRad = d => d*Math.PI/180;
+  const y = Math.sin(toRad(lon2-lon1))*Math.cos(toRad(lat2));
+  const x = Math.cos(toRad(lat1))*Math.sin(toRad(lat2)) - Math.sin(toRad(lat1))*Math.cos(toRad(lat2))*Math.cos(toRad(lon2-lon1));
+  let deg = toRad ? (Math.atan2(y,x)*180/Math.PI) : 0;
+  return (deg+360)%360;
+}
+function haversine(lat1,lon1,lat2,lon2){
+  const R=6371000, toRad=d=>d*Math.PI/180;
+  const dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
+  const a=Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+const COMPASS = [
+  {name:'Norden',dx:0,dy:-1},{name:'Nordosten',dx:1,dy:-1},{name:'Osten',dx:1,dy:0},{name:'Südosten',dx:1,dy:1},
+  {name:'Süden',dx:0,dy:1},{name:'Südwesten',dx:-1,dy:1},{name:'Westen',dx:-1,dy:0},{name:'Nordwesten',dx:-1,dy:-1}
+];
+function bearingToCompass(deg){
+  const idx = Math.round(deg/45)%8;
+  return COMPASS[idx];
+}
+
+function routeSegments(x1,y1,x2,y2){
+  const dx=x2-x1, dy=y2-y1;
+  if(dx===0 || dy===0 || Math.abs(dx)===Math.abs(dy)) return [[x1,y1],[x2,y2]];
+  const d = Math.min(Math.abs(dx),Math.abs(dy));
+  const sx = Math.sign(dx), sy=Math.sign(dy);
+  const bx = x1+d*sx, by=y1+d*sy;
+  return [[x1,y1],[bx,by],[x2,y2]];
+}
+
+function nodeById(id){ return state.nodes.find(n=>n.id===id); }
+function lineColorFor(name){
+  let h=0; for(const c of (name||'x')) h = (h*31 + c.charCodeAt(0))>>>0;
+  return LINE_COLORS[h % LINE_COLORS.length];
+}
+
+// ---------- rendering ----------
+function gridToPx(g, minGx, minGy){
+  return { x: (g.gx-minGx)*UNIT + 90, y: (g.gy-minGy)*UNIT + 70 };
+}
+
+function render(){
+  renderMap();
+  renderLegend();
+  renderSelects();
+  updateFabLabel();
+  if(editing){ renderNodeTable(); renderEdgeTable(); }
+}
+
+function renderMap(){
+  UNIT = state.gridUnit || 70;
+  const subdivision = state.gridSubdivision || 1;
+  document.getElementById('mapWrap').style.setProperty('--grid-unit', (UNIT/subdivision)+'px');
+  const svg = document.getElementById('map');
+  let gxs = state.nodes.map(n=>n.gx), gys = state.nodes.map(n=>n.gy);
+  state.edges.forEach(e=>{ (e.points||[]).forEach(p=>{ gxs.push(p.gx); gys.push(p.gy); }); });
+  const minGx = Math.min(0,...gxs), minGy = Math.min(0,...gys);
+  lastMinGx = minGx; lastMinGy = minGy;
+  const maxGx = Math.max(0,...gxs), maxGy = Math.max(0,...gys);
+  const width = (maxGx-minGx)*UNIT + 220;
+  const height = (maxGy-minGy)*UNIT + 180;
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.innerHTML = '';
+
+  const pos = {};
+  state.nodes.forEach(n=> pos[n.id] = gridToPx(n, minGx, minGy));
+
+  const ns = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs){ const e=document.createElementNS(ns,tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  // build the ordered list of "real" points (from-node, bend points, to-node) as pixel coords for one edge
+  function realPointsFor(edge){
+    const a = pos[edge.from], b = pos[edge.to];
+    if(!a||!b) return null;
+    const mids = (edge.points||[]).map(p=>({x:(p.gx-minGx)*UNIT+90, y:(p.gy-minGy)*UNIT+70}));
+    return [a, ...mids, b];
+  }
+  // expand real points into rendered elbow segments, tagging which "real" segment (index into edge.points insertion slot) each belongs to
+  function buildSegments(realPts){
+    const segs = [];
+    for(let i=0;i<realPts.length-1;i++){
+      const sub = routeSegments(realPts[i].x, realPts[i].y, realPts[i+1].x, realPts[i+1].y);
+      for(let j=0;j<sub.length-1;j++){
+        segs.push({ p1:sub[j], p2:sub[j+1], realIndex:i });
+      }
+    }
+    return segs;
+  }
+  function segsToPath(segs){
+    if(!segs.length) return '';
+    return 'M ' + segs[0].p1.join(',') + segs.map(s=>' L '+s.p2.join(',')).join('');
+  }
+
+  // edges first (below nodes)
+  state.edges.forEach(edge=>{
+    const realPts = realPointsFor(edge);
+    if(!realPts) return;
+    const segs = buildSegments(realPts);
+    const d = segsToPath(segs);
+    const isRoute = highlightedEdgeIds.has(edge.id);
+    const isRequired = requiredEdgeIds.has(edge.id);
+
+    if(isRoute){
+      const glow = el('path',{d, fill:'none', stroke:'var(--route-highlight)', 'stroke-width':17, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity:0.6, class:'route-glow'});
+      svg.appendChild(glow);
+    }
+
+    if(edge.type==='strasse'){
+      const p = el('path',{d, fill:'none', stroke:'var(--strasse-line)', 'stroke-width':2, 'stroke-dasharray':'6,5', 'stroke-linecap':'round'});
+      svg.appendChild(p);
+    } else {
+      const color = lineColorFor(edge.name || edge.id);
+      const p = el('path',{d, fill:'none', stroke:color, 'stroke-width':7, 'stroke-linecap':'round', 'stroke-linejoin':'round'});
+      svg.appendChild(p);
+      if(edge.type==='steig'){
+        const p2 = el('path',{d, fill:'none', stroke:'#ffffff', 'stroke-width':2, 'stroke-dasharray':'1,9', 'stroke-linecap':'round'});
+        svg.appendChild(p2);
+      }
+    }
+
+    if(isRequired){
+      const req = el('path',{d, fill:'none', stroke:'var(--required)', 'stroke-width':3, 'stroke-dasharray':'1,7', 'stroke-linecap':'round'});
+      svg.appendChild(req);
+    }
+
+    if(editing && selectedEdgeId===edge.id){
+      const sel = el('path',{d, fill:'none', stroke:'var(--edit-select)', 'stroke-width':13, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity:0.35});
+      svg.appendChild(sel);
+    }
+
+    // invisible wide hit-path: click behaviour differs by mode
+    // editing mode -> click selects + opens the edge for editing;
+    //                 double-click adds a bend point at that spot
+    // normal mode   -> click toggles "muss dabei sein" (only Weg/Steig)
+    if(editing){
+      const hit = el('path',{d, fill:'none', stroke:'transparent', 'stroke-width':18, 'stroke-linecap':'round', 'stroke-linejoin':'round', style:'cursor:pointer;'});
+      let clickTimer = null;
+      hit.addEventListener('click', ()=>{
+        // delay the single-click action briefly so a second click can still
+        // register as a double-click before we rebuild the map (which would
+        // otherwise destroy this element mid-gesture and break dblclick)
+        if(clickTimer){ clearTimeout(clickTimer); clickTimer = null; return; }
+        clickTimer = setTimeout(()=>{
+          clickTimer = null;
+          selectedEdgeId = edge.id;
+          startEditEdge(edge.id);
+          renderMap();
+        }, 260);
+      });
+      hit.addEventListener('dblclick', (ev)=>{
+        if(clickTimer){ clearTimeout(clickTimer); clickTimer = null; }
+        const rect = svg.getBoundingClientRect();
+        const cx = ev.clientX - rect.left, cy = ev.clientY - rect.top;
+        // find nearest rendered segment to the click point
+        let best=null, bestDist=Infinity;
+        segs.forEach(s=>{
+          const dist = pointToSegmentDist(cx,cy, s.p1[0],s.p1[1], s.p2[0],s.p2[1]);
+          if(dist<bestDist){ bestDist=dist; best=s; }
+        });
+        if(!best) return;
+        const gx = snapToGrid(cx-90) + minGx;
+        const gy = snapToGrid(cy-70) + minGy;
+        edge.points = edge.points || [];
+        edge.points.splice(best.realIndex, 0, {gx, gy});
+        save(); renderMap();
+      });
+      svg.appendChild(hit);
+    } else if(edge.type!=='strasse'){
+      const hit = el('path',{d, fill:'none', stroke:'transparent', 'stroke-width':18, 'stroke-linecap':'round', 'stroke-linejoin':'round', style:'cursor:pointer;'});
+      hit.addEventListener('click', ()=>{ toggleRequiredEdge(edge.id); showPathInfo(edge); });
+      svg.appendChild(hit);
+    }
+
+    // midpoint label — place on the middle rendered segment (hidden via CSS
+    // when zoomed far out, so only the line graphics remain visible)
+    {
+      const mIdx = Math.floor((segs.length-1)/2);
+      const mx = (segs[mIdx].p1[0]+segs[mIdx].p2[0])/2;
+      const my = (segs[mIdx].p1[1]+segs[mIdx].p2[1])/2;
+      const labelParts = [];
+      if(edge.type!=='strasse' && edge.name) labelParts.push(edge.name);
+      labelParts.push(edge.timeMin+' min');
+      if(edge.accessible) labelParts.push('♿');
+      if(edge.steep) labelParts.push('▲');
+      if(isRequired) labelParts.push('★');
+      const bg = el('rect',{x:mx-2, y:my-9, width: labelParts.join(' · ').length*5.6+6, height:14, fill:'var(--paper)', opacity:0.9, class:'map-label'});
+      svg.appendChild(bg);
+      const t = el('text',{x:mx, y:my+2, class: 'edge-time map-label', 'font-size': edge.type==='strasse'?'10':'10.5'});
+      t.textContent = labelParts.join(' · ');
+      svg.appendChild(t);
+    }
+
+    // draggable bend-point markers (editing only)
+    if(editing){
+      (edge.points||[]).forEach((wp, idx)=>{
+        const wx = (wp.gx-minGx)*UNIT+90, wy=(wp.gy-minGy)*UNIT+70;
+        const c = el('circle',{cx:wx, cy:wy, r:5.5, class:'bend-point'});
+        c.addEventListener('pointerdown', (ev)=>{ ev.stopPropagation(); startDragBend(edge, idx, minGx, minGy); });
+        c.addEventListener('dblclick', (ev)=>{
+          ev.stopPropagation();
+          edge.points.splice(idx,1);
+          save(); renderMap();
+        });
+        svg.appendChild(c);
+      });
+    }
+  });
+
+  // nodes
+  const selectedEdgeObj = (editing && selectedEdgeId) ? state.edges.find(e=>e.id===selectedEdgeId) : null;
+  const editorNodeLabels = editing ? disambiguationLabels() : null;
+  state.nodes.forEach(n=>{
+    if(n.hidden && !editing) return; // invisible connector nodes: not shown/clickable to end users
+    const p = pos[n.id];
+    const g = el('g',{});
+    let cls = 'node-circle';
+    if(editing) cls += ' editable';
+    if(n.hidden) cls += ' node-hidden-marker';
+    if(selectedNodeId===n.id) cls += ' selected';
+    if(selectedEdgeObj && (n.id===selectedEdgeObj.from || n.id===selectedEdgeObj.to)) cls += ' edge-endpoint';
+    if(!editing && n.id===routeFromId) cls += ' route-start';
+    if(!editing && n.id===routeToId) cls += ' route-end';
+    const r = n.hidden ? 5 : 9;
+    const circle = el('circle',{cx:p.x, cy:p.y, r, class:cls, 'data-id':n.id, style:'cursor:pointer;'});
+    g.appendChild(circle);
+    if(!editing && n.id===routeFromId){
+      const tag = el('text',{x:p.x, y:p.y-15, class:'route-tag', 'text-anchor':'middle'}); tag.textContent='S'; g.appendChild(tag);
+    }
+    if(!editing && n.id===routeToId){
+      const tag = el('text',{x:p.x, y:p.y-15, class:'route-tag', 'text-anchor':'middle'}); tag.textContent='Z'; g.appendChild(tag);
+    }
+    {
+      const label = el('text',{x:p.x+13, y:p.y+4, class:'node-label map-label'+(n.hidden?' node-label-hidden':'')});
+      label.textContent = editing ? editorNodeLabels[n.id] + (n.hidden ? ' (unsichtbar)' : '') : n.name;
+      g.appendChild(label);
+    }
+    svg.appendChild(g);
+
+    if(editing){
+      circle.addEventListener('pointerdown', (ev)=>{ ev.stopPropagation(); startDrag(ev, n.id, minGx, minGy); });
+      circle.addEventListener('click', (ev)=>{
+        if(!pickingTarget) return;
+        ev.stopPropagation();
+        const fieldId = pickingTarget==='from' ? 'edgeFrom' : 'edgeTo';
+        document.getElementById(fieldId).value = n.id;
+        pickingTarget = null;
+        updatePickingButtons();
+        updateBearingHint();
+        showToast('Knoten übernommen.');
+      });
+    } else {
+      circle.addEventListener('click', ()=> handleNodeClickForRouting(n.id));
+    }
+  });
+  updateLabelVisibility();
+}
+
+function pointToSegmentDist(px,py, x1,y1, x2,y2){
+  const dx=x2-x1, dy=y2-y1;
+  const len2 = dx*dx+dy*dy;
+  let t = len2===0 ? 0 : ((px-x1)*dx + (py-y1)*dy)/len2;
+  t = Math.max(0, Math.min(1, t));
+  const cx = x1+t*dx, cy = y1+t*dy;
+  return Math.hypot(px-cx, py-cy);
+}
+
+let dragState = null;
+function startDrag(ev, nodeId, minGx, minGy){
+  selectedNodeId = nodeId;
+  const svg = document.getElementById('map');
+  dragState = { nodeId, minGx, minGy };
+  function onMove(e){
+    const rect = svg.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const gx = snapToGrid(px-90) + minGx;
+    const gy = snapToGrid(py-70) + minGy;
+    const n = nodeById(nodeId);
+    n.gx = gx; n.gy = gy;
+    renderMap();
+  }
+  function onUp(){
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    save();
+  }
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+}
+
+function startDragBend(edge, idx, minGx, minGy){
+  const svg = document.getElementById('map');
+  function onMove(e){
+    const rect = svg.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const gx = snapToGrid(px-90) + minGx;
+    const gy = snapToGrid(py-70) + minGy;
+    edge.points[idx].gx = gx;
+    edge.points[idx].gy = gy;
+    renderMap();
+  }
+  function onUp(){
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    save();
+  }
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+}
+
+function renderLegend(){
+  const wegSteigEdges = state.edges.filter(e=>e.type!=='strasse');
+  const seen = new Map();
+  wegSteigEdges.forEach(e=>{ if(!seen.has(e.name)) seen.set(e.name, lineColorFor(e.name||e.id)); });
+  const box = document.getElementById('legendLines');
+  box.innerHTML = '';
+  seen.forEach((color, name)=>{
+    const div = document.createElement('div');
+    div.className='legend-item';
+    div.innerHTML = `<div class="legend-swatch" style="background:${color}"></div> ${name||'(unbenannt)'}`;
+    box.appendChild(div);
+  });
+}
+
+// numbers duplicate-named nodes (1), (2), ... in a stable order — only ever
+// used in the Redaktion (editor), never shown to end users
+function disambiguationLabels(){
+  const nameCounts = {};
+  state.nodes.forEach(n=> nameCounts[n.name] = (nameCounts[n.name]||0)+1);
+  const seenIndex = {};
+  const labelFor = {};
+  state.nodes.forEach(n=>{
+    if(nameCounts[n.name] > 1){
+      seenIndex[n.name] = (seenIndex[n.name]||0)+1;
+      labelFor[n.id] = `${n.name} (${seenIndex[n.name]})`;
+    } else {
+      labelFor[n.id] = n.name;
+    }
+  });
+  return labelFor;
+}
+
+function renderSelects(){
+  const editorLabels = disambiguationLabels();
+  function publicOptionFor(n){
+    return `<option value="${n.id}">${n.name}</option>`;
+  }
+  function editorOptionFor(n){
+    return `<option value="${n.id}">${editorLabels[n.id]}${n.hidden ? ' [unsichtbar]' : ''}</option>`;
+  }
+  const publicOpts = state.nodes.filter(n=>!n.hidden).map(publicOptionFor).join('');
+  const allOpts = state.nodes.map(editorOptionFor).join('');
+  ['routeFrom','routeTo'].forEach(id=>{
+    const el = document.getElementById(id);
+    const prev = el.value;
+    el.innerHTML = publicOpts;
+    if(prev) el.value = prev;
+  });
+  ['edgeFrom','edgeTo'].forEach(id=>{
+    const el = document.getElementById(id);
+    const prev = el.value;
+    el.innerHTML = allOpts;
+    if(prev) el.value = prev;
+  });
+  document.getElementById('routeFrom').value = routeFromId || '';
+  document.getElementById('routeTo').value = routeToId || '';
+}
+
+// ---------- routing: click-to-select on the map ----------
+function handleNodeClickForRouting(nodeId){
+  if(routeFromId && routeToId){
+    routeFromId = nodeId; routeToId = null;
+  } else if(!routeFromId){
+    routeFromId = nodeId;
+  } else if(routeFromId === nodeId){
+    routeFromId = null;
+  } else {
+    routeToId = nodeId;
+  }
+  clearComputedRoute();
+  renderSelects();
+  updateFabLabel();
+  renderMap();
+}
+
+function toggleRequiredEdge(edgeId){
+  if(requiredEdgeIds.has(edgeId)) requiredEdgeIds.delete(edgeId);
+  else requiredEdgeIds.add(edgeId);
+  clearComputedRoute();
+  updateFabLabel();
+  renderMap();
+}
+
+function resetRouteSelection(){
+  routeFromId = null; routeToId = null; requiredEdgeIds = new Set();
+  clearComputedRoute();
+  renderSelects();
+  updateFabLabel();
+  renderMap();
+}
+
+// clears any previously computed route result (called whenever the
+// start/destination/Pflichtwege selection changes and the old result is stale)
+function clearComputedRoute(){
+  document.getElementById('routeResult').style.display='none';
+  document.getElementById('routeResult').innerHTML='';
+  highlightedEdgeIds = new Set();
+  currentRoutes = [];
+  document.getElementById('openSheet').classList.remove('has-route');
+  hideCornerCard();
+  resetMapZoom();
+}
+
+function resetMapZoom(){
+  const svg = document.getElementById('map');
+  svg.style.transform = 'none';
+  mapZoom = 1;
+  updateLabelVisibility();
+}
+
+function updateFabLabel(){
+  const fab = document.getElementById('openSheet');
+  const textEl = fab.querySelector('.fab-text');
+  const hint = document.getElementById('mapHint');
+  let text, hintText;
+  if(!routeFromId){ text = 'Start wählen'; hintText = 'Startpunkt auf der Karte antippen.'; }
+  else if(!routeToId){ text = 'Ziel wählen'; hintText = 'Zielpunkt auf der Karte antippen.'; }
+  else { text = 'Route'; hintText = 'Optional: Wege/Steige antippen, um sie einzuplanen — dann auf „Route" tippen.'; }
+  if(textEl) textEl.textContent = text;
+  if(hint){
+    hint.textContent = hintText;
+    hint.style.display = currentRoutes.length ? 'none' : 'block';
+  }
+}
+
+function renderNodeTable(){
+  const tbody = document.querySelector('#nodeTable tbody');
+  tbody.innerHTML = '';
+  const labels = disambiguationLabels();
+  const filter = document.getElementById('nodeFilterInput').value.trim().toLowerCase();
+  const visibleNodes = filter ? state.nodes.filter(n => n.name.toLowerCase().includes(filter)) : state.nodes;
+  visibleNodes.forEach(n=>{
+    const tr = document.createElement('tr');
+    const tag = n.hidden ? ' <span style="color:var(--ink-soft);font-size:10px;">(unsichtbar)</span>' : '';
+    tr.innerHTML = `<td>${labels[n.id]}${tag}</td><td style="white-space:nowrap;">
+      <button class="del-btn edit-node-btn" data-id="${n.id}" title="Bearbeiten" style="font-size:11px;">✎</button>
+      <button class="del-btn toggle-hidden-btn" data-id="${n.id}" title="Sichtbarkeit umschalten" style="font-size:11px;color:var(--ink-soft);">${n.hidden ? '👁' : '🚫'}</button>
+      <button class="del-btn" data-id="${n.id}">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  if(filter && !visibleNodes.length){
+    tbody.innerHTML = `<tr><td colspan="2" style="color:var(--ink-soft);font-style:italic;">Keine Treffer.</td></tr>`;
+  }
+  tbody.querySelectorAll('.edit-node-btn').forEach(b=> b.addEventListener('click', ()=>{
+    startEditNode(b.getAttribute('data-id'));
+  }));
+  tbody.querySelectorAll('.toggle-hidden-btn').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.getAttribute('data-id');
+    const n = nodeById(id);
+    if(n){ n.hidden = !n.hidden; save(); render(); }
+  }));
+  tbody.querySelectorAll('.del-btn:not(.toggle-hidden-btn):not(.edit-node-btn)').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.getAttribute('data-id');
+    if(state.edges.some(e=>e.from===id||e.to===id)){
+      showToast('Dieser Knoten wird noch von mindestens einer Verbindung genutzt. Bitte zuerst die Verbindung(en) löschen.');
+      return;
+    }
+    if(editingNodeId===id) cancelNodeEdit();
+    state.nodes = state.nodes.filter(n=>n.id!==id);
+    save(); render();
+  }));
+}
+document.getElementById('nodeFilterInput').addEventListener('input', renderNodeTable);
+
+function renderEdgeTable(){
+  const tbody = document.querySelector('#edgeTable tbody');
+  tbody.innerHTML = '';
+  const filter = document.getElementById('edgeFilterInput').value.trim().toLowerCase();
+  const labelFor = (e) => {
+    const a = nodeById(e.from), b = nodeById(e.to);
+    return (e.name? e.name+' — ' : '') + (a?a.name:'?') + ' ↔ ' + (b?b.name:'?');
+  };
+  const visibleEdges = filter ? state.edges.filter(e => labelFor(e).toLowerCase().includes(filter)) : state.edges;
+  visibleEdges.forEach(e=>{
+    const label = labelFor(e);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${label}</td><td>${e.timeMin}</td><td style="white-space:nowrap;">
+      <button class="del-btn edit-edge-btn" data-id="${e.id}" title="Bearbeiten" style="font-size:11px;">✎</button>
+      <button class="del-btn" data-id="${e.id}">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  if(filter && !visibleEdges.length){
+    tbody.innerHTML = `<tr><td colspan="3" style="color:var(--ink-soft);font-style:italic;">Keine Treffer.</td></tr>`;
+  }
+  tbody.querySelectorAll('.edit-edge-btn').forEach(b=> b.addEventListener('click', ()=>{
+    startEditEdge(b.getAttribute('data-id'));
+  }));
+  tbody.querySelectorAll('.del-btn:not(.edit-edge-btn)').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.getAttribute('data-id');
+    if(editingEdgeId===id) cancelEdgeEdit();
+    state.edges = state.edges.filter(e=>e.id!==id);
+    save(); render();
+  }));
+}
+document.getElementById('edgeFilterInput').addEventListener('input', renderEdgeTable);
+
+// ---------- routing (Dijkstra) ----------
+let highlightedEdgeIds = new Set();
+let currentRoutes = [];
+let selectedRouteIdx = 0;
+
+function findRoute(fromId, toId, opts){
+  const exclude = opts.excludeEdgeIds || new Set();
+  const dist = {}, prevEdge = {}, prevNode = {};
+  state.nodes.forEach(n=> dist[n.id]=Infinity);
+  dist[fromId]=0;
+  const q = new Set(state.nodes.map(n=>n.id));
+  while(q.size){
+    let u=null, best=Infinity;
+    q.forEach(id=>{ if(dist[id]<best){best=dist[id]; u=id;} });
+    if(u===null) break;
+    q.delete(u);
+    if(u===toId) break;
+    state.edges.forEach(e=>{
+      if(exclude.has(e.id)) return;
+      let v=null;
+      if(e.from===u) v=e.to; else if(e.to===u) v=e.from; else return;
+      if(!q.has(v)) return;
+      if(opts.onlyAccessible && !e.accessible) return;
+      if(opts.avoidSteep && e.steep) return;
+      const w = e.timeMin;
+      if(dist[u]+w < dist[v]){
+        dist[v]=dist[u]+w; prevEdge[v]=e; prevNode[v]=u;
+      }
+    });
+  }
+  if(dist[toId]===Infinity) return null;
+  const edges=[]; let cur=toId;
+  while(cur!==fromId){
+    const e = prevEdge[cur];
+    if(!e) break;
+    edges.unshift(e);
+    cur = prevNode[cur];
+  }
+  return { totalMin: dist[toId], edges };
+}
+
+function routeSignature(route){ return route.edges.map(e=>e.id).sort().join(','); }
+
+// builds a route from fromId to toId that must pass through every edge in
+// requiredIds (in whichever order/direction is closest at each step)
+// builds a route from fromId to toId that must pass through every edge in
+// requiredIds (in whichever order/direction is closest at each step), while
+// builds a route from fromId to toId that must pass through every edge in
+// requiredIds, using no edge more than once. Instead of a single greedy
+// guess at the order/direction to take the required edges (which could miss
+// a valid route entirely), this does an exhaustive search over every order
+// and direction, keeping the fastest complete route found. A guard limits
+// this to a sane number of required edges so it can't hang the browser.
+function forcedRoute(fromId, toId, requiredIds, opts){
+  const requiredEdges = requiredIds.map(id=>state.edges.find(x=>x.id===id)).filter(Boolean);
+  if(!requiredEdges.length) return findRoute(fromId, toId, opts);
+
+  const EXHAUSTIVE_LIMIT = 6; // 6 required edges -> up to ~46k branches, still fast
+  if(requiredEdges.length > EXHAUSTIVE_LIMIT){
+    return forcedRouteGreedyFallback(fromId, toId, requiredEdges, opts);
+  }
+
+  const baseExclude = opts.excludeEdgeIds || new Set();
+  let best = null;
+
+  function search(remaining, cur, usedIds, edges, totalMin){
+    if(best && totalMin >= best.totalMin) return; // branch-and-bound pruning
+    if(remaining.length===0){
+      const last = findRoute(cur, toId, {...opts, excludeEdgeIds: new Set([...baseExclude, ...usedIds])});
+      if(last){
+        const candTotal = totalMin + last.totalMin;
+        if(!best || candTotal < best.totalMin) best = { totalMin: candTotal, edges: [...edges, ...last.edges] };
+      }
+      return;
+    }
+    for(let i=0;i<remaining.length;i++){
+      const e = remaining[i];
+      const rest = remaining.slice(0,i).concat(remaining.slice(i+1));
+      const directions = e.from===e.to ? [[e.from,e.to]] : [[e.from,e.to],[e.to,e.from]];
+      for(const [enter, exit] of directions){
+        const excl = new Set([...baseExclude, ...usedIds]);
+        const sub = findRoute(cur, enter, {...opts, excludeEdgeIds: excl});
+        if(!sub) continue;
+        const newUsed = new Set(usedIds);
+        sub.edges.forEach(se=>newUsed.add(se.id));
+        newUsed.add(e.id);
+        search(rest, exit, newUsed, [...edges, ...sub.edges, e], totalMin + sub.totalMin + e.timeMin);
+      }
+    }
+  }
+
+  search(requiredEdges, fromId, new Set(), [], 0);
+  return best;
+}
+
+// simple single-pass fallback for the rare case of more required edges than
+// the exhaustive search will attempt — approximate, but avoids ever hanging
+function forcedRouteGreedyFallback(fromId, toId, requiredEdges, opts){
+  const baseExclude = opts.excludeEdgeIds || new Set();
+  const usedIds = new Set();
+  let cur = fromId, edges = [], totalMin = 0;
+  let remaining = [...requiredEdges];
+  while(remaining.length){
+    let bestIdx=-1, bestSub=null, bestExit=null, bestDist=Infinity;
+    remaining.forEach((e, idx)=>{
+      const excl = new Set([...baseExclude, ...usedIds]);
+      const subA = findRoute(cur, e.from, {...opts, excludeEdgeIds: excl});
+      const subB = findRoute(cur, e.to, {...opts, excludeEdgeIds: excl});
+      if(subA && subA.totalMin < bestDist){ bestDist=subA.totalMin; bestIdx=idx; bestSub=subA; bestExit=e.to; }
+      if(subB && subB.totalMin < bestDist){ bestDist=subB.totalMin; bestIdx=idx; bestSub=subB; bestExit=e.from; }
+    });
+    if(bestIdx===-1) return null;
+    const e = remaining[bestIdx];
+    edges.push(...bestSub.edges, e);
+    bestSub.edges.forEach(se=>usedIds.add(se.id));
+    usedIds.add(e.id);
+    totalMin += bestSub.totalMin + e.timeMin;
+    cur = bestExit;
+    remaining.splice(bestIdx,1);
+  }
+  const last = findRoute(cur, toId, {...opts, excludeEdgeIds: new Set([...baseExclude, ...usedIds])});
+  if(!last) return null;
+  edges.push(...last.edges);
+  totalMin += last.totalMin;
+  return { totalMin, edges };
+}
+
+// wraps findRoute / forcedRoute depending on whether "Pflichtwege" are set
+function computeRoute(fromId, toId, opts){
+  if(requiredEdgeIds.size){
+    return forcedRoute(fromId, toId, [...requiredEdgeIds], opts);
+  }
+  return findRoute(fromId, toId, opts);
+}
+
+// finds the primary route plus up to `max` distinct alternatives by
+// excluding, one at a time, each *optional* edge used in an already-found route
+// (edges marked as "muss dabei sein" are never excluded)
+function findRoutesWithAlternatives(fromId, toId, opts, max){
+  const primary = computeRoute(fromId, toId, opts);
+  if(!primary) return [];
+  const found = [primary];
+  const seenSigs = new Set([routeSignature(primary)]);
+  const optionalIds = primary.edges.filter(e=>!requiredEdgeIds.has(e.id)).map(e=>e.id);
+  const queue = optionalIds.map(id=>new Set([id]));
+  let i=0;
+  while(i<queue.length && found.length-1 < max){
+    const excludeEdgeIds = queue[i]; i++;
+    const alt = computeRoute(fromId, toId, {...opts, excludeEdgeIds});
+    if(!alt) continue;
+    const sig = routeSignature(alt);
+    if(seenSigs.has(sig)) continue;
+    seenSigs.add(sig);
+    found.push(alt);
+    if(found.length-1 < max){
+      alt.edges.forEach(e=>{ if(!requiredEdgeIds.has(e.id) && !excludeEdgeIds.has(e.id)) queue.push(new Set([...excludeEdgeIds, e.id])); });
+    }
+  }
+  found.sort((a,b)=>a.totalMin-b.totalMin);
+  return found.slice(0, max+1);
+}
+
+// gives a specific reason instead of a generic "no route" message: checks
+// whether a connection exists at all (ignoring Pflichtwege), so the person
+// knows whether the problem is the required path or the filters/network
+// finds required-edge endpoints that have no other connection at all (aside
+// from being the actual start/destination) — a dead end that can never work
+// as a "pass-through" stop on a required path
+function findDeadEndRequiredEdges(fromId, toId){
+  const results = [];
+  requiredEdgeIds.forEach(id=>{
+    const e = state.edges.find(x=>x.id===id);
+    if(!e) return;
+    [e.from, e.to].forEach(nodeId=>{
+      if(nodeId===fromId || nodeId===toId) return; // fine if it's the actual start/destination
+      const otherDegree = state.edges.filter(x=>x.id!==e.id && (x.from===nodeId || x.to===nodeId)).length;
+      if(otherDegree===0){
+        const n = nodeById(nodeId);
+        results.push({ edgeName: e.name || (e.type==='strasse'?'Verbindungsstraße':'Weg'), nodeName: n ? n.name : '?' });
+      }
+    });
+  });
+  return results;
+}
+
+function diagnoseNoRoute(diag){
+  if(!diag) return 'Keine Route mit diesen Einstellungen gefunden.';
+  const { from, to, onlyAccessible, avoidSteep } = diag;
+  if(requiredEdgeIds.size){
+    const plain = findRoute(from, to, { onlyAccessible, avoidSteep });
+    if(plain){
+      const deadEnds = findDeadEndRequiredEdges(from, to);
+      if(deadEnds.length){
+        const list = deadEnds.map(d => `„${d.edgeName}" endet bei „${d.nodeName}", der mit keinem weiteren Weg verbunden ist`).join('; ');
+        return `Der Pflichtweg führt in eine Sackgasse: ${list}. Ergänze dort in der Redaktion eine weitere Verbindung, damit die Route von dort aus weiterlaufen kann.`;
+      }
+      return 'Zwischen Start und Ziel gibt es eine Verbindung — aber nicht über den/die gewählten Pflichtweg(e). Vermutlich liegt der Pflichtweg abseits jeder möglichen Route dorthin, oder ein Filter (barrierefrei/Steige vermeiden) schließt einen für den Pflichtweg nötigen Verbindungsabschnitt aus. Tipp: Pflichtweg testweise abwählen und schauen, ob dann eine Route gefunden wird.';
+    }
+    return 'Zwischen Start und Ziel gibt es mit den aktuellen Filtern (barrierefrei/Steige vermeiden) generell keine Verbindung — unabhängig vom Pflichtweg.';
+  }
+  if(onlyAccessible || avoidSteep){
+    const withoutFilters = findRoute(from, to, {});
+    if(withoutFilters){
+      return 'Mit den aktuellen Filtern (barrierefrei/Steige vermeiden) gibt es keine Verbindung — ohne diese Filter aber schon. Versuch es mit gelockerten Filtern.';
+    }
+  }
+  return 'Zwischen Start und Ziel gibt es aktuell keine Verbindung im Wegenetz.';
+}
+
+// builds/refreshes the list of route cards in the popup, marking whichever
+// route is currently selected — called on every selection change (whether
+// triggered from the popup itself or from the corner card's cycle button),
+// so opening "Details" later always shows the actually active route selected
+function renderRouteResultCards(){
+  const box = document.getElementById('routeResult');
+  const cards = currentRoutes.map((r, idx)=>{
+    const steps = r.edges.map(e=>{
+      const a=nodeById(e.from), b=nodeById(e.to);
+      return `<li>${e.name || (e.type==='strasse'?'Verbindungsstraße':'Weg')}: ${a.name} → ${b.name} <em>(${e.timeMin} min${e.accessible?', ♿':''}${e.steep?', ▲ steil':''})</em></li>`;
+    }).join('');
+    const label = idx===0 ? 'Empfohlene Route' : 'Alternative ' + idx;
+    return `<div class="route-option${idx===selectedRouteIdx?' active':''}" data-idx="${idx}">
+      <div class="route-option-head"><span>${label}</span><span>${r.totalMin} Min</span></div>
+      <ol>${steps}</ol>
+    </div>`;
+  }).join('');
+  const note = currentRoutes.length===1 ? '<div class="hint" style="margin-top:8px;">Keine alternative Route gefunden.</div>' : '';
+  box.innerHTML = cards + note;
+  box.querySelectorAll('.route-option').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const idx = parseInt(card.getAttribute('data-idx'));
+      selectRouteOption(idx);
+    });
+  });
+}
+
+function renderRouteOptions(routes, diag){
+  const box = document.getElementById('routeResult');
+  const fab = document.getElementById('openSheet');
+  if(!routes.length){
+    box.innerHTML = `<div class="warn">${diagnoseNoRoute(diag)}</div>`;
+    highlightedEdgeIds = new Set();
+    fab.classList.remove('has-route');
+    hideCornerCard();
+    renderMap();
+    return;
+  }
+  fab.classList.add('has-route');
+  selectedRouteIdx = 0;
+  highlightedEdgeIds = new Set(routes[0].edges.map(e=>e.id));
+  renderRouteResultCards();
+  renderMap();
+  renderCornerCard();
+  fitRouteIntoView();
+}
+
+// selects one of the computed routes (by index) as the active/highlighted one
+function selectRouteOption(idx){
+  selectedRouteIdx = idx;
+  highlightedEdgeIds = new Set(currentRoutes[idx].edges.map(e=>e.id));
+  renderRouteResultCards(); // keep the popup's card list in sync even while it's closed
+  renderMap();
+  renderCornerCard();
+  fitRouteIntoView();
+}
+
+// ---------- compact corner summary shown once a route has been calculated ----------
+// reconstructs the real-world sequence of nodes visited by a computed route,
+// following the actual traversal direction of each edge (not just its raw
+// from/to storage order)
+function nodeSequenceForRoute(route, startNodeId){
+  const seq = [startNodeId];
+  let cur = startNodeId;
+  route.edges.forEach(e=>{
+    const next = (e.from===cur) ? e.to : e.from;
+    seq.push(next);
+    cur = next;
+  });
+  return seq;
+}
+
+// builds a Google Maps walking-directions URL with the route's real nodes as
+// ordered waypoints (Google Maps supports up to ~25 stops via this URL)
+function buildGoogleMapsUrl(route, startNodeId){
+  const ids = nodeSequenceForRoute(route, startNodeId);
+  const nodes = ids.map(id=>nodeById(id)).filter(Boolean);
+  if(nodes.length<2) return null;
+  const origin = `${nodes[0].lat},${nodes[0].lng}`;
+  const destination = `${nodes[nodes.length-1].lat},${nodes[nodes.length-1].lng}`;
+  const middle = nodes.slice(1,-1).slice(0,23); // Google's practical waypoint limit
+  let url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=walking`;
+  if(middle.length) url += `&waypoints=${encodeURIComponent(middle.map(n=>`${n.lat},${n.lng}`).join('|'))}`;
+  return url;
+}
+
+function openCurrentRouteInGoogleMaps(){
+  if(!currentRoutes.length) return;
+  const route = currentRoutes[selectedRouteIdx];
+  const url = buildGoogleMapsUrl(route, routeFromId);
+  if(!url){ showToast('Route konnte nicht übergeben werden.'); return; }
+  window.open(url, '_blank');
+}
+
+function renderCornerCard(){
+  const card = document.getElementById('routeCorner');
+  const fitBtn = document.getElementById('zoomFitRoute');
+  const navBtn = document.getElementById('sheetNavigate');
+  if(!currentRoutes.length){ card.style.display='none'; fitBtn.style.display='none'; navBtn.style.display='none'; return; }
+  fitBtn.style.display='block';
+  navBtn.style.display='block';
+  const r = currentRoutes[selectedRouteIdx];
+  const label = selectedRouteIdx===0 ? 'Empfohlene Route' : 'Alternative ' + selectedRouteIdx;
+  const totalRoutes = currentRoutes.length;
+  const nextIdx = (selectedRouteIdx + 1) % totalRoutes;
+  const cycleBtn = totalRoutes>1 ? `<button class="btn-ghost btn-small" id="cornerCycle">Alternative Route (${nextIdx+1}/${totalRoutes})</button>` : '';
+  card.innerHTML = `
+    <div class="route-corner-head">
+      <span>${label}</span>
+      <button class="corner-close" id="cornerClose">✕</button>
+    </div>
+    <div class="route-corner-time">${r.totalMin} Min</div>
+    <div class="route-corner-actions">
+      <button class="btn-ghost btn-small" id="cornerDetails">Details</button>
+      ${cycleBtn}
+    </div>
+    <button class="btn-ghost btn-small" id="cornerNavigate" style="width:100%;margin-top:6px;">🧭 In Google Maps öffnen</button>`;
+  card.style.display='block';
+  document.getElementById('cornerClose').addEventListener('click', resetRouteSelection);
+  document.getElementById('cornerDetails').addEventListener('click', openSheet);
+  document.getElementById('cornerNavigate').addEventListener('click', openCurrentRouteInGoogleMaps);
+  const cycle = document.getElementById('cornerCycle');
+  if(cycle) cycle.addEventListener('click', ()=>{
+    selectRouteOption((selectedRouteIdx+1) % currentRoutes.length);
+  });
+}
+function hideCornerCard(){
+  const card = document.getElementById('routeCorner');
+  if(card) card.style.display='none';
+  const fitBtn = document.getElementById('zoomFitRoute');
+  if(fitBtn) fitBtn.style.display='none';
+  const navBtn = document.getElementById('sheetNavigate');
+  if(navBtn) navBtn.style.display='none';
+}
+
+// shows a small info card with everything known about a tapped path — this
+// is the place to surface any additional details added later, since the
+// underlying edge object can grow more fields without changing this function
+function showPathInfo(edge){
+  const box = document.getElementById('pathInfo');
+  const typeLabel = { weg:'Weg', steig:'Steig', strasse:'Straße' }[edge.type] || edge.type;
+  const meta = [];
+  meta.push(typeLabel);
+  meta.push(edge.timeMin + ' min');
+  if(edge.surface) meta.push(edge.surface);
+  if(edge.accessible) meta.push('♿ barrierefrei');
+  if(edge.steep) meta.push('▲ steil');
+  if(requiredEdgeIds.has(edge.id)) meta.push('★ muss dabei sein');
+  const title = edge.name || typeLabel;
+  const infoText = edge.info ? `<div class="path-info-text">${edge.info.replace(/</g,'&lt;')}</div>` : '';
+  box.innerHTML = `
+    <div class="path-info-head">
+      <span>${title}</span>
+      <button class="corner-close" id="pathInfoClose">✕</button>
+    </div>
+    <div class="path-info-meta">${meta.join(' · ')}</div>
+    ${infoText}`;
+  box.style.display = 'block';
+  document.getElementById('pathInfoClose').addEventListener('click', hidePathInfo);
+}
+function hidePathInfo(){
+  const box = document.getElementById('pathInfo');
+  if(box) box.style.display = 'none';
+}
+
+// scales/scrolls the map so the currently highlighted route is fully visible,
+// zooming out only as far as needed (down to a readable minimum)
+function fitRouteIntoView(){
+  const svg = document.getElementById('map');
+  const mapWrap = document.getElementById('mapWrap');
+  svg.style.transform = 'none';
+  requestAnimationFrame(()=>{
+    const glowEls = svg.querySelectorAll('.route-glow');
+    if(!glowEls.length) return;
+    let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
+    glowEls.forEach(el=>{
+      const b = el.getBBox();
+      minX=Math.min(minX,b.x); minY=Math.min(minY,b.y);
+      maxX=Math.max(maxX,b.x+b.width); maxY=Math.max(maxY,b.y+b.height);
+    });
+    const bboxW = Math.max(1, maxX-minX), bboxH = Math.max(1, maxY-minY);
+    const availW = mapWrap.clientWidth - 60;
+    const availH = mapWrap.clientHeight - 100;
+    let scale = Math.min(1, availW/bboxW, availH/bboxH);
+    scale = Math.max(0.3, scale);
+    mapZoom = scale; // keep the manual zoom buttons in sync with the auto-fit level
+    svg.style.transformOrigin = '0 0';
+    svg.style.transform = `scale(${scale})`;
+    updateLabelVisibility();
+    requestAnimationFrame(()=>{
+      let gminX=Infinity, gminY=Infinity, gmaxX=-Infinity, gmaxY=-Infinity;
+      glowEls.forEach(el=>{
+        const r = el.getBoundingClientRect();
+        gminX=Math.min(gminX,r.left); gminY=Math.min(gminY,r.top);
+        gmaxX=Math.max(gmaxX,r.right); gmaxY=Math.max(gmaxY,r.bottom);
+      });
+      const wrapRect = mapWrap.getBoundingClientRect();
+      const targetCx = wrapRect.left + wrapRect.width/2;
+      const targetCy = wrapRect.top + wrapRect.height/2;
+      const curCx = (gminX+gmaxX)/2, curCy=(gminY+gmaxY)/2;
+      mapWrap.scrollLeft += (curCx - targetCx);
+      mapWrap.scrollTop += (curCy - targetCy);
+    });
+  });
+}
+
+function computeAndShowRoute(){
+  const from = document.getElementById('routeFrom').value;
+  const to = document.getElementById('routeTo').value;
+  const onlyAccessible = document.getElementById('prefAccess').checked;
+  const avoidSteep = document.getElementById('avoidSteep').checked;
+  const box = document.getElementById('routeResult');
+  box.style.display='block';
+  if(!from || !to){ box.innerHTML = 'Bitte Start und Ziel wählen (auf der Karte antippen oder über die Listen).'; openSheet(); return; }
+  if(from===to){ box.innerHTML = 'Start und Ziel sind identisch.'; highlightedEdgeIds=new Set(); renderMap(); openSheet(); return; }
+  routeFromId = from; routeToId = to;
+  currentRoutes = findRoutesWithAlternatives(from, to, {onlyAccessible, avoidSteep}, 2);
+  renderRouteOptions(currentRoutes, {from, to, onlyAccessible, avoidSteep});
+  if(currentRoutes.length){
+    closeSheet();
+  } else {
+    // no route found — make sure the message is actually visible instead of
+    // sitting inside a popup that was never opened
+    showToast('Keine Route gefunden.');
+    openSheet();
+  }
+}
+
+document.getElementById('calcRoute').addEventListener('click', computeAndShowRoute);
+
+document.getElementById('routeFrom').addEventListener('change', (e)=>{ routeFromId = e.target.value || null; renderMap(); });
+document.getElementById('routeTo').addEventListener('change', (e)=>{ routeToId = e.target.value || null; renderMap(); });
+document.getElementById('resetRoute').addEventListener('click', resetRouteSelection);
+document.getElementById('sheetNavigate').addEventListener('click', openCurrentRouteInGoogleMaps);
+
+// ---------- editor: bearing hint ----------
+function updateBearingHint(){
+  const fromId = document.getElementById('edgeFrom').value;
+  const toId = document.getElementById('edgeTo').value;
+  const hint = document.getElementById('bearingHint');
+  if(!fromId || !toId || fromId===toId){ hint.textContent='Richtung wird nach Auswahl beider Knoten berechnet.'; return; }
+  const a=nodeById(fromId), b=nodeById(toId);
+  const deg = bearing(a.lat,a.lng,b.lat,b.lng);
+  const comp = bearingToCompass(deg);
+  const curDx = Math.sign(b.gx-a.gx), curDy=Math.sign(b.gy-a.gy);
+  const matches = curDx===comp.dx && curDy===comp.dy;
+  hint.innerHTML = `Realer Verlauf: <b>${comp.name}</b> (${Math.round(deg)}°) von ${a.name}. ` +
+    (matches ? 'Rasteranordnung passt bereits ✓' : 'Aktuelle Rasteranordnung weicht ab — Knoten ziehen oder Button nutzen.');
+}
+document.getElementById('edgeFrom').addEventListener('change', updateBearingHint);
+document.getElementById('edgeTo').addEventListener('change', updateBearingHint);
+
+// ---------- editor: pick edge endpoints by tapping the map ----------
+function updatePickingButtons(){
+  document.getElementById('pickFromMap').classList.toggle('picking-active', pickingTarget==='from');
+  document.getElementById('pickToMap').classList.toggle('picking-active', pickingTarget==='to');
+}
+document.getElementById('pickFromMap').addEventListener('click', ()=>{
+  pickingTarget = (pickingTarget==='from') ? null : 'from';
+  updatePickingButtons();
+  if(pickingTarget==='from') showToast('Knoten für „Von" auf der Karte antippen.');
+});
+document.getElementById('pickToMap').addEventListener('click', ()=>{
+  pickingTarget = (pickingTarget==='to') ? null : 'to';
+  updatePickingButtons();
+  if(pickingTarget==='to') showToast('Knoten für „Nach" auf der Karte antippen.');
+});
+
+document.getElementById('applyBearing').addEventListener('click', ()=>{
+  const fromId = document.getElementById('edgeFrom').value;
+  const toId = document.getElementById('edgeTo').value;
+  if(!fromId||!toId||fromId===toId) return;
+  const a=nodeById(fromId), b=nodeById(toId);
+  const deg = bearing(a.lat,a.lng,b.lat,b.lng);
+  const comp = bearingToCompass(deg);
+  b.gx = a.gx + comp.dx*2;
+  b.gy = a.gy + comp.dy*2;
+  save(); render();
+  updateBearingHint();
+});
+
+document.getElementById('estimateTime').addEventListener('click', ()=>{
+  const fromId = document.getElementById('edgeFrom').value;
+  const toId = document.getElementById('edgeTo').value;
+  if(!fromId||!toId||fromId===toId) return;
+  const a=nodeById(fromId), b=nodeById(toId);
+  let distM = parseFloat(document.getElementById('edgeDist').value);
+  if(!distM){ distM = haversine(a.lat,a.lng,b.lat,b.lng); document.getElementById('edgeDist').value = Math.round(distM); }
+  const isSteig = document.getElementById('edgeType').value==='steig';
+  const accessible = document.getElementById('edgeAccessible').checked;
+  const speed = accessible ? 3200 : (isSteig ? 2800 : 4500); // m/h
+  const minutes = Math.max(1, Math.round(distM/speed*60));
+  document.getElementById('edgeTime').value = minutes;
+});
+
+// parses coordinate strings copied straight from Google Maps, e.g.
+// "49.8103, 12.1497", "49.8103,12.1497", "49.8103 12.1497", "49.8103° N, 12.1497° E"
+function parseCoords(raw){
+  if(!raw) return null;
+  const cleaned = raw.replace(/[°NnEeOo]/g,'').trim();
+  const parts = cleaned.split(/[,\s]+/).filter(Boolean);
+  if(parts.length < 2) return null;
+  const lat = parseFloat(parts[0]);
+  const lng = parseFloat(parts[1]);
+  if(isNaN(lat) || isNaN(lng)) return null;
+  return {lat, lng};
+}
+
+// ---------- editor: add / edit node ----------
+let editingNodeId = null;
+
+function startEditNode(id){
+  const n = nodeById(id);
+  if(!n) return;
+  editingNodeId = id;
+  document.getElementById('nodeName').value = n.name;
+  document.getElementById('nodeCoords').value = `${n.lat}, ${n.lng}`;
+  document.getElementById('nodeHidden').checked = !!n.hidden;
+  document.getElementById('addNode').textContent = '✓ Änderungen speichern';
+  document.getElementById('cancelNodeEdit').style.display = 'block';
+  selectedNodeId = id;
+  renderMap();
+}
+function cancelNodeEdit(){
+  editingNodeId = null;
+  document.getElementById('nodeName').value = '';
+  document.getElementById('nodeCoords').value = '';
+  document.getElementById('nodeHidden').checked = false;
+  document.getElementById('addNode').textContent = '+ Knoten anlegen';
+  document.getElementById('cancelNodeEdit').style.display = 'none';
+  selectedNodeId = null;
+  renderMap();
+}
+document.getElementById('cancelNodeEdit').addEventListener('click', cancelNodeEdit);
+
+// converts the current center of the visible map viewport into grid
+// coordinates, so a newly created node appears where the person is looking
+function getViewportCenterGrid(){
+  const svg = document.getElementById('map');
+  const mapWrap = document.getElementById('mapWrap');
+  const svgRect = svg.getBoundingClientRect();
+  const wrapRect = mapWrap.getBoundingClientRect();
+  if(svgRect.width===0 || svgRect.height===0) return { gx:0, gy:0 };
+  const centerX = wrapRect.left + wrapRect.width/2;
+  const centerY = wrapRect.top + wrapRect.height/2;
+  const relX = (centerX - svgRect.left) / svgRect.width;
+  const relY = (centerY - svgRect.top) / svgRect.height;
+  const svgW = parseFloat(svg.getAttribute('width')) || svgRect.width;
+  const svgH = parseFloat(svg.getAttribute('height')) || svgRect.height;
+  const internalX = relX * svgW;
+  const internalY = relY * svgH;
+  return {
+    gx: snapToGrid(internalX - 90) + lastMinGx,
+    gy: snapToGrid(internalY - 70) + lastMinGy
+  };
+}
+
+document.getElementById('addNode').addEventListener('click', ()=>{
+  const name = document.getElementById('nodeName').value.trim();
+  const coords = parseCoords(document.getElementById('nodeCoords').value);
+  const hidden = document.getElementById('nodeHidden').checked;
+  if(!name || !coords){ showToast('Bitte Name und Koordinaten im Format "49.8103, 12.1497" angeben.'); return; }
+  if(editingNodeId){
+    const n = nodeById(editingNodeId);
+    if(n){ n.name=name; n.lat=coords.lat; n.lng=coords.lng; n.hidden=hidden; }
+    cancelNodeEdit();
+    showToast('Knoten aktualisiert.');
+  } else {
+    const id = 'n' + Date.now();
+    const { gx, gy } = getViewportCenterGrid();
+    state.nodes.push({id, name, lat:coords.lat, lng:coords.lng, gx, gy, hidden});
+    document.getElementById('nodeName').value='';
+    document.getElementById('nodeCoords').value='';
+    document.getElementById('nodeHidden').checked=false;
+  }
+  save(); render();
+});
+
+// ---------- editor: add / edit edge ----------
+let editingEdgeId = null;
+
+function startEditEdge(id){
+  const e = state.edges.find(x=>x.id===id);
+  if(!e) return;
+  editingEdgeId = id;
+  selectedEdgeId = id;
+  document.getElementById('edgeType').value = e.type;
+  document.getElementById('edgeName').value = e.name || '';
+  document.getElementById('edgeFrom').value = e.from;
+  document.getElementById('edgeTo').value = e.to;
+  document.getElementById('edgeTime').value = e.timeMin;
+  document.getElementById('edgeDist').value = '';
+  document.getElementById('edgeSurface').value = e.surface;
+  document.getElementById('edgeAccessible').checked = !!e.accessible;
+  document.getElementById('edgeSteepFlag').checked = !!e.steep;
+  document.getElementById('edgeInfo').value = e.info || '';
+  document.getElementById('addEdge').textContent = '✓ Änderungen speichern';
+  document.getElementById('cancelEdgeEdit').style.display = 'block';
+  updateBearingHint();
+  renderMap();
+}
+function cancelEdgeEdit(){
+  editingEdgeId = null;
+  selectedEdgeId = null;
+  pickingTarget = null;
+  updatePickingButtons();
+  document.getElementById('edgeName').value = '';
+  document.getElementById('edgeDist').value = '';
+  document.getElementById('edgeTime').value = 10;
+  document.getElementById('edgeAccessible').checked = false;
+  document.getElementById('edgeSteepFlag').checked = false;
+  document.getElementById('edgeInfo').value = '';
+  document.getElementById('addEdge').textContent = '+ Verbindung anlegen';
+  document.getElementById('cancelEdgeEdit').style.display = 'none';
+  renderMap();
+}
+document.getElementById('cancelEdgeEdit').addEventListener('click', cancelEdgeEdit);
+
+document.getElementById('addEdge').addEventListener('click', ()=>{
+  const type = document.getElementById('edgeType').value;
+  const name = document.getElementById('edgeName').value.trim();
+  const from = document.getElementById('edgeFrom').value;
+  const to = document.getElementById('edgeTo').value;
+  const timeMin = parseInt(document.getElementById('edgeTime').value) || 1;
+  const surface = document.getElementById('edgeSurface').value;
+  const accessible = document.getElementById('edgeAccessible').checked;
+  const steep = document.getElementById('edgeSteepFlag').checked;
+  const info = document.getElementById('edgeInfo').value.trim();
+  if(!from || !to || from===to){ showToast('Bitte zwei unterschiedliche Knoten wählen.'); return; }
+  if(type!=='strasse' && !name){ showToast('Bitte eine Bezeichnung für Weg/Steig angeben.'); return; }
+  if(editingEdgeId){
+    const e = state.edges.find(x=>x.id===editingEdgeId);
+    if(e){ e.type=type; e.name=name; e.from=from; e.to=to; e.timeMin=timeMin; e.surface=surface; e.accessible=accessible; e.steep=steep; e.info=info; }
+    cancelEdgeEdit();
+    showToast('Verbindung aktualisiert.');
+  } else {
+    const id = 'e' + Date.now();
+    state.edges.push({id, type, name, from, to, timeMin, accessible, steep, surface, info, points:[]});
+    document.getElementById('edgeName').value='';
+    document.getElementById('edgeDist').value='';
+    document.getElementById('edgeInfo').value='';
+  }
+  save(); render();
+});
+
+// ---------- route sheet (bottom popup) ----------
+function openSheet(){
+  document.getElementById('sheetBackdrop').classList.add('open');
+  document.getElementById('routeSheet').classList.add('open');
+}
+function closeSheet(){
+  document.getElementById('sheetBackdrop').classList.remove('open');
+  document.getElementById('routeSheet').classList.remove('open');
+}
+document.getElementById('openSheet').addEventListener('click', ()=>{
+  if(routeFromId && routeToId){
+    computeAndShowRoute(); // start & destination already chosen — compute directly, no popup needed
+  } else {
+    openSheet(); // still choosing — offer the dropdown fallback
+  }
+});
+document.getElementById('closeSheet').addEventListener('click', closeSheet);
+document.getElementById('sheetBackdrop').addEventListener('click', closeSheet);
+
+// ---------- editor gate ----------
+// ---------- generic inline dialogs (no native alert/confirm/prompt — those
+// get silently blocked in some embedded preview frames) ----------
+let toastTimer = null;
+function showToast(message){
+  const t = document.getElementById('toast');
+  t.textContent = message;
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.style.display='none'; }, 4000);
+}
+document.getElementById('toast').addEventListener('click', ()=>{
+  document.getElementById('toast').style.display='none';
+  clearTimeout(toastTimer);
+});
+
+function showConfirm(message){
+  return new Promise(resolve=>{
+    document.getElementById('confirmMessage').textContent = message;
+    document.getElementById('confirmBackdrop').style.display='block';
+    document.getElementById('confirmCard').style.display='block';
+    const yes = document.getElementById('confirmYes');
+    const no = document.getElementById('confirmNo');
+    const backdrop = document.getElementById('confirmBackdrop');
+    function cleanup(result){
+      document.getElementById('confirmBackdrop').style.display='none';
+      document.getElementById('confirmCard').style.display='none';
+      yes.removeEventListener('click', onYes);
+      no.removeEventListener('click', onNo);
+      backdrop.removeEventListener('click', onNo);
+      resolve(result);
+    }
+    function onYes(){ cleanup(true); }
+    function onNo(){ cleanup(false); }
+    yes.addEventListener('click', onYes);
+    no.addEventListener('click', onNo);
+    backdrop.addEventListener('click', onNo);
+  });
+}
+
+function openEditorGate(){
+  document.getElementById('gateError').style.display='none';
+  document.getElementById('gateInput').value='';
+  document.getElementById('gateBackdrop').style.display='block';
+  document.getElementById('gateCard').style.display='block';
+  document.getElementById('gateInput').focus();
+}
+function closeEditorGate(){
+  document.getElementById('gateBackdrop').style.display='none';
+  document.getElementById('gateCard').style.display='none';
+}
+function enterEditingMode(){
+  editing = true;
+  closeSheet();
+  resetMapZoom();
+  hideCornerCard();
+  hidePathInfo();
+  document.getElementById('editorPanel').style.display='block';
+  document.getElementById('editorToggle').style.display='none';
+  document.getElementById('zoomControls').style.display='none';
+  render();
+}
+function submitEditorGate(){
+  const pass = document.getElementById('gateInput').value;
+  if(pass === 'redaktion'){
+    closeEditorGate();
+    enterEditingMode();
+  } else {
+    document.getElementById('gateError').style.display='block';
+    document.getElementById('gateInput').value='';
+    document.getElementById('gateInput').focus();
+  }
+}
+
+document.getElementById('editorToggle').addEventListener('click', openEditorGate);
+document.getElementById('gateConfirm').addEventListener('click', submitEditorGate);
+document.getElementById('gateCancel').addEventListener('click', closeEditorGate);
+document.getElementById('gateBackdrop').addEventListener('click', closeEditorGate);
+document.getElementById('gateInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter') submitEditorGate();
+  if(e.key==='Escape') closeEditorGate();
+});
+document.getElementById('exitEditor').addEventListener('click', ()=>{
+  editing = false;
+  selectedNodeId = null;
+  if(editingNodeId) cancelNodeEdit();
+  if(editingEdgeId) cancelEdgeEdit();
+  document.getElementById('editorPanel').style.display='none';
+  document.getElementById('editorToggle').style.display='block';
+  document.getElementById('zoomControls').style.display='flex';
+  render();
+  renderCornerCard();
+});
+
+// ---------- editor: grid size ----------
+document.getElementById('gridUnitSlider').addEventListener('input', (e)=>{
+  const val = parseInt(e.target.value);
+  document.getElementById('gridUnitLabel').textContent = val + ' px';
+  state.gridUnit = val;
+  renderMap();
+});
+document.getElementById('gridUnitSlider').addEventListener('change', ()=>{ save(); });
+
+document.getElementById('gridSubdivisionSelect').addEventListener('change', (e)=>{
+  state.gridSubdivision = parseInt(e.target.value);
+  save();
+  renderMap();
+});
+
+// ---------- editor: export / import ----------
+document.getElementById('exportData').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'wegenetz-windischeschenbach.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('importFile').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async () => {
+    let parsed;
+    try{ parsed = JSON.parse(reader.result); }
+    catch(err){ showToast('Die Datei enthält kein gültiges JSON.'); e.target.value=''; return; }
+    const migrated = migrateState(parsed);
+    if(!migrated){
+      showToast('Die Datei hat nicht das erwartete Format (nodes/edges).');
+      e.target.value='';
+      return;
+    }
+    const ok = await showConfirm('Aktuelle Knoten und Wege durch den Inhalt dieser Datei ersetzen?');
+    if(!ok){ e.target.value=''; return; }
+    state = migrated;
+    document.getElementById('gridUnitSlider').value = state.gridUnit;
+    document.getElementById('gridUnitLabel').textContent = state.gridUnit + ' px';
+    document.getElementById('gridSubdivisionSelect').value = state.gridSubdivision;
+    await save();
+    render();
+    showToast('Import erfolgreich übernommen.');
+    e.target.value='';
+  };
+  reader.readAsText(file);
+});
+
+// ---------- editor: automatic backups ----------
+async function renderBackupList(){
+  const box = document.getElementById('backupList');
+  box.innerHTML = '<div class="hint">Lade Sicherungen…</div>';
+  const backups = await listBackups();
+  if(!backups.length){ box.innerHTML = '<div class="hint">Noch keine automatischen Sicherungen vorhanden.</div>'; return; }
+  box.innerHTML = backups.map(ts => `
+    <div class="backup-item">
+      <span>${formatBackupTime(ts)}</span>
+      <button class="btn-ghost btn-small" data-ts="${ts}">Wiederherstellen</button>
+    </div>`).join('');
+  box.querySelectorAll('button[data-ts]').forEach(btn=>{
+    btn.addEventListener('click', ()=> restoreBackup(btn.getAttribute('data-ts')));
+  });
+}
+document.getElementById('showBackups').addEventListener('click', renderBackupList);
+
+// ---------- public zoom controls ----------
+function applyMapZoom(){
+  if(editing) return;
+  const svg = document.getElementById('map');
+  svg.style.transformOrigin = '0 0';
+  svg.style.transform = `scale(${mapZoom})`;
+  updateLabelVisibility();
+}
+
+// toggles a CSS class on the map so labels hide/show immediately on every
+// zoom change (buttons, pinch, fit-to-view) — independent of whether a full
+// renderMap() happens to run, since zooming alone doesn't rebuild the SVG
+function updateLabelVisibility(){
+  const svg = document.getElementById('map');
+  svg.classList.toggle('hide-labels', !editing && mapZoom < LABEL_ZOOM_THRESHOLD);
+}
+
+// changes the zoom level while keeping whatever content point is currently
+// under (clientX, clientY) visually anchored in place — otherwise every
+// zoom step would drift toward the map's top-left corner
+function zoomAroundPoint(newZoom, clientX, clientY){
+  const svg = document.getElementById('map');
+  const mapWrap = document.getElementById('mapWrap');
+  const rectBefore = svg.getBoundingClientRect();
+  if(rectBefore.width===0 || rectBefore.height===0){ mapZoom = newZoom; applyMapZoom(); return; }
+  const relX = (clientX - rectBefore.left) / rectBefore.width;
+  const relY = (clientY - rectBefore.top) / rectBefore.height;
+  mapZoom = newZoom;
+  applyMapZoom();
+  const rectAfter = svg.getBoundingClientRect();
+  const newX = rectAfter.left + relX * rectAfter.width;
+  const newY = rectAfter.top + relY * rectAfter.height;
+  mapWrap.scrollLeft += (newX - clientX);
+  mapWrap.scrollTop += (newY - clientY);
+}
+
+function zoomButtonCenter(){
+  const r = document.getElementById('mapWrap').getBoundingClientRect();
+  return { x: r.left + r.width/2, y: r.top + r.height/2 };
+}
+
+document.getElementById('zoomIn').addEventListener('click', ()=>{
+  const c = zoomButtonCenter();
+  zoomAroundPoint(Math.min(ZOOM_MAX, mapZoom * ZOOM_STEP), c.x, c.y);
+});
+document.getElementById('zoomOut').addEventListener('click', ()=>{
+  const c = zoomButtonCenter();
+  zoomAroundPoint(Math.max(ZOOM_MIN, mapZoom / ZOOM_STEP), c.x, c.y);
+});
+// scales/scrolls the map so the whole network (all nodes/edges) is fully
+// visible and centered — used by the bottom-most zoom-control button
+function fitWholeMapIntoView(){
+  const svg = document.getElementById('map');
+  const mapWrap = document.getElementById('mapWrap');
+  svg.style.transform = 'none';
+  requestAnimationFrame(()=>{
+    const b = svg.getBBox();
+    if(!b || b.width===0 || b.height===0) return;
+    const availW = mapWrap.clientWidth - 60;
+    const availH = mapWrap.clientHeight - 100;
+    let scale = Math.min(1, availW/b.width, availH/b.height);
+    scale = Math.max(0.2, scale);
+    mapZoom = scale;
+    svg.style.transformOrigin = '0 0';
+    svg.style.transform = `scale(${scale})`;
+    updateLabelVisibility();
+    requestAnimationFrame(()=>{
+      const rect = svg.getBoundingClientRect();
+      const wrapRect = mapWrap.getBoundingClientRect();
+      const targetCx = wrapRect.left + wrapRect.width/2;
+      const targetCy = wrapRect.top + wrapRect.height/2;
+      const curCx = rect.left + rect.width/2;
+      const curCy = rect.top + rect.height/2;
+      mapWrap.scrollLeft += (curCx - targetCx);
+      mapWrap.scrollTop += (curCy - targetCy);
+    });
+  });
+}
+
+document.getElementById('zoomReset').addEventListener('click', fitWholeMapIntoView);
+document.getElementById('zoomFitRoute').addEventListener('click', fitRouteIntoView);
+
+// ---------- locate me: set the nearest node as the route start via GPS ----------
+// scrolls the map so a specific node is centered in the viewport,
+// respecting whatever zoom level is currently applied
+function centerNodeInView(nodeId){
+  requestAnimationFrame(()=>{
+    const svg = document.getElementById('map');
+    const mapWrap = document.getElementById('mapWrap');
+    const circle = svg.querySelector(`circle[data-id="${nodeId}"]`);
+    if(!circle) return;
+    const rect = circle.getBoundingClientRect();
+    const wrapRect = mapWrap.getBoundingClientRect();
+    const targetCx = wrapRect.left + wrapRect.width/2;
+    const targetCy = wrapRect.top + wrapRect.height/2;
+    const curCx = rect.left + rect.width/2;
+    const curCy = rect.top + rect.height/2;
+    mapWrap.scrollBy({ left: curCx-targetCx, top: curCy-targetCy, behavior:'smooth' });
+  });
+}
+
+function locateAndSetStart(){
+  if(!navigator.geolocation){
+    showToast('Standortbestimmung wird von diesem Browser nicht unterstützt.');
+    return;
+  }
+  showToast('Standort wird ermittelt…');
+  navigator.geolocation.getCurrentPosition(
+    (pos)=>{
+      const { latitude, longitude } = pos.coords;
+      const candidates = state.nodes.filter(n=>!n.hidden);
+      if(!candidates.length){ showToast('Keine Orte im Wegenetz vorhanden.'); return; }
+      let best=null, bestDist=Infinity;
+      candidates.forEach(n=>{
+        const d = haversine(latitude, longitude, n.lat, n.lng);
+        if(d<bestDist){ bestDist=d; best=n; }
+      });
+      routeFromId = best.id;
+      clearComputedRoute();
+      renderSelects();
+      updateFabLabel();
+      renderMap();
+      centerNodeInView(best.id);
+      const distText = bestDist<1000 ? Math.round(bestDist)+' m' : (bestDist/1000).toFixed(1)+' km';
+      showToast(`Start gesetzt: ${best.name} (${distText} entfernt)`);
+    },
+    (err)=>{
+      let msg = 'Standort konnte nicht ermittelt werden.';
+      if(err.code===1) msg = 'Standortzugriff wurde verweigert (z. B. in dieser eingebetteten Vorschau blockiert, oder in den Geräteeinstellungen nicht erlaubt).';
+      else if(err.code===2) msg = 'Standort ist gerade nicht verfügbar.';
+      else if(err.code===3) msg = 'Zeitüberschreitung bei der Standortbestimmung.';
+      showToast(msg);
+    },
+    { enableHighAccuracy:true, timeout:10000 }
+  );
+}
+document.getElementById('locateMe').addEventListener('click', locateAndSetStart);
+
+// pinch-to-zoom for touch devices
+(function setupPinchZoom(){
+  const mapWrap = document.getElementById('mapWrap');
+  let pinchStartDist = null;
+  let pinchStartZoom = 1;
+  function touchDist(t){
+    const dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY;
+    return Math.hypot(dx, dy);
+  }
+  function touchMid(t){
+    return { x: (t[0].clientX+t[1].clientX)/2, y: (t[0].clientY+t[1].clientY)/2 };
+  }
+  mapWrap.addEventListener('touchstart', (e)=>{
+    if(editing || e.touches.length!==2) return;
+    e.preventDefault(); // stop iOS Safari from treating this as its own tab-switch/page-zoom gesture
+    pinchStartDist = touchDist(e.touches);
+    pinchStartZoom = mapZoom;
+  }, {passive:false});
+  mapWrap.addEventListener('touchmove', (e)=>{
+    if(editing || e.touches.length!==2 || pinchStartDist===null) return;
+    e.preventDefault();
+    const dist = touchDist(e.touches);
+    const factor = dist / pinchStartDist;
+    const newZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, pinchStartZoom * factor));
+    const mid = touchMid(e.touches);
+    zoomAroundPoint(newZoom, mid.x, mid.y);
+  }, {passive:false});
+  mapWrap.addEventListener('touchend', (e)=>{
+    if(e.touches.length < 2) pinchStartDist = null;
+  }, {passive:true});
+})();
+
+// ---------- init ----------
+(async function init(){
+  await load();
+  document.getElementById('gridUnitSlider').value = state.gridUnit || 70;
+  document.getElementById('gridUnitLabel').textContent = (state.gridUnit || 70) + ' px';
+  document.getElementById('gridSubdivisionSelect').value = state.gridSubdivision || 1;
+  render();
+})();
+</script>
+</body>
+</html>
