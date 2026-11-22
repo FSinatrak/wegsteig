@@ -1481,6 +1481,7 @@ function updateUserMarker(){
   const m = document.getElementById('userMarker');
   if(!m) return;
   const p = userMarkerPx();
+  lastMarkerPx = p;
   if(!p){ m.style.display = 'none'; return; }
   m.setAttribute('transform', `translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`);
   m.style.display = '';
@@ -1490,13 +1491,30 @@ function updateUserMarker(){
 
 // Blickrichtungs-Kegel am blauen Punkt (Norden = oben, wie die Schemakarte)
 let lastConeAngle = null;
+let lastMarkerPx = null;
 function updateUserCone(){
   const c = document.getElementById('userCone');
   if(!c) return;
   if(nav.heading===null){ c.style.display = 'none'; return; }
-  if(lastConeAngle!==null && Math.abs(((nav.heading - lastConeAngle + 540) % 360) - 180) < 2) return;
-  lastConeAngle = nav.heading;
-  c.setAttribute('transform', `rotate(${nav.heading.toFixed(1)})`);
+  let ang = nav.heading;
+  // Während der Navigation: Kegel am Ziel ausrichten statt am echten Norden.
+  // Blickt man genau aufs Ziel, zeigt der Kegel auf der (verzerrten) Schemakarte
+  // genau zum Zielknoten — passend zum Pfeil, der dann geradeaus zeigt.
+  if(nav.active && !nav.done && nav.pos && lastMarkerPx && lastMapGeom){
+    const n = nodeById(nav.targets[nav.idx]);
+    const np = n && lastMapGeom.pos[n.id];
+    if(np){
+      const dx = np.x - lastMarkerPx.x, dy = np.y - lastMarkerPx.y;
+      if(Math.hypot(dx, dy) > 4){
+        const mapBearing = Math.atan2(dx, -dy) * 180/Math.PI;
+        const realBearing = bearing(nav.pos.lat, nav.pos.lng, n.lat, n.lng);
+        ang = ((mapBearing + (nav.heading - realBearing)) % 360 + 360) % 360;
+      }
+    }
+  }
+  if(lastConeAngle!==null && Math.abs(((ang - lastConeAngle + 540) % 360) - 180) < 2) return;
+  lastConeAngle = ang;
+  c.setAttribute('transform', `rotate(${ang.toFixed(1)})`);
   c.style.display = '';
 }
 
