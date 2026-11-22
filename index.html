@@ -683,6 +683,10 @@
     transform-origin:center;
     animation:userHalo 1.6s ease-out infinite;
   }
+  .user-cone{
+    fill:#1a73e8;
+    opacity:0.28;
+  }
   @keyframes userBlink{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
   @keyframes userHalo{ 0%{transform:scale(0.7);opacity:0.5;} 100%{transform:scale(2.4);opacity:0;} }
   #navStart{font-size:19px;color:var(--route-highlight);border-color:var(--route-highlight);}
@@ -1414,6 +1418,7 @@ function renderMap(){
   lastMapGeom = { pos, realPointsFor, buildSegments, minGx, minGy };
   if(!editing){
     const g = el('g',{id:'userMarker', style:'display:none;pointer-events:none;'});
+    g.appendChild(el('path',{id:'userCone', d:'M0,0 L-15.5,-33.3 A36.7,36.7 0 0 1 15.5,-33.3 Z', class:'user-cone', style:'display:none;'}));
     g.appendChild(el('circle',{cx:0, cy:0, r:11, class:'user-halo'}));
     g.appendChild(el('circle',{cx:0, cy:0, r:7, class:'user-dot'}));
     svg.appendChild(g);
@@ -1479,6 +1484,20 @@ function updateUserMarker(){
   if(!p){ m.style.display = 'none'; return; }
   m.setAttribute('transform', `translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`);
   m.style.display = '';
+  lastConeAngle = null;
+  updateUserCone();
+}
+
+// Blickrichtungs-Kegel am blauen Punkt (Norden = oben, wie die Schemakarte)
+let lastConeAngle = null;
+function updateUserCone(){
+  const c = document.getElementById('userCone');
+  if(!c) return;
+  if(nav.heading===null){ c.style.display = 'none'; return; }
+  if(lastConeAngle!==null && Math.abs(((nav.heading - lastConeAngle + 540) % 360) - 180) < 2) return;
+  lastConeAngle = nav.heading;
+  c.setAttribute('transform', `rotate(${nav.heading.toFixed(1)})`);
+  c.style.display = '';
 }
 
 function pointToSegmentDist(px,py, x1,y1, x2,y2){
@@ -2911,9 +2930,13 @@ function onNavOrientation(e){
   nav.heading = h;
   nav.headingSource = 'compass';
   updateNavArrow();
+  updateUserCone();
 }
 
+let compassStarted = false;
 function startCompass(){
+  if(compassStarted) return;
+  compassStarted = true;
   // iOS verlangt eine Erlaubnis, die direkt aus einem Tipp heraus angefragt werden muss
   const attach = ()=>{
     window.addEventListener('deviceorientationabsolute', onNavOrientation, true);
@@ -2922,13 +2945,31 @@ function startCompass(){
   try{
     if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
       DeviceOrientationEvent.requestPermission()
-        .then(r=>{ if(r==='granted') attach(); })
-        .catch(()=>{});
+        .then(r=>{ if(r==='granted') attach(); else compassStarted = false; })
+        .catch(()=>{ compassStarted = false; });
     } else {
       attach();
     }
   }catch(e){ /* kein Kompass verfügbar */ }
 }
+// iOS: Kompass-Erlaubnis darf nur aus einem Tipp heraus angefragt werden ->
+// beim ersten Tipp irgendwo in der App fragen. Android braucht keine Erlaubnis.
+function setupCompassOnFirstTap(){
+  const needsPermission = typeof DeviceOrientationEvent!=='undefined'
+                          && typeof DeviceOrientationEvent.requestPermission==='function';
+  if(!needsPermission){ startCompass(); return; }
+  const onTap = ()=>{
+    if(editing || compassStarted) return;
+    startCompass();
+    if(compassStarted){
+      document.removeEventListener('click', onTap, true);
+      document.removeEventListener('touchend', onTap, true);
+    }
+  };
+  document.addEventListener('click', onTap, true);
+  document.addEventListener('touchend', onTap, true);
+}
+
 function stopCompass(){
   window.removeEventListener('deviceorientationabsolute', onNavOrientation, true);
   window.removeEventListener('deviceorientation', onNavOrientation, true);
@@ -2968,7 +3009,7 @@ function startNavigation(){
   if(!navigator.geolocation){ showToast('Standortbestimmung wird von diesem Browser nicht unterstützt.'); return; }
   startCompass(); // muss als Erstes im Tipp passieren (iOS)
   nav.active = true;
-  nav.heading = null; nav.headingSource = null; // bekannter Standort bleibt erhalten
+  if(nav.headingSource!=='compass'){ nav.heading = null; nav.headingSource = null; } // bekannter Standort/Kompass bleibt erhalten
   nav.targets = []; nav.mode = null; nav.idx = 0;
   applyNavTargets(t);
   startLocationWatch();
@@ -2983,7 +3024,7 @@ function startNavigation(){
 }
 
 function stopNavigation(){
-  stopCompass(); // Standort läuft weiter, damit der blaue Punkt sichtbar bleibt
+  // Standort und Kompass laufen weiter, damit Punkt und Blickrichtung sichtbar bleiben
   if(nav.wakeLock){ try{ nav.wakeLock.release(); }catch(e){} nav.wakeLock = null; }
   nav.active = false; nav.done = false;
   document.getElementById('navCard').style.display = 'none';
@@ -3172,6 +3213,7 @@ document.getElementById('navNext').addEventListener('click', ()=>{
   document.getElementById('gridSubdivisionSelect').value = state.gridSubdivision || 1;
   render();
   startLocationWatch(); // eigenen Standort direkt beim Öffnen anzeigen
+  setupCompassOnFirstTap();
 })();
 </script>
 </body>
