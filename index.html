@@ -606,6 +606,72 @@
     border-top:1px dashed var(--hairline);
     line-height:1.4;
   }
+  /* --- live navigation --- */
+  .nav-card{
+    position:fixed;
+    left:72px; right:14px;
+    bottom:calc(16px + env(safe-area-inset-bottom));
+    max-width:420px;
+    margin-left:auto;
+    z-index:47;
+    background:var(--panel);
+    border:1px solid var(--hairline);
+    border-radius:14px;
+    padding:10px 12px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    box-shadow:0 6px 20px rgba(0,0,0,0.22);
+  }
+  .nav-arrow{width:104px;height:104px;flex-shrink:0;}
+  #navArrowShape{
+    transform-box:view-box;
+    transform-origin:70px 70px;
+    transition:transform 0.25s ease-out;
+  }
+  .nav-arrow.no-fix #navArrowShape{fill:#b9b6ac;}
+  .nav-arrow-text{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-weight:700;
+    font-size:19px;
+    fill:#fff;
+  }
+  .nav-info{flex:1;min-width:0;}
+  .nav-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+    color:var(--ink-soft);
+  }
+  .nav-name{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-size:19px;
+    font-weight:700;
+    line-height:1.15;
+    margin:2px 0 3px 0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .nav-meta{font-size:11.5px;color:var(--ink-soft);line-height:1.35;}
+  .nav-actions{display:flex;gap:6px;margin-top:7px;}
+  .nav-actions button{flex:1;padding:7px 4px;font-size:13px;}
+  .nav-pulse{
+    fill:none;
+    stroke:var(--route-highlight);
+    stroke-width:3;
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:navPulse 1.4s ease-out infinite;
+    pointer-events:none;
+  }
+  @keyframes navPulse{
+    0%{transform:scale(0.6);opacity:0.9;}
+    100%{transform:scale(1.8);opacity:0;}
+  }
+  #navStart{font-size:19px;color:var(--route-highlight);border-color:var(--route-highlight);}
+
   .backup-item{
     display:flex;
     align-items:center;
@@ -732,11 +798,28 @@
 <div class="route-corner" id="routeCorner" style="display:none;"></div>
 <div class="path-info" id="pathInfo" style="display:none;"></div>
 <div class="zoom-controls" id="zoomControls">
+  <button id="navStart" title="Live-Navigation starten" style="display:none;">➤</button>
   <button id="locateMe" title="Meinen Standort als Start verwenden">📍</button>
   <button id="zoomIn" title="Vergrößern">+</button>
   <button id="zoomOut" title="Verkleinern">−</button>
   <button id="zoomFitRoute" title="Gesamte Route anzeigen" style="display:none;">⛶</button>
   <button id="zoomReset" title="Gesamte Karte anzeigen">⤢</button>
+</div>
+<div class="nav-card" id="navCard" style="display:none;">
+  <svg class="nav-arrow" id="navArrow" viewBox="0 0 140 140">
+    <polygon id="navArrowShape" points="70,4 134,66 100,66 100,136 40,136 40,66 6,66" fill="var(--route-highlight)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+    <text id="navArrowText" class="nav-arrow-text" x="70" y="77" text-anchor="middle">…</text>
+  </svg>
+  <div class="nav-info">
+    <div class="nav-label" id="navLabel">Navigation</div>
+    <div class="nav-name" id="navName">–</div>
+    <div class="nav-meta" id="navMeta">Standort wird ermittelt…</div>
+    <div class="nav-actions">
+      <button class="btn-ghost" id="navPrev" title="Vorheriger Punkt">‹</button>
+      <button class="btn-ghost" id="navNext" title="Nächster Punkt">›</button>
+      <button class="btn-ghost" id="navStop" title="Navigation beenden">✕ Ende</button>
+    </div>
+  </div>
 </div>
 <button class="fab" id="openSheet"><span class="dot" id="fabDot"></span><span class="fab-text">Start wählen</span></button>
 
@@ -848,6 +931,9 @@ let pickingTarget = null; // 'from' | 'to' | null — used while picking an edge
 let routeFromId = null;
 let routeToId = null;
 let requiredEdgeIds = new Set();
+// Live-Navigation: Zustand (Ziele = Knotenfolge, aktueller Index, GPS, Kompass)
+let nav = { active:false, mode:null, targets:[], idx:0, done:false, watchId:null,
+            pos:null, heading:null, headingSource:null, arrowAngle:0, wakeLock:null };
 
 // ---------- seed data (example — replace/extend via Redaktion) ----------
 function seedData(){
@@ -1259,7 +1345,12 @@ function renderMap(){
   // nodes
   const selectedEdgeObj = (editing && selectedEdgeId) ? state.edges.find(e=>e.id===selectedEdgeId) : null;
   const editorNodeLabels = editing ? disambiguationLabels() : null;
+  const navTargetId = (!editing && nav.active && !nav.done) ? nav.targets[nav.idx] : null;
   state.nodes.forEach(n=>{
+    if(n.id===navTargetId){
+      // pulsierender Ring um den aktuellen Navigationspunkt (auch bei unsichtbaren Zwischenknoten)
+      svg.appendChild(el('circle',{cx:pos[n.id].x, cy:pos[n.id].y, r:16, class:'nav-pulse'}));
+    }
     if(n.hidden && !editing) return; // invisible connector nodes: not shown/clickable to end users
     const p = pos[n.id];
     const g = el('g',{});
@@ -1460,6 +1551,11 @@ function clearComputedRoute(){
   document.getElementById('openSheet').classList.remove('has-route');
   hideCornerCard();
   resetMapZoom();
+  // laufende Navigation an die geänderte Auswahl anpassen (ohne Route: nur noch zum Start)
+  if(nav.active){
+    const t = navTargetsFromSelection();
+    if(t) applyNavTargets(t); else stopNavigation();
+  }
 }
 
 function resetMapZoom(){
@@ -1480,8 +1576,11 @@ function updateFabLabel(){
   if(textEl) textEl.textContent = text;
   if(hint){
     hint.textContent = hintText;
-    hint.style.display = currentRoutes.length ? 'none' : 'block';
+    hint.style.display = (currentRoutes.length || nav.active) ? 'none' : 'block';
   }
+  fab.style.display = nav.active ? 'none' : '';
+  const navBtn = document.getElementById('navStart');
+  if(navBtn) navBtn.style.display = (routeFromId && !nav.active) ? 'block' : 'none';
 }
 
 function renderNodeTable(){
@@ -1806,6 +1905,7 @@ function renderRouteOptions(routes, diag){
   selectedRouteIdx = 0;
   highlightedEdgeIds = new Set(routes[0].edges.map(e=>e.id));
   renderRouteResultCards();
+  if(nav.active) applyNavTargets(navTargetsFromSelection()); // Navigation zum Start läuft schon -> auf ganze Route erweitern
   renderMap();
   renderCornerCard();
   fitRouteIntoView();
@@ -1816,6 +1916,7 @@ function selectRouteOption(idx){
   selectedRouteIdx = idx;
   highlightedEdgeIds = new Set(currentRoutes[idx].edges.map(e=>e.id));
   renderRouteResultCards(); // keep the popup's card list in sync even while it's closed
+  if(nav.active) applyNavTargets(navTargetsFromSelection());
   renderMap();
   renderCornerCard();
   fitRouteIntoView();
@@ -1880,11 +1981,14 @@ function renderCornerCard(){
       <button class="btn-ghost btn-small" id="cornerDetails">Details</button>
       ${cycleBtn}
     </div>
+    ${nav.active ? '' : '<button class="btn-primary btn-small" id="cornerGo" style="width:100%;margin-top:6px;">➤ Losgehen</button>'}
     <button class="btn-ghost btn-small" id="cornerNavigate" style="width:100%;margin-top:6px;">🧭 In Google Maps öffnen</button>`;
   card.style.display='block';
   document.getElementById('cornerClose').addEventListener('click', resetRouteSelection);
   document.getElementById('cornerDetails').addEventListener('click', openSheet);
   document.getElementById('cornerNavigate').addEventListener('click', openCurrentRouteInGoogleMaps);
+  const goBtn = document.getElementById('cornerGo');
+  if(goBtn) goBtn.addEventListener('click', startNavigation);
   const cycle = document.getElementById('cornerCycle');
   if(cycle) cycle.addEventListener('click', ()=>{
     selectRouteOption((selectedRouteIdx+1) % currentRoutes.length);
@@ -2410,6 +2514,7 @@ function closeEditorGate(){
   document.getElementById('gateCard').style.display='none';
 }
 function enterEditingMode(){
+  if(nav.active) stopNavigation();
   editing = true;
   closeSheet();
   resetMapZoom();
@@ -2662,6 +2767,258 @@ function locateAndSetStart(){
   );
 }
 document.getElementById('locateMe').addEventListener('click', locateAndSetStart);
+
+// ---------- Live-Navigation: Pfeil mit Richtung + Entfernung zum nächsten Knoten ----------
+// Ablauf: Ist eine Route berechnet, führt die Navigation nacheinander über alle
+// Knoten der Route (erst zum Startpunkt, dann weiter). Ist nur ein Start gewählt,
+// führt sie nur dorthin. Wird ein Punkt erreicht, springt sie automatisch weiter.
+const NAV_ARRIVE_MIN_M = 10, NAV_ARRIVE_MAX_M = 40;
+const NAV_PASS_NEAR_M = 30; // so nah muss man gewesen sein, damit "vorbeigegangen" zählt
+const NAV_WALK_M_PER_MIN = 75; // ~4,5 km/h
+
+function navTargetsFromSelection(){
+  if(!routeFromId) return null;
+  if(currentRoutes.length){
+    return { mode:'route', targets: nodeSequenceForRoute(currentRoutes[selectedRouteIdx], routeFromId) };
+  }
+  return { mode:'start', targets:[routeFromId] };
+}
+
+function applyNavTargets(t){
+  if(!t) return;
+  const sameStart = nav.targets[0]===t.targets[0];
+  const keepIdx = sameStart && nav.mode===t.mode ? nav.idx : 0;
+  nav.mode = t.mode;
+  nav.targets = t.targets;
+  nav.idx = Math.min(keepIdx, t.targets.length-1);
+  nav.done = false;
+  checkNavArrival();
+  updateNavDisplay();
+}
+
+function formatDistance(m){
+  if(m < 1000) return Math.round(m/5)*5 + ' m';
+  return (m/1000).toFixed(1).replace('.', ',') + ' km';
+}
+
+function navTargetLabel(idx){
+  const n = nodeById(nav.targets[idx]);
+  if(!n) return '?';
+  if(!n.hidden) return n.name;
+  // unsichtbarer Zwischenknoten: Richtung des nächsten echten Ortes mit angeben
+  const next = nav.targets.slice(idx+1).map(nodeById).find(x=>x && !x.hidden);
+  return next ? 'Wegpunkt → ' + next.name : 'Wegpunkt';
+}
+
+function onNavOrientation(e){
+  let h = null;
+  if(typeof e.webkitCompassHeading==='number' && !isNaN(e.webkitCompassHeading)) h = e.webkitCompassHeading; // iOS
+  else if(e.absolute && typeof e.alpha==='number') h = (360 - e.alpha) % 360;                               // Android
+  if(h===null) return;
+  nav.heading = h;
+  nav.headingSource = 'compass';
+  updateNavArrow();
+}
+
+function startCompass(){
+  // iOS verlangt eine Erlaubnis, die direkt aus einem Tipp heraus angefragt werden muss
+  const attach = ()=>{
+    window.addEventListener('deviceorientationabsolute', onNavOrientation, true);
+    window.addEventListener('deviceorientation', onNavOrientation, true);
+  };
+  try{
+    if(typeof DeviceOrientationEvent!=='undefined' && typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission()
+        .then(r=>{ if(r==='granted') attach(); })
+        .catch(()=>{});
+    } else {
+      attach();
+    }
+  }catch(e){ /* kein Kompass verfügbar */ }
+}
+function stopCompass(){
+  window.removeEventListener('deviceorientationabsolute', onNavOrientation, true);
+  window.removeEventListener('deviceorientation', onNavOrientation, true);
+}
+
+async function requestWakeLock(){
+  try{ if('wakeLock' in navigator) nav.wakeLock = await navigator.wakeLock.request('screen'); }
+  catch(e){ /* nicht unterstützt — Display kann ausgehen */ }
+}
+document.addEventListener('visibilitychange', ()=>{
+  if(nav.active && document.visibilityState==='visible') requestWakeLock();
+});
+
+function startNavigation(){
+  const t = navTargetsFromSelection();
+  if(!t){ showToast('Bitte zuerst einen Startpunkt wählen.'); return; }
+  if(!navigator.geolocation){ showToast('Standortbestimmung wird von diesem Browser nicht unterstützt.'); return; }
+  startCompass(); // muss als Erstes im Tipp passieren (iOS)
+  nav.active = true;
+  nav.pos = null; nav.heading = null; nav.headingSource = null;
+  nav.targets = []; nav.mode = null; nav.idx = 0;
+  applyNavTargets(t);
+  nav.watchId = navigator.geolocation.watchPosition(onNavPosition, onNavError,
+    { enableHighAccuracy:true, maximumAge:2000, timeout:20000 });
+  requestWakeLock();
+  closeSheet();
+  hidePathInfo();
+  document.getElementById('navCard').style.display = 'flex';
+  updateFabLabel();
+  renderCornerCard();
+  renderMap();
+  centerNodeInView(nav.targets[nav.idx]);
+}
+
+function stopNavigation(){
+  if(nav.watchId!==null) navigator.geolocation.clearWatch(nav.watchId);
+  nav.watchId = null;
+  stopCompass();
+  if(nav.wakeLock){ try{ nav.wakeLock.release(); }catch(e){} nav.wakeLock = null; }
+  nav.active = false; nav.done = false;
+  document.getElementById('navCard').style.display = 'none';
+  updateFabLabel();
+  renderCornerCard();
+  renderMap();
+}
+
+function onNavPosition(p){
+  const c = p.coords;
+  nav.pos = { lat:c.latitude, lng:c.longitude, acc:c.accuracy };
+  // ohne Kompass: Gehrichtung aus GPS nehmen, sobald man sich bewegt
+  if(nav.headingSource!=='compass' && Number.isFinite(c.heading) && c.speed > 0.6){
+    nav.heading = c.heading; nav.headingSource = 'gps';
+  }
+  checkNavArrival();
+  updateNavDisplay();
+}
+
+function onNavError(err){
+  let msg = 'Standort konnte nicht ermittelt werden.';
+  if(err.code===1) msg = 'Standortzugriff verweigert. Bitte in den Einstellungen erlauben (bzw. funktioniert nicht in der eingebetteten Vorschau).';
+  else if(err.code===3) return; // Zeitüberschreitung: einfach auf das nächste Signal warten
+  document.getElementById('navMeta').textContent = msg;
+  if(err.code===1) showToast(msg);
+}
+
+// Merkt sich die größte Annäherung an den aktuellen Zielknoten — für die
+// "Vorbeigegangen"-Erkennung. Wird bei jedem Zielwechsel zurückgesetzt.
+function resetNavPassTracking(){
+  nav.track = { forIdx: nav.idx, minDist: Infinity, nextDistAtMin: Infinity };
+}
+
+function checkNavArrival(){
+  if(!nav.active || nav.done || !nav.pos) return;
+  // Radius: so genau wie das GPS gerade ist, aber mindestens 10 m und höchstens 40 m
+  const acc = nav.pos.acc || 0;
+  const radius = Math.min(NAV_ARRIVE_MAX_M, Math.max(NAV_ARRIVE_MIN_M, acc));
+  let advanced = false;
+  while(!nav.done){
+    const n = nodeById(nav.targets[nav.idx]);
+    if(!n) break;
+    if(!nav.track || nav.track.forIdx!==nav.idx) resetNavPassTracking();
+    const d = haversine(nav.pos.lat, nav.pos.lng, n.lat, n.lng);
+    const nextNode = nav.idx < nav.targets.length-1 ? nodeById(nav.targets[nav.idx+1]) : null;
+    const dNext = nextNode ? haversine(nav.pos.lat, nav.pos.lng, nextNode.lat, nextNode.lng) : null;
+
+    let reached = d <= radius;
+    if(!reached){
+      const t = nav.track;
+      if(d < t.minDist){ t.minDist = d; t.nextDistAtMin = dNext ?? Infinity; }
+      // Vorbeigegangen: war schon nah dran, entfernt sich wieder deutlich
+      // (mehr als das GPS-Rauschen) und kommt dem übernächsten Knoten näher
+      const awayMargin = Math.max(10, acc * 0.6);
+      const wasClose = t.minDist <= NAV_PASS_NEAR_M;
+      const movingAway = d > t.minDist + awayMargin;
+      const towardNext = nextNode ? (dNext < t.nextDistAtMin - 5) : true;
+      reached = wasClose && movingAway && towardNext;
+    }
+    if(!reached) break;
+    advanced = true;
+    if(nav.idx < nav.targets.length-1){
+      nav.idx++;
+    } else {
+      nav.done = true;
+    }
+  }
+  if(advanced){
+    try{ if(navigator.vibrate) navigator.vibrate(nav.done ? [150,80,150] : 150); }catch(e){}
+    if(nav.done){
+      showToast(nav.mode==='start' ? 'Startpunkt erreicht.' : 'Ziel erreicht 🎉');
+    } else {
+      showToast(`Weiter zu „${navTargetLabel(nav.idx)}"`);
+    }
+    renderMap();
+  }
+}
+
+function updateNavArrow(){
+  const shape = document.getElementById('navArrowShape');
+  const svg = document.getElementById('navArrow');
+  if(!nav.active || !nav.pos || nav.done){ svg.classList.add('no-fix'); return; }
+  svg.classList.remove('no-fix');
+  const n = nodeById(nav.targets[nav.idx]);
+  if(!n) return;
+  const b = bearing(nav.pos.lat, nav.pos.lng, n.lat, n.lng);
+  const rel = nav.heading!==null ? b - nav.heading : b;
+  // kürzesten Drehweg wählen, damit der Pfeil nicht bei 359°→0° einmal herumwirbelt
+  const delta = ((rel - nav.arrowAngle) % 360 + 540) % 360 - 180;
+  if(Math.abs(delta) < 1.5) return;
+  nav.arrowAngle += delta;
+  shape.style.transform = `rotate(${nav.arrowAngle}deg)`;
+}
+
+function updateNavDisplay(){
+  if(!nav.active) return;
+  const label = document.getElementById('navLabel');
+  const name = document.getElementById('navName');
+  const meta = document.getElementById('navMeta');
+  const txt = document.getElementById('navArrowText');
+  const last = nav.targets.length-1;
+  document.getElementById('navPrev').disabled = nav.idx===0 && !nav.done;
+  document.getElementById('navNext').disabled = nav.done || nav.idx>=last;
+
+  if(nav.done){
+    label.textContent = 'Navigation';
+    name.textContent = nav.mode==='start' ? 'Startpunkt erreicht' : 'Ziel erreicht 🎉';
+    meta.textContent = nav.mode==='start' ? 'Ziel wählen und „Route" tippen, dann geht es weiter.' : 'Schöne Runde gewesen!';
+    txt.textContent = '✓';
+    updateNavArrow();
+    return;
+  }
+  if(nav.idx===0) label.textContent = 'Zum Startpunkt';
+  else if(nav.idx===last) label.textContent = 'Zum Ziel';
+  else label.textContent = `Nächster Punkt · ${nav.idx}/${last}`;
+  name.textContent = navTargetLabel(nav.idx);
+
+  if(!nav.pos){
+    txt.textContent = '…';
+    meta.textContent = 'Standort wird ermittelt…';
+    updateNavArrow();
+    return;
+  }
+  const n = nodeById(nav.targets[nav.idx]);
+  const d = haversine(nav.pos.lat, nav.pos.lng, n.lat, n.lng);
+  txt.textContent = formatDistance(d);
+  const parts = [`ca. ${Math.max(1, Math.round(d/NAV_WALK_M_PER_MIN))} Min`, `GPS ± ${Math.round(nav.pos.acc)} m`];
+  let line2 = '';
+  if(nav.heading===null) line2 = 'Kein Kompass: Pfeil zeigt bezogen auf Norden = oben.';
+  else if(nav.headingSource==='gps') line2 = 'Richtung aus deiner Gehbewegung.';
+  meta.innerHTML = parts.join(' · ') + (line2 ? '<br>' + line2 : '');
+  updateNavArrow();
+}
+
+document.getElementById('navStart').addEventListener('click', startNavigation);
+document.getElementById('navStop').addEventListener('click', stopNavigation);
+document.getElementById('navPrev').addEventListener('click', ()=>{
+  if(nav.done){ nav.done = false; }
+  else if(nav.idx>0) nav.idx--;
+  updateNavDisplay(); renderMap(); centerNodeInView(nav.targets[nav.idx]);
+});
+document.getElementById('navNext').addEventListener('click', ()=>{
+  if(nav.idx < nav.targets.length-1){ nav.idx++; nav.done = false; }
+  updateNavDisplay(); renderMap(); centerNodeInView(nav.targets[nav.idx]);
+});
 
 // pinch-to-zoom for touch devices
 (function setupPinchZoom(){

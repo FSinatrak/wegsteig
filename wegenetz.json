@@ -560,6 +560,42 @@
       "gx": -0.5,
       "gy": 10,
       "hidden": false
+    },
+    {
+      "id": "n1795368773330",
+      "name": "Tor zum Waldnaabtal",
+      "lat": 49.80430495637032,
+      "lng": 12.159613710994343,
+      "gx": 13.5,
+      "gy": -11.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795368909711",
+      "name": "Gottesackerweg",
+      "lat": 49.80322132874246,
+      "lng": 12.156370270129706,
+      "gx": 9,
+      "gy": -6,
+      "hidden": false
+    },
+    {
+      "id": "n1795368972344",
+      "name": "Friedhof",
+      "lat": 49.80347076871751,
+      "lng": 12.157489680306611,
+      "gx": 11,
+      "gy": -8,
+      "hidden": false
+    },
+    {
+      "id": "n1795369078181",
+      "name": "Friedhof",
+      "lat": 49.80302743385231,
+      "lng": 12.159276835211237,
+      "gx": 13.5,
+      "gy": -7.5,
+      "hidden": false
     }
   ],
   "edges": [
@@ -1756,6 +1792,67 @@
       "timeMin": 2,
       "accessible": true,
       "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795368849237",
+      "type": "strasse",
+      "name": "Rundschleifstrasse",
+      "from": "n1788120569710",
+      "to": "n1795368773330",
+      "timeMin": 5,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795369008314",
+      "type": "weg",
+      "name": "Gottesackerweg",
+      "from": "n1795368909711",
+      "to": "n1795368972344",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795369163575",
+      "type": "weg",
+      "name": "Friedhof",
+      "from": "n1795369078181",
+      "to": "n1795368972344",
+      "timeMin": 2,
+      "accessible": false,
+      "steep": false,
+      "surface": "Schotter",
+      "info": "",
+      "points": [
+        {
+          "gx": 12.5,
+          "gy": -7.5
+        },
+        {
+          "gx": 12.5,
+          "gy": -8
+        }
+      ]
+    },
+    {
+      "id": "e1795369602567",
+      "type": "strasse",
+      "name": "Freiherr-vom-Stein-Strasse",
+      "from": "n1795369078181",
+      "to": "n1795368773330",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
       "surface": "Asphalt",
       "info": "",
       "points": []
