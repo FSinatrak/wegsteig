@@ -670,6 +670,21 @@
     0%{transform:scale(0.6);opacity:0.9;}
     100%{transform:scale(1.8);opacity:0;}
   }
+  .user-dot{
+    fill:#1a73e8;
+    stroke:#fff;
+    stroke-width:3;
+    animation:userBlink 1.2s ease-in-out infinite;
+  }
+  .user-halo{
+    fill:#1a73e8;
+    opacity:0.35;
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:userHalo 1.6s ease-out infinite;
+  }
+  @keyframes userBlink{ 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+  @keyframes userHalo{ 0%{transform:scale(0.7);opacity:0.5;} 100%{transform:scale(2.4);opacity:0;} }
   #navStart{font-size:19px;color:var(--route-highlight);border-color:var(--route-highlight);}
 
   .backup-item{
@@ -1393,7 +1408,73 @@ function renderMap(){
       circle.addEventListener('click', ()=> handleNodeClickForRouting(n.id));
     }
   });
+
+  // Geometrie merken, damit der eigene Standort bei jedem GPS-Update
+  // verschoben werden kann, ohne die ganze Karte neu zu zeichnen
+  lastMapGeom = { pos, realPointsFor, buildSegments, minGx, minGy };
+  if(!editing && nav.active){
+    const g = el('g',{id:'userMarker', style:'display:none;pointer-events:none;'});
+    g.appendChild(el('circle',{cx:0, cy:0, r:11, class:'user-halo'}));
+    g.appendChild(el('circle',{cx:0, cy:0, r:7, class:'user-dot'}));
+    svg.appendChild(g);
+    updateUserMarker();
+  }
   updateLabelVisibility();
+}
+
+let lastMapGeom = null;
+
+// bestimmt, wo der eigene Standort auf der Schemakarte liegt (in Pixeln)
+function userMarkerPx(){
+  if(!nav.pos || !lastMapGeom) return null;
+  const { pos, realPointsFor, buildSegments, minGx, minGy } = lastMapGeom;
+  const P = nav.pos;
+
+  // 1) Auf der Route unterwegs: auf den aktuellen Abschnitt projizieren
+  if(nav.mode==='route' && nav.idx>0 && currentRoutes.length){
+    const edge = currentRoutes[selectedRouteIdx].edges[nav.idx-1];
+    const aId = nav.targets[nav.idx-1], bId = nav.targets[nav.idx];
+    const A = nodeById(aId), B = nodeById(bId);
+    if(edge && A && B){
+      const pa = {x:0,y:0}, pb = toLocalMeters(B.lat, B.lng, A.lat, A.lng), pp = toLocalMeters(P.lat, P.lng, A.lat, A.lng);
+      const L2 = pb.x*pb.x + pb.y*pb.y;
+      let t = L2>0 ? (pp.x*pb.x + pp.y*pb.y)/L2 : 0;
+      t = Math.max(0, Math.min(1, t));
+      const off = Math.hypot(pp.x - t*pb.x, pp.y - t*pb.y);
+      // nur verwenden, wenn man nicht deutlich neben dem Abschnitt ist
+      if(off <= Math.max(80, (P.acc||0)*2)){
+        const real = realPointsFor(edge);
+        if(real){
+          const segs = buildSegments(real);
+          let pts = [segs[0].p1, ...segs.map(s=>s.p2)];
+          if(edge.from!==aId) pts = pts.reverse();
+          const lens = []; let total = 0;
+          for(let i=0;i<pts.length-1;i++){ const l = Math.hypot(pts[i+1][0]-pts[i][0], pts[i+1][1]-pts[i][1]); lens.push(l); total += l; }
+          let target = t*total;
+          for(let i=0;i<lens.length;i++){
+            if(target <= lens[i] || i===lens.length-1){
+              const f = lens[i]>0 ? Math.min(1, target/lens[i]) : 0;
+              return { x: pts[i][0] + (pts[i+1][0]-pts[i][0])*f, y: pts[i][1] + (pts[i+1][1]-pts[i][1])*f };
+            }
+            target -= lens[i];
+          }
+        }
+      }
+    }
+  }
+  // 2) Sonst (Weg zum Start, abseits der Route): Lage aus Nachbarknoten schätzen
+  const g = estimateRawGrid(P.lat, P.lng, null);
+  if(!g) return null;
+  return { x: (g.gx-minGx)*UNIT + 90, y: (g.gy-minGy)*UNIT + 70 };
+}
+
+function updateUserMarker(){
+  const m = document.getElementById('userMarker');
+  if(!m) return;
+  const p = userMarkerPx();
+  if(!p){ m.style.display = 'none'; return; }
+  m.setAttribute('transform', `translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`);
+  m.style.display = '';
 }
 
 function pointToSegmentDist(px,py, x1,y1, x2,y2){
@@ -2303,9 +2384,15 @@ function nearestFreeGridSpot(rawGx, rawGy, excludeId){
   return { gx:sx, gy:sy, moved:false };
 }
 
-// Hauptfunktion: Rasterposition für (lat,lng) schätzen. Gibt null zurück,
-// wenn es noch keinen Bezugsknoten gibt.
+// Hauptfunktion: Rasterposition für (lat,lng) schätzen, eingerastet und auf
+// einen freien Platz. Gibt null zurück, wenn es noch keinen Bezugsknoten gibt.
 function estimateGridPosition(lat, lng, excludeId){
+  const raw = estimateRawGrid(lat, lng, excludeId);
+  return raw ? nearestFreeGridSpot(raw.gx, raw.gy, excludeId) : null;
+}
+
+// gleiche Schätzung, aber ohne Einrasten (z. B. für den eigenen Standort)
+function estimateRawGrid(lat, lng, excludeId){
   const others = state.nodes.filter(n => n.id!==excludeId && Number.isFinite(n.lat) && Number.isFinite(n.lng));
   if(!others.length) return null;
   const lat0 = others.reduce((s,n)=>s+n.lat,0)/others.length;
@@ -2330,7 +2417,7 @@ function estimateGridPosition(lat, lng, excludeId){
     });
     if(wSum>0){ raw.gx += dgx/wSum; raw.gy += dgy/wSum; }
   }
-  return nearestFreeGridSpot(raw.gx, raw.gy, excludeId);
+  return raw;
 }
 
 document.getElementById('addNode').addEventListener('click', ()=>{
@@ -2891,6 +2978,7 @@ function onNavPosition(p){
   }
   checkNavArrival();
   updateNavDisplay();
+  updateUserMarker();
 }
 
 function onNavError(err){
