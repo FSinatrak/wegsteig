@@ -8,8 +8,8 @@
       "name": "Bahnhof",
       "lat": 49.794747649306295,
       "lng": 12.165029250776852,
-      "gx": 18,
-      "gy": 10.5,
+      "gx": 28,
+      "gy": 21,
       "hidden": false
     },
     {
@@ -596,6 +596,105 @@
       "gx": 13.5,
       "gy": -7.5,
       "hidden": false
+    },
+    {
+      "id": "n1795370635442",
+      "name": "Winterling-Porzellan-Strasse",
+      "lat": 49.799416385629115,
+      "lng": 12.160999207517508,
+      "gx": 19.5,
+      "gy": 3.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795370866649",
+      "name": "Akaziensteig",
+      "lat": 49.798218748948806,
+      "lng": 12.161813249935774,
+      "gx": 20,
+      "gy": 7,
+      "hidden": false
+    },
+    {
+      "id": "n1795370956733",
+      "name": "Akaziensteig",
+      "lat": 49.79631369250932,
+      "lng": 12.161590209868594,
+      "gx": 19,
+      "gy": 12,
+      "hidden": false
+    },
+    {
+      "id": "n1795371655269",
+      "name": "Angerpointstrasse",
+      "lat": 49.79728913748233,
+      "lng": 12.155277966448134,
+      "gx": 3.5,
+      "gy": 15.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795371875797",
+      "name": "Schweitzerpfad",
+      "lat": 49.79743295591439,
+      "lng": 12.157106203294495,
+      "gx": 9,
+      "gy": 13,
+      "hidden": false
+    },
+    {
+      "id": "n1795371992144",
+      "name": "Schweitzerpfad",
+      "lat": 49.796990043041724,
+      "lng": 12.157595793208868,
+      "gx": 10,
+      "gy": 14,
+      "hidden": false
+    },
+    {
+      "id": "n1795372028434",
+      "name": "Schweitzerpfad",
+      "lat": 49.79665353719758,
+      "lng": 12.157576258593986,
+      "gx": 10,
+      "gy": 15,
+      "hidden": false
+    },
+    {
+      "id": "n1795372070483",
+      "name": "Albert-Schweitzer-Strasse",
+      "lat": 49.79666550137539,
+      "lng": 12.16055729277682,
+      "gx": 18,
+      "gy": 11,
+      "hidden": false
+    },
+    {
+      "id": "n1795372172855",
+      "name": "Albert-Schweitzer-Strasse",
+      "lat": 49.79636883807031,
+      "lng": 12.157559918650342,
+      "gx": 10,
+      "gy": 16,
+      "hidden": true
+    },
+    {
+      "id": "n1795372198487",
+      "name": "Albert-Schweitzer-Strasse",
+      "lat": 49.7960107371565,
+      "lng": 12.157436639118147,
+      "gx": 10,
+      "gy": 17.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795372262882",
+      "name": "Stützelstrasse",
+      "lat": 49.79667462941064,
+      "lng": 12.155238802226435,
+      "gx": 3.5,
+      "gy": 16.5,
+      "hidden": false
     }
   ],
   "edges": [
@@ -825,11 +924,11 @@
       "id": "e1788120618334",
       "type": "strasse",
       "name": "An der alten Post",
-      "from": "n1788120569710",
+      "from": "n1795368909711",
       "to": "n1788120421096",
       "timeMin": 1,
       "accessible": true,
-      "steep": false,
+      "steep": true,
       "surface": "Asphalt",
       "info": "",
       "points": []
@@ -865,18 +964,13 @@
       "type": "strasse",
       "name": "Bahnhofstrasse",
       "from": "n2",
-      "to": "n1788099415829",
-      "timeMin": 9,
-      "accessible": false,
-      "steep": false,
+      "to": "n1795370956733",
+      "timeMin": 4,
+      "accessible": true,
+      "steep": true,
       "surface": "Asphalt",
       "info": "",
-      "points": [
-        {
-          "gx": 16.5,
-          "gy": 9.5
-        }
-      ]
+      "points": []
     },
     {
       "id": "e1788152208994",
@@ -1449,9 +1543,9 @@
       "id": "e1788287894011",
       "type": "strasse",
       "name": "Am Anger",
-      "from": "n1788287702719",
+      "from": "n1788288275516",
       "to": "n1788287598317",
-      "timeMin": 3,
+      "timeMin": 1,
       "accessible": true,
       "steep": false,
       "surface": "Asphalt",
@@ -1856,6 +1950,270 @@
       "surface": "Asphalt",
       "info": "",
       "points": []
+    },
+    {
+      "id": "e1795370701644",
+      "type": "strasse",
+      "name": "Neuhauser Strasse",
+      "from": "n1788099415829",
+      "to": "n1795370635442",
+      "timeMin": 3,
+      "accessible": false,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 15.5,
+          "gy": 7.5
+        }
+      ]
+    },
+    {
+      "id": "e1795370923715",
+      "type": "strasse",
+      "name": "Winterling-Porzellan-Strasse",
+      "from": "n1795370635442",
+      "to": "n1795370866649",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795371030664",
+      "type": "steig",
+      "name": "Akaziensteig",
+      "from": "n1795370956733",
+      "to": "n1795370866649",
+      "timeMin": 5,
+      "accessible": false,
+      "steep": true,
+      "surface": "Treppe",
+      "info": "",
+      "points": [
+        {
+          "gx": 22,
+          "gy": 9
+        }
+      ]
+    },
+    {
+      "id": "e1795371359146",
+      "type": "strasse",
+      "name": "Bahnhofstrasse",
+      "from": "n1788099415829",
+      "to": "n1795372070483",
+      "timeMin": 5,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795371432422",
+      "type": "strasse",
+      "name": "Kleiau",
+      "from": "n1795368909711",
+      "to": "n1788120569710",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795371536200",
+      "type": "strasse",
+      "name": "Am Anger",
+      "from": "n1788288275516",
+      "to": "n1788287702719",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795371748465",
+      "type": "strasse",
+      "name": "Angerpointstrasse",
+      "from": "n1788287702719",
+      "to": "n1795371875797",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795371798513",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1788288867993",
+      "to": "n1795371655269",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795371939151",
+      "type": "strasse",
+      "name": "Angerpointstrasse",
+      "from": "n1795371655269",
+      "to": "n1795371875797",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 6.5,
+          "gy": 15.5
+        }
+      ]
+    },
+    {
+      "id": "e1795372135861",
+      "type": "strasse",
+      "name": "Bahnhofstrasse",
+      "from": "n1795370956733",
+      "to": "n1795372070483",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795372332261",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1795371655269",
+      "to": "n1795372262882",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795372355724",
+      "type": "strasse",
+      "name": "Stützelstrasse",
+      "from": "n1795372198487",
+      "to": "n1795372262882",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 4.5,
+          "gy": 17.5
+        }
+      ]
+    },
+    {
+      "id": "e1795372435744",
+      "type": "strasse",
+      "name": "Grundstück",
+      "from": "n1795371875797",
+      "to": "n1795371992144",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795372489969",
+      "type": "steig",
+      "name": "Schweitzerpfad",
+      "from": "n1795372028434",
+      "to": "n1795371992144",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": false,
+      "surface": "unbekannt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795372536284",
+      "type": "strasse",
+      "name": "Albert-Schweitzer-Strasse",
+      "from": "n1795372028434",
+      "to": "n1795372172855",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "unbekannt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795372584782",
+      "type": "strasse",
+      "name": "Albert-Schweitzer-Strasse",
+      "from": "n1795372198487",
+      "to": "n1795372172855",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "unbekannt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795372617647",
+      "type": "strasse",
+      "name": "Albert-Schweitzer-Strasse",
+      "from": "n1795372172855",
+      "to": "n1795372070483",
+      "timeMin": 4,
+      "accessible": true,
+      "steep": false,
+      "surface": "unbekannt",
+      "info": "",
+      "points": [
+        {
+          "gx": 13,
+          "gy": 16
+        }
+      ]
+    },
+    {
+      "id": "e1795372800052",
+      "type": "strasse",
+      "name": "Stützelstrasse",
+      "from": "n1795372198487",
+      "to": "n1795370956733",
+      "timeMin": 4,
+      "accessible": true,
+      "steep": false,
+      "surface": "unbekannt",
+      "info": "",
+      "points": [
+        {
+          "gx": 13.5,
+          "gy": 17.5
+        }
+      ]
     }
   ]
 }
