@@ -542,6 +542,24 @@
       "gx": -4.5,
       "gy": 6,
       "hidden": false
+    },
+    {
+      "id": "n1795342036142",
+      "name": "Kerschensteinerstrasse",
+      "lat": 49.799591819642266,
+      "lng": 12.154595273769548,
+      "gx": 3.5,
+      "gy": 10,
+      "hidden": false
+    },
+    {
+      "id": "n1795342239094",
+      "name": "Adolf-Kolping-Strasse",
+      "lat": 49.7993710771921,
+      "lng": 12.15323785773044,
+      "gx": -0.5,
+      "gy": 10,
+      "hidden": false
     }
   ],
   "edges": [
@@ -1474,9 +1492,9 @@
       "id": "e1788289065825",
       "type": "strasse",
       "name": "Neustädter Strasse",
-      "from": "n1788242441932",
+      "from": "n1795342036142",
       "to": "n1788288867993",
-      "timeMin": 3,
+      "timeMin": 1,
       "accessible": true,
       "steep": true,
       "surface": "Asphalt",
@@ -1702,6 +1720,45 @@
           "gy": 4.5
         }
       ]
+    },
+    {
+      "id": "e1795342183148",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1795342036142",
+      "to": "n1788242441932",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795342307864",
+      "type": "strasse",
+      "name": "Kerschensteiner Strasse",
+      "from": "n1795342036142",
+      "to": "n1795342239094",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795342343419",
+      "type": "strasse",
+      "name": "Adolf-Kolping-Strasse",
+      "from": "n1795341293206",
+      "to": "n1795342239094",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
     }
   ]
 }
