@@ -1412,7 +1412,7 @@ function renderMap(){
   // Geometrie merken, damit der eigene Standort bei jedem GPS-Update
   // verschoben werden kann, ohne die ganze Karte neu zu zeichnen
   lastMapGeom = { pos, realPointsFor, buildSegments, minGx, minGy };
-  if(!editing && nav.active){
+  if(!editing){
     const g = el('g',{id:'userMarker', style:'display:none;pointer-events:none;'});
     g.appendChild(el('circle',{cx:0, cy:0, r:11, class:'user-halo'}));
     g.appendChild(el('circle',{cx:0, cy:0, r:7, class:'user-dot'}));
@@ -1423,6 +1423,7 @@ function renderMap(){
 }
 
 let lastMapGeom = null;
+const USER_MARKER_MAX_M = 2000;
 
 // bestimmt, wo der eigene Standort auf der Schemakarte liegt (in Pixeln)
 function userMarkerPx(){
@@ -1431,7 +1432,7 @@ function userMarkerPx(){
   const P = nav.pos;
 
   // 1) Auf der Route unterwegs: auf den aktuellen Abschnitt projizieren
-  if(nav.mode==='route' && nav.idx>0 && currentRoutes.length){
+  if(nav.active && nav.mode==='route' && nav.idx>0 && currentRoutes.length){
     const edge = currentRoutes[selectedRouteIdx].edges[nav.idx-1];
     const aId = nav.targets[nav.idx-1], bId = nav.targets[nav.idx];
     const A = nodeById(aId), B = nodeById(bId);
@@ -1462,7 +1463,10 @@ function userMarkerPx(){
       }
     }
   }
-  // 2) Sonst (Weg zum Start, abseits der Route): Lage aus Nachbarknoten schätzen
+  // 2) Sonst (keine Navigation, Weg zum Start, abseits der Route): Lage aus Nachbarknoten schätzen.
+  //    Weit außerhalb des Wegenetzes (> 2 km zum nächsten Knoten) wird nichts angezeigt.
+  const nearest = Math.min(...state.nodes.map(n=>haversine(P.lat, P.lng, n.lat, n.lng)));
+  if(!(nearest <= USER_MARKER_MAX_M)) return null;
   const g = estimateRawGrid(P.lat, P.lng, null);
   if(!g) return null;
   return { x: (g.gx-minGx)*UNIT + 90, y: (g.gy-minGy)*UNIT + 70 };
@@ -2602,6 +2606,7 @@ function closeEditorGate(){
 }
 function enterEditingMode(){
   if(nav.active) stopNavigation();
+  stopLocationWatch();
   editing = true;
   closeSheet();
   resetMapZoom();
@@ -2642,6 +2647,7 @@ document.getElementById('exitEditor').addEventListener('click', ()=>{
   document.getElementById('zoomControls').style.display='flex';
   render();
   renderCornerCard();
+  startLocationWatch();
 });
 
 // ---------- editor: grid size ----------
@@ -2933,8 +2939,28 @@ async function requestWakeLock(){
   catch(e){ /* nicht unterstützt — Display kann ausgehen */ }
 }
 document.addEventListener('visibilitychange', ()=>{
-  if(nav.active && document.visibilityState==='visible') requestWakeLock();
+  if(document.visibilityState==='visible'){
+    if(nav.active) requestWakeLock();
+    startLocationWatch();
+  } else if(!nav.active){
+    stopLocationWatch(); // im Hintergrund kein GPS laufen lassen (Akku)
+  }
 });
+
+// ---------- eigener Standort: läuft ab dem Öffnen der App ----------
+// Die Navigation nutzt denselben Standort-Strom; sie startet ihn nur, falls
+// er (z. B. nach einer verweigerten Erlaubnis) noch nicht läuft.
+function startLocationWatch(){
+  if(!navigator.geolocation || nav.watchId!==null || editing) return;
+  try{
+    nav.watchId = navigator.geolocation.watchPosition(onNavPosition, onNavError,
+      { enableHighAccuracy:true, maximumAge:2000, timeout:20000 });
+  }catch(e){ nav.watchId = null; }
+}
+function stopLocationWatch(){
+  if(nav.watchId!==null){ try{ navigator.geolocation.clearWatch(nav.watchId); }catch(e){} }
+  nav.watchId = null;
+}
 
 function startNavigation(){
   const t = navTargetsFromSelection();
@@ -2942,11 +2968,10 @@ function startNavigation(){
   if(!navigator.geolocation){ showToast('Standortbestimmung wird von diesem Browser nicht unterstützt.'); return; }
   startCompass(); // muss als Erstes im Tipp passieren (iOS)
   nav.active = true;
-  nav.pos = null; nav.heading = null; nav.headingSource = null;
+  nav.heading = null; nav.headingSource = null; // bekannter Standort bleibt erhalten
   nav.targets = []; nav.mode = null; nav.idx = 0;
   applyNavTargets(t);
-  nav.watchId = navigator.geolocation.watchPosition(onNavPosition, onNavError,
-    { enableHighAccuracy:true, maximumAge:2000, timeout:20000 });
+  startLocationWatch();
   requestWakeLock();
   closeSheet();
   hidePathInfo();
@@ -2958,9 +2983,7 @@ function startNavigation(){
 }
 
 function stopNavigation(){
-  if(nav.watchId!==null) navigator.geolocation.clearWatch(nav.watchId);
-  nav.watchId = null;
-  stopCompass();
+  stopCompass(); // Standort läuft weiter, damit der blaue Punkt sichtbar bleibt
   if(nav.wakeLock){ try{ nav.wakeLock.release(); }catch(e){} nav.wakeLock = null; }
   nav.active = false; nav.done = false;
   document.getElementById('navCard').style.display = 'none';
@@ -2976,8 +2999,7 @@ function onNavPosition(p){
   if(nav.headingSource!=='compass' && Number.isFinite(c.heading) && c.speed > 0.6){
     nav.heading = c.heading; nav.headingSource = 'gps';
   }
-  checkNavArrival();
-  updateNavDisplay();
+  if(nav.active){ checkNavArrival(); updateNavDisplay(); }
   updateUserMarker();
 }
 
@@ -2985,6 +3007,8 @@ function onNavError(err){
   let msg = 'Standort konnte nicht ermittelt werden.';
   if(err.code===1) msg = 'Standortzugriff verweigert. Bitte in den Einstellungen erlauben (bzw. funktioniert nicht in der eingebetteten Vorschau).';
   else if(err.code===3) return; // Zeitüberschreitung: einfach auf das nächste Signal warten
+  if(err.code===1) stopLocationWatch(); // beim nächsten "Losgehen" erneut versuchen
+  if(!nav.active) return; // beim Öffnen der App still bleiben, keine Fehlermeldung
   document.getElementById('navMeta').textContent = msg;
   if(err.code===1) showToast(msg);
 }
@@ -3147,6 +3171,7 @@ document.getElementById('navNext').addEventListener('click', ()=>{
   document.getElementById('gridUnitLabel').textContent = (state.gridUnit || 70) + ' px';
   document.getElementById('gridSubdivisionSelect').value = state.gridSubdivision || 1;
   render();
+  startLocationWatch(); // eigenen Standort direkt beim Öffnen anzeigen
 })();
 </script>
 </body>
