@@ -506,6 +506,42 @@
       "gx": -3.5,
       "gy": -8.5,
       "hidden": false
+    },
+    {
+      "id": "n1795340874743",
+      "name": "Schlosshof",
+      "lat": 49.801700198092234,
+      "lng": 12.154370856036369,
+      "gx": 3.5,
+      "gy": 2.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795341001371",
+      "name": "Schlosshof",
+      "lat": 49.80122318582008,
+      "lng": 12.152287481542082,
+      "gx": -2,
+      "gy": 4,
+      "hidden": false
+    },
+    {
+      "id": "n1795341293206",
+      "name": "Hans-Böckler-Strasse",
+      "lat": 49.80005991241314,
+      "lng": 12.152305456684461,
+      "gx": -2.5,
+      "gy": 8,
+      "hidden": false
+    },
+    {
+      "id": "n1795341352079",
+      "name": "Pfarrer-Roeseneder-Strasse",
+      "lat": 49.800385016325585,
+      "lng": 12.151393516034238,
+      "gx": -4.5,
+      "gy": 6,
+      "hidden": false
     }
   ],
   "edges": [
@@ -1593,6 +1629,77 @@
         {
           "gx": 9.5,
           "gy": 6.5
+        }
+      ]
+    },
+    {
+      "id": "e1795341064766",
+      "type": "strasse",
+      "name": "Schlosshof",
+      "from": "n1795340874743",
+      "to": "n1795341001371",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": 3,
+          "gy": 3
+        },
+        {
+          "gx": -1,
+          "gy": 3
+        }
+      ]
+    },
+    {
+      "id": "e1795341461284",
+      "type": "strasse",
+      "name": "Hans-Böckler-Strasse",
+      "from": "n1795341293206",
+      "to": "n1795341001371",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": -2.5,
+          "gy": 4.5
+        }
+      ]
+    },
+    {
+      "id": "e1795341552687",
+      "type": "strasse",
+      "name": "Adolf-Kolping-Strasse",
+      "from": "n1795341293206",
+      "to": "n1795341352079",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795341602057",
+      "type": "strasse",
+      "name": "Adolf-Kolping-Strasse",
+      "from": "n1788155909388",
+      "to": "n1795341352079",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": -5,
+          "gy": 4.5
         }
       ]
     }
