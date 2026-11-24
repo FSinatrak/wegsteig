@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "gridUnit": 70,
+  "gridUnit": 55,
   "gridSubdivision": 2,
   "nodes": [
     {
@@ -694,6 +694,87 @@
       "lng": 12.155238802226435,
       "gx": 3.5,
       "gy": 16.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795501658708",
+      "name": "Naabstrasse",
+      "lat": 49.7996185028107,
+      "lng": 12.162268865762442,
+      "gx": 22.5,
+      "gy": 1.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795501795720",
+      "name": "Tor zum Waldnaabtal (Neuhaus)",
+      "lat": 49.80170243724588,
+      "lng": 12.164128972527193,
+      "gx": 26.5,
+      "gy": -3,
+      "hidden": false
+    },
+    {
+      "id": "n1795502046745",
+      "name": "Abzweig Johannisthal",
+      "lat": 49.80479687363058,
+      "lng": 12.16264761523027,
+      "gx": 22.5,
+      "gy": -11.5,
+      "hidden": true
+    },
+    {
+      "id": "n1795502288089",
+      "name": "Waldspielplatz",
+      "lat": 49.80477652649982,
+      "lng": 12.160317876695576,
+      "gx": 16,
+      "gy": -13,
+      "hidden": false
+    },
+    {
+      "id": "n1795502881117",
+      "name": "Galgenkatherlweg (Umgehungsstrasse)",
+      "lat": 49.80686857947858,
+      "lng": 12.163713856647695,
+      "gx": 24.5,
+      "gy": -15.5,
+      "hidden": false
+    },
+    {
+      "id": "n1795503247650",
+      "name": "Barchweg",
+      "lat": 49.80750034817588,
+      "lng": 12.155347450701422,
+      "gx": 8.5,
+      "gy": -18,
+      "hidden": false
+    },
+    {
+      "id": "n1795503386056",
+      "name": "Abzweig Naabdemenreuth",
+      "lat": 49.80763827774385,
+      "lng": 12.151209178111998,
+      "gx": -1.5,
+      "gy": -18,
+      "hidden": true
+    },
+    {
+      "id": "n1795503521715",
+      "name": "Barchweg",
+      "lat": 49.807266146166214,
+      "lng": 12.15002149389653,
+      "gx": -4.5,
+      "gy": -16,
+      "hidden": false
+    },
+    {
+      "id": "n1795503699962",
+      "name": "Loipenweg",
+      "lat": 49.806876728685914,
+      "lng": 12.149995511325281,
+      "gx": -5,
+      "gy": -14.5,
       "hidden": false
     }
   ],
@@ -1424,7 +1505,7 @@
       "id": "e1788242937381",
       "type": "strasse",
       "name": "Neustädter Strasse",
-      "from": "n1788152681057",
+      "from": "n1795340874743",
       "to": "n1788242441932",
       "timeMin": 2,
       "accessible": true,
@@ -2214,6 +2295,195 @@
           "gy": 17.5
         }
       ]
+    },
+    {
+      "id": "e1795501437421",
+      "type": "strasse",
+      "name": "Neustädter Strasse",
+      "from": "n1795340874743",
+      "to": "n1788152681057",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795501719711",
+      "type": "strasse",
+      "name": "Neuhauser Strasse",
+      "from": "n1795370635442",
+      "to": "n1795501658708",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795501825778",
+      "type": "strasse",
+      "name": "Neuhauser Strasse",
+      "from": "n1795501795720",
+      "to": "n1795501658708",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795502124212",
+      "type": "weg",
+      "name": "Waldnaabkanal",
+      "from": "n1795501795720",
+      "to": "n1795502046745",
+      "timeMin": 9,
+      "accessible": false,
+      "steep": true,
+      "surface": "Wurzeln/Fels",
+      "info": "",
+      "points": [
+        {
+          "gx": 26.5,
+          "gy": -7
+        }
+      ]
+    },
+    {
+      "id": "e1795502399157",
+      "type": "weg",
+      "name": "Spielplatzweg",
+      "from": "n1795502046745",
+      "to": "n1795502288089",
+      "timeMin": 6,
+      "accessible": false,
+      "steep": true,
+      "surface": "Wurzeln/Fels",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795502446048",
+      "type": "weg",
+      "name": "Spielplatzweg",
+      "from": "n1795368773330",
+      "to": "n1795502288089",
+      "timeMin": 2,
+      "accessible": false,
+      "steep": true,
+      "surface": "Wurzeln/Fels",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795502540458",
+      "type": "strasse",
+      "name": "Rundschleifstrasse",
+      "from": "n1795368773330",
+      "to": "n1795502288089",
+      "timeMin": 2,
+      "accessible": false,
+      "steep": true,
+      "surface": "Waldweg",
+      "info": "",
+      "points": [
+        {
+          "gx": 17,
+          "gy": -12
+        }
+      ]
+    },
+    {
+      "id": "e1795502943007",
+      "type": "weg",
+      "name": "Galgenkatherlweg",
+      "from": "n1795502046745",
+      "to": "n1795502881117",
+      "timeMin": 10,
+      "accessible": false,
+      "steep": true,
+      "surface": "Wurzeln/Fels",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795503338077",
+      "type": "strasse",
+      "name": "Bernsteiner Strasse",
+      "from": "n1788154448013",
+      "to": "n1795503247650",
+      "timeMin": 5,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "Teilweise auf der Strasse",
+      "points": []
+    },
+    {
+      "id": "e1795503471642",
+      "type": "weg",
+      "name": "Bussardweg",
+      "from": "n1795503386056",
+      "to": "n1795503247650",
+      "timeMin": 6,
+      "accessible": false,
+      "steep": true,
+      "surface": "Schotter",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795503578358",
+      "type": "weg",
+      "name": "Barchweg",
+      "from": "n1795503386056",
+      "to": "n1795503521715",
+      "timeMin": 1,
+      "accessible": false,
+      "steep": true,
+      "surface": "Schotter",
+      "info": "",
+      "points": [
+        {
+          "gx": -2.5,
+          "gy": -18
+        }
+      ]
+    },
+    {
+      "id": "e1795503757357",
+      "type": "weg",
+      "name": "Loipenweg",
+      "from": "n1788289836758",
+      "to": "n1795503699962",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": -4.5,
+          "gy": -14
+        }
+      ]
+    },
+    {
+      "id": "e1795503803269",
+      "type": "strasse",
+      "name": "Erbendorfer Strasse",
+      "from": "n1795503521715",
+      "to": "n1795503699962",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
     }
   ]
 }
