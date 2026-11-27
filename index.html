@@ -324,6 +324,14 @@
   .dir-tab{flex:1;padding:7px;border:1px solid var(--hairline);border-radius:8px;background:none;font:inherit;font-size:13px;cursor:pointer;color:var(--ink);}
   .dir-tab.active{background:var(--ink);color:#fff;border-color:var(--ink);}
   .dir-list{margin-top:8px;}
+  .dir-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .dir-chips:empty{display:none;}
+  .dir-chip{
+    padding:6px 10px;border:1px solid var(--hairline);border-radius:16px;background:var(--panel);
+    font:inherit;font-size:13px;cursor:pointer;color:var(--ink);
+  }
+  .dir-chip.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+  .dir-filter-note{font-size:11.5px;color:var(--ink-soft);margin-top:6px;}
   .dir-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--hairline);}
   .dir-main{flex:1;min-width:0;}
   .dir-name{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -989,6 +997,7 @@
       <button class="dir-tab" data-tab="wege">Wege &amp; Steige</button>
     </div>
     <input type="text" id="dirSearch" placeholder="Suchen…" autocomplete="off">
+    <div id="dirChips" class="dir-chips"></div>
     <div id="dirList" class="dir-list"></div>
   </div>
 
@@ -3184,15 +3193,46 @@ function renderRouteSummary(){
 }
 
 let dirTab = 'orte';
+const dirKindFilter = new Set(); // leer = alle Arten
+
+function renderDirChips(){
+  const box = document.getElementById('dirChips');
+  if(dirTab!=='orte'){
+    // bei Wegen gelten die Routen-Optionen oben als Filter
+    const notes = [];
+    if(document.getElementById('prefAccess').checked) notes.push('nur barrierefreie');
+    if(document.getElementById('avoidSteep').checked) notes.push('ohne steile Abschnitte');
+    box.innerHTML = notes.length ? `<div class="dir-filter-note">Gefiltert wie oben eingestellt: ${notes.join(', ')}.</div>` : '';
+    return;
+  }
+  const chips = [`<button class="dir-chip ${dirKindFilter.size===0?'active':''}" data-kind="">Alle</button>`];
+  Object.entries(NODE_KINDS).forEach(([k,v])=>{
+    // nur Arten anbieten, die es im Wegenetz auch gibt
+    if(!state.nodes.some(n=>!n.hidden && (n.kind||'regular')===k)) return;
+    const label = k==='regular' ? 'Weitere Orte' : (v.icon+' '+v.label);
+    chips.push(`<button class="dir-chip ${dirKindFilter.has(k)?'active':''}" data-kind="${k}">${label}</button>`);
+  });
+  box.innerHTML = chips.join('');
+  box.querySelectorAll('.dir-chip').forEach(c=>c.addEventListener('click', ()=>{
+    const k = c.getAttribute('data-kind');
+    if(!k) dirKindFilter.clear();
+    else if(dirKindFilter.has(k)) dirKindFilter.delete(k);
+    else dirKindFilter.add(k);
+    renderDirectory();
+  }));
+}
+
 function renderDirectory(){
   const list = document.getElementById('dirList');
   if(!list) return;
+  renderDirChips();
   const KIND_ORDER = Object.keys(NODE_KINDS);
   const q = document.getElementById('dirSearch').value.trim().toLowerCase();
   let html = '';
   if(dirTab==='orte'){
     // Orte: sichtbare Knoten, nach Art und Name sortiert; darunter die anliegenden Wege (hilft bei gleichnamigen Orten)
-    const nodes = state.nodes.filter(n=>!n.hidden && (!q || n.name.toLowerCase().includes(q)))
+    const nodes = state.nodes.filter(n=>!n.hidden && (!q || n.name.toLowerCase().includes(q))
+                                     && (dirKindFilter.size===0 || dirKindFilter.has(n.kind||'regular')))
       .sort((a,b)=> (KIND_ORDER.indexOf(a.kind||'regular') - KIND_ORDER.indexOf(b.kind||'regular')) || a.name.localeCompare(b.name,'de'));
     nodes.forEach(n=>{
       const ic = nodeKindIcon(n);
@@ -3210,7 +3250,11 @@ function renderDirectory(){
     if(!nodes.length) html = `<div class="dir-empty">Keine Orte gefunden.</div>`;
   } else {
     // Wege & Steige (Verbindungsstraßen sind nur Verbindungsstücke und fehlen hier)
-    const edges = state.edges.filter(e=>e.type!=='strasse').filter(e=>{
+    const onlyAcc = document.getElementById('prefAccess').checked;
+    const noSteig = document.getElementById('avoidSteep').checked;
+    const edges = state.edges.filter(e=>e.type!=='strasse')
+      .filter(e=>(!onlyAcc || e.accessible) && (!noSteig || !e.steep))
+      .filter(e=>{
       if(!q) return true;
       const a = nodeById(e.from), b = nodeById(e.to);
       return [e.name, a&&a.name, b&&b.name].some(t=>t && t.toLowerCase().includes(q));
@@ -3271,6 +3315,8 @@ document.querySelectorAll('.dir-tab').forEach(t=>t.addEventListener('click', ()=
   renderDirectory();
 }));
 document.getElementById('dirSearch').addEventListener('input', renderDirectory);
+document.getElementById('prefAccess').addEventListener('change', renderDirectory);
+document.getElementById('avoidSteep').addEventListener('change', renderDirectory);
 
 // ---------- Reset: Start/Ziel/Wege zurücksetzen, Karte auf eigenen Standort ----------
 function centerUserInView(){
