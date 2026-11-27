@@ -1854,7 +1854,12 @@ function navLocksSelection(){
 function handleNodeClickForRouting(nodeId){
   if(navLocksSelection()) return;
   if(routeFromId && routeToId){
-    routeFromId = nodeId; routeToId = null;
+    // Start und Ziel stehen schon: anderer Knoten = neues Ziel (Start und Pflichtwege bleiben).
+    // Erneutes Antippen von Start oder Ziel wählt diesen Punkt ab.
+    // Komplett zurücksetzen geht über den Reset-Knopf ↺.
+    if(nodeId===routeToId) routeToId = null;
+    else if(nodeId===routeFromId) routeFromId = null;
+    else routeToId = nodeId;
   } else if(!routeFromId){
     routeFromId = nodeId;
   } else if(routeFromId === nodeId){
