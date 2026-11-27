@@ -116,6 +116,7 @@
     font-size:12px;
     color:var(--ink-soft);
     box-shadow:0 3px 10px rgba(0,0,0,0.12);
+    text-align:right; /* Pfeil "↓" steht so immer über dem Knopf "Route planen" */
   }
 
   .zoom-controls{
@@ -1928,7 +1929,7 @@ function updateFabLabel(){
   const textEl = fab.querySelector('.fab-text');
   const hint = document.getElementById('mapHint');
   let text, hintText;
-  text = 'Route planen';
+  text = currentRoutes.length ? 'Route ändern' : 'Route planen'; // Route fertig -> zurück ins Planungsmenü
   if(!routeFromId) hintText = 'Startpunkt auf der Karte antippen';
   else if(!routeToId) hintText = 'Zielpunkt auf der Karte antippen';
   else hintText = 'Optional Wege/Steige antippen';
@@ -2262,10 +2263,12 @@ function renderRouteOptions(routes, diag){
     highlightedEdgeIds = new Set();
     fab.classList.remove('has-route');
     hideCornerCard();
+    updateFabLabel();
     renderMap();
     return;
   }
   fab.classList.add('has-route');
+  updateFabLabel(); // Beschriftung: "Route ändern"
   selectedRouteIdx = 0;
   highlightedEdgeIds = new Set(routes[0].edges.map(e=>e.id));
   renderRouteResultCards();
@@ -2823,7 +2826,9 @@ function closeSheet(){
   document.getElementById('routeSheet').classList.remove('open');
 }
 document.getElementById('openSheet').addEventListener('click', ()=>{
-  if(routeFromId && routeToId){
+  if(currentRoutes.length){
+    openSheet(); // "Route ändern": zurück ins Planungsmenü
+  } else if(routeFromId && routeToId){
     computeAndShowRoute(); // start & destination already chosen — compute directly, no popup needed
   } else {
     openSheet(); // still choosing — offer the dropdown fallback
