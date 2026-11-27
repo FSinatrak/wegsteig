@@ -10,7 +10,8 @@
       "lng": 12.165029250776852,
       "gx": 28,
       "gy": 21,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788099415829",
@@ -19,7 +20,8 @@
       "lng": 12.158582887843473,
       "gx": 14.5,
       "gy": 7.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788099451950",
@@ -28,7 +30,8 @@
       "lng": 12.157924328975595,
       "gx": 13,
       "gy": 6,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788099475245",
@@ -37,7 +40,8 @@
       "lng": 12.156746343394087,
       "gx": 9.5,
       "gy": 2.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788099527589",
@@ -46,7 +50,8 @@
       "lng": 12.155758505090992,
       "gx": 7,
       "gy": 0,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788099563573",
@@ -55,7 +60,8 @@
       "lng": 12.154816401015625,
       "gx": 3.5,
       "gy": -3.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788099680665",
@@ -64,7 +70,8 @@
       "lng": 12.158372373251256,
       "gx": 14,
       "gy": 4,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788099942265",
@@ -73,7 +80,8 @@
       "lng": 12.157270065228028,
       "gx": 12.5,
       "gy": 0.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788118068650",
@@ -82,7 +90,8 @@
       "lng": 12.15652220436407,
       "gx": 9,
       "gy": -3,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788118180067",
@@ -91,7 +100,8 @@
       "lng": 12.156158325001861,
       "gx": 8.5,
       "gy": -1.5,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788119563821",
@@ -100,7 +110,8 @@
       "lng": 12.15605623629772,
       "gx": 8.5,
       "gy": -3.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788119726045",
@@ -109,7 +120,8 @@
       "lng": 12.155414158000115,
       "gx": 6,
       "gy": -1,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788119935548",
@@ -118,7 +130,8 @@
       "lng": 12.155581031510978,
       "gx": 7,
       "gy": -5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788120275500",
@@ -127,7 +140,8 @@
       "lng": 12.155803893907175,
       "gx": 8,
       "gy": -4,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788120421096",
@@ -136,7 +150,8 @@
       "lng": 12.156271085708239,
       "gx": 9.5,
       "gy": -5.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788120569710",
@@ -145,7 +160,8 @@
       "lng": 12.15609337164776,
       "gx": 8.5,
       "gy": -6.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788152339000",
@@ -154,7 +170,8 @@
       "lng": 12.154116800050208,
       "gx": 1,
       "gy": -1,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788152516381",
@@ -163,7 +180,8 @@
       "lng": 12.154321228583338,
       "gx": 2.5,
       "gy": 0.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788152681057",
@@ -172,7 +190,8 @@
       "lng": 12.154405105631918,
       "gx": 3.5,
       "gy": 1.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788153011969",
@@ -181,7 +200,8 @@
       "lng": 12.154966664885869,
       "gx": 5,
       "gy": -2,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788153164420",
@@ -190,7 +210,8 @@
       "lng": 12.15497706724309,
       "gx": 5,
       "gy": 0,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788153396935",
@@ -199,7 +220,8 @@
       "lng": 12.15534088959158,
       "gx": 6.5,
       "gy": 1.5,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788153495011",
@@ -208,7 +230,8 @@
       "lng": 12.155816846149737,
       "gx": 7.5,
       "gy": 0.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788153650600",
@@ -217,7 +240,8 @@
       "lng": 12.154602757455756,
       "gx": 4,
       "gy": -1,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788153988450",
@@ -226,7 +250,8 @@
       "lng": 12.15406264313135,
       "gx": 1.5,
       "gy": -1.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788154061081",
@@ -235,7 +260,8 @@
       "lng": 12.153974728847919,
       "gx": 1.5,
       "gy": -7.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788154448013",
@@ -244,7 +270,8 @@
       "lng": 12.155640229929483,
       "gx": 8,
       "gy": -7.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788154725495",
@@ -253,7 +280,8 @@
       "lng": 12.153476590185077,
       "gx": 0,
       "gy": -1,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788154861983",
@@ -262,7 +290,8 @@
       "lng": 12.152728021240643,
       "gx": -2,
       "gy": 0.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788154975568",
@@ -271,7 +300,8 @@
       "lng": 12.153802849744256,
       "gx": 1,
       "gy": 0.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788155353769",
@@ -280,7 +310,8 @@
       "lng": 12.15092734485978,
       "gx": -6,
       "gy": 0.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788155456589",
@@ -289,7 +320,8 @@
       "lng": 12.150804372982153,
       "gx": -6,
       "gy": -1,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788155708338",
@@ -298,7 +330,8 @@
       "lng": 12.150796543131968,
       "gx": -6,
       "gy": 3,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788155909388",
@@ -307,7 +340,8 @@
       "lng": 12.150686767268022,
       "gx": -6,
       "gy": 3.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788156081126",
@@ -316,7 +350,8 @@
       "lng": 12.151069922696443,
       "gx": -5,
       "gy": -1,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788156206183",
@@ -325,7 +360,8 @@
       "lng": 12.1503075110995,
       "gx": -6.5,
       "gy": -4,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788242245365",
@@ -334,7 +370,8 @@
       "lng": 12.15600933502244,
       "gx": 8,
       "gy": 1,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788242441932",
@@ -343,7 +380,8 @@
       "lng": 12.154444057387993,
       "gx": 3.5,
       "gy": 3,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788242591592",
@@ -352,7 +390,8 @@
       "lng": 12.155605592012122,
       "gx": 6.5,
       "gy": 2.5,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788243067042",
@@ -361,7 +400,8 @@
       "lng": 12.154952139329744,
       "gx": 4.5,
       "gy": 3,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788243199567",
@@ -370,7 +410,8 @@
       "lng": 12.156302250091638,
       "gx": 7.5,
       "gy": 5.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788243341197",
@@ -379,7 +420,8 @@
       "lng": 12.15682795693032,
       "gx": 10,
       "gy": 3,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788287598317",
@@ -388,7 +430,8 @@
       "lng": 12.156905503137583,
       "gx": 10,
       "gy": 6,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788287702719",
@@ -397,7 +440,8 @@
       "lng": 12.158116051539738,
       "gx": 13.5,
       "gy": 8.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788288144975",
@@ -406,7 +450,8 @@
       "lng": 12.157591815408662,
       "gx": 12.5,
       "gy": 5.5,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788288275516",
@@ -415,7 +460,8 @@
       "lng": 12.157460098249333,
       "gx": 11.5,
       "gy": 6.5,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788288563974",
@@ -424,7 +470,8 @@
       "lng": 12.156615813551825,
       "gx": 8.5,
       "gy": 6.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788288603880",
@@ -433,7 +480,8 @@
       "lng": 12.15620335071836,
       "gx": 6.5,
       "gy": 9,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788288867993",
@@ -442,7 +490,8 @@
       "lng": 12.155079988408515,
       "gx": 3.5,
       "gy": 12,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788289241655",
@@ -451,7 +500,8 @@
       "lng": 12.153367770373032,
       "gx": 1,
       "gy": -9.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788289486401",
@@ -460,7 +510,8 @@
       "lng": 12.153333648101551,
       "gx": 1,
       "gy": -10.5,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788289525034",
@@ -469,7 +520,8 @@
       "lng": 12.152042987569594,
       "gx": -1.5,
       "gy": -10.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788289557779",
@@ -478,7 +530,8 @@
       "lng": 12.153282582143103,
       "gx": 1,
       "gy": -12,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788289728473",
@@ -487,7 +540,8 @@
       "lng": 12.152052373890653,
       "gx": -1.5,
       "gy": -12,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1788289836758",
@@ -496,7 +550,8 @@
       "lng": 12.1507280885787,
       "gx": -4.5,
       "gy": -9.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1788289944786",
@@ -505,7 +560,8 @@
       "lng": 12.151339149765452,
       "gx": -3.5,
       "gy": -8.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795340874743",
@@ -514,7 +570,8 @@
       "lng": 12.154370856036369,
       "gx": 3.5,
       "gy": 2.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795341001371",
@@ -523,7 +580,8 @@
       "lng": 12.152287481542082,
       "gx": -2,
       "gy": 4,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795341293206",
@@ -532,7 +590,8 @@
       "lng": 12.152305456684461,
       "gx": -2.5,
       "gy": 8,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795341352079",
@@ -541,7 +600,8 @@
       "lng": 12.151393516034238,
       "gx": -4.5,
       "gy": 6,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795342036142",
@@ -550,7 +610,8 @@
       "lng": 12.154595273769548,
       "gx": 3.5,
       "gy": 10,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795342239094",
@@ -559,7 +620,8 @@
       "lng": 12.15323785773044,
       "gx": -0.5,
       "gy": 10,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795368773330",
@@ -568,7 +630,8 @@
       "lng": 12.159613710994343,
       "gx": 13.5,
       "gy": -11.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795368909711",
@@ -577,7 +640,8 @@
       "lng": 12.156370270129706,
       "gx": 9,
       "gy": -6,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795368972344",
@@ -586,7 +650,8 @@
       "lng": 12.157489680306611,
       "gx": 11,
       "gy": -8,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795369078181",
@@ -595,7 +660,8 @@
       "lng": 12.159276835211237,
       "gx": 13.5,
       "gy": -7.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795370635442",
@@ -604,7 +670,8 @@
       "lng": 12.160999207517508,
       "gx": 19.5,
       "gy": 3.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795370866649",
@@ -613,7 +680,8 @@
       "lng": 12.161813249935774,
       "gx": 20,
       "gy": 7,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795370956733",
@@ -622,7 +690,8 @@
       "lng": 12.161590209868594,
       "gx": 19,
       "gy": 12,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795371655269",
@@ -631,7 +700,8 @@
       "lng": 12.155277966448134,
       "gx": 3.5,
       "gy": 15.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795371875797",
@@ -640,7 +710,8 @@
       "lng": 12.157106203294495,
       "gx": 9,
       "gy": 13,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795371992144",
@@ -649,7 +720,8 @@
       "lng": 12.157595793208868,
       "gx": 10,
       "gy": 14,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795372028434",
@@ -658,7 +730,8 @@
       "lng": 12.157576258593986,
       "gx": 10,
       "gy": 15,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795372070483",
@@ -667,7 +740,8 @@
       "lng": 12.16055729277682,
       "gx": 18,
       "gy": 11,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795372172855",
@@ -676,7 +750,8 @@
       "lng": 12.157559918650342,
       "gx": 10,
       "gy": 16,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1795372198487",
@@ -685,7 +760,8 @@
       "lng": 12.157436639118147,
       "gx": 10,
       "gy": 17.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795372262882",
@@ -694,7 +770,8 @@
       "lng": 12.155238802226435,
       "gx": 3.5,
       "gy": 16.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795501658708",
@@ -703,7 +780,8 @@
       "lng": 12.162268865762442,
       "gx": 22.5,
       "gy": 1.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795501795720",
@@ -712,7 +790,8 @@
       "lng": 12.164128972527193,
       "gx": 26.5,
       "gy": -3,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795502046745",
@@ -721,7 +800,8 @@
       "lng": 12.16264761523027,
       "gx": 22.5,
       "gy": -11.5,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1795502288089",
@@ -730,7 +810,8 @@
       "lng": 12.160317876695576,
       "gx": 16,
       "gy": -13,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795502881117",
@@ -739,7 +820,8 @@
       "lng": 12.163713856647695,
       "gx": 24.5,
       "gy": -15.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795503247650",
@@ -748,7 +830,8 @@
       "lng": 12.155347450701422,
       "gx": 8.5,
       "gy": -18,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795503386056",
@@ -757,7 +840,8 @@
       "lng": 12.151209178111998,
       "gx": -1.5,
       "gy": -18,
-      "hidden": true
+      "hidden": true,
+      "kind": "regular"
     },
     {
       "id": "n1795503521715",
@@ -766,7 +850,8 @@
       "lng": 12.15002149389653,
       "gx": -4.5,
       "gy": -16,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
     },
     {
       "id": "n1795503699962",
@@ -775,7 +860,38 @@
       "lng": 12.149995511325281,
       "gx": -5,
       "gy": -14.5,
-      "hidden": false
+      "hidden": false,
+      "kind": "regular"
+    },
+    {
+      "id": "n1795815056095",
+      "name": "Zum Roudn",
+      "lat": 49.80315889487311,
+      "lng": 12.154362383891028,
+      "gx": 2,
+      "gy": -2,
+      "hidden": false,
+      "kind": "zoigl"
+    },
+    {
+      "id": "n1795815126458",
+      "name": "Fiedlschneider",
+      "lat": 49.80328021241596,
+      "lng": 12.15548805614724,
+      "gx": 6.5,
+      "gy": -4.5,
+      "hidden": false,
+      "kind": "zoigl"
+    },
+    {
+      "id": "n1795815175788",
+      "name": "Binner",
+      "lat": 49.80360653699337,
+      "lng": 12.15614055503037,
+      "gx": 9,
+      "gy": -7,
+      "hidden": false,
+      "kind": "zoigl"
     }
   ],
   "edges": [
@@ -980,7 +1096,7 @@
       "type": "strasse",
       "name": "Stadtplatz",
       "from": "n1788119935548",
-      "to": "n1788099563573",
+      "to": "n1795815126458",
       "timeMin": 1,
       "accessible": true,
       "steep": false,
@@ -1071,7 +1187,7 @@
       "type": "strasse",
       "name": "",
       "from": "n1788153988450",
-      "to": "n1788099563573",
+      "to": "n1795815056095",
       "timeMin": 1,
       "accessible": true,
       "steep": false,
@@ -1976,8 +2092,8 @@
       "type": "strasse",
       "name": "Rundschleifstrasse",
       "from": "n1788120569710",
-      "to": "n1795368773330",
-      "timeMin": 5,
+      "to": "n1795815175788",
+      "timeMin": 1,
       "accessible": true,
       "steep": false,
       "surface": "Asphalt",
@@ -2482,6 +2598,50 @@
       "accessible": true,
       "steep": false,
       "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795815260869",
+      "type": "strasse",
+      "name": "Rundschleifstrasse",
+      "from": "n1795368773330",
+      "to": "n1795815175788",
+      "timeMin": 3,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795815313888",
+      "type": "strasse",
+      "name": "Stadtplatz",
+      "from": "n1788099563573",
+      "to": "n1795815126458",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": [
+        {
+          "gx": 5.5,
+          "gy": -3.5
+        }
+      ]
+    },
+    {
+      "id": "e1795815392250",
+      "type": "strasse",
+      "name": "",
+      "from": "n1788099563573",
+      "to": "n1795815056095",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
       "info": "",
       "points": []
     }
