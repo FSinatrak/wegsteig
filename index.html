@@ -102,6 +102,7 @@
   }
   .fab.has-route .dot{display:inline-block;}
 
+  .hint-arrow{font-weight:700;font-size:14px;color:var(--ink);}
   .map-hint{
     position:fixed;
     right:16px;
@@ -141,6 +142,37 @@
   }
   .zoom-controls button:active{background:var(--paper);}
   #zoomReset{font-size:17px;}
+  #resetAll{font-size:21px;}
+  #filterBtn{display:flex;align-items:center;justify-content:center;}
+  #filterBtn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .filter-panel{
+    position:fixed;
+    left:70px;
+    bottom:46px;
+    z-index:48;
+    width:230px;
+    max-height:calc(100vh - 120px);
+    overflow-y:auto;
+    background:var(--panel);
+    border:1px solid var(--hairline);
+    border-radius:14px;
+    padding:10px 12px 12px 12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.22);
+  }
+  .filter-head{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:'Barlow Semi Condensed',sans-serif;font-weight:700;font-size:17px;
+  }
+  .filter-group{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;
+    letter-spacing:0.4px;color:var(--ink-soft);margin:10px 0 4px 0;
+  }
+  .filter-row{
+    display:flex;align-items:center;gap:8px;
+    font-family:inherit;text-transform:none;letter-spacing:0;
+    font-size:14px;color:var(--ink);margin:0;padding:5px 0;cursor:pointer;
+  }
+  .filter-row input{width:18px;height:18px;margin:0;}
   #zoomFitRoute{font-size:19px;color:var(--accent);border-color:var(--accent);}
   #locateMe{font-size:19px;}
 
@@ -275,6 +307,34 @@
     padding-bottom:4px;
   }
   .sidebar h2:first-of-type{margin-top:0;}
+  /* Auswahl-Übersicht im Routen-Menü */
+  .route-summary{margin:10px 0 4px 0;display:flex;flex-direction:column;gap:6px;}
+  .sum-row{display:flex;align-items:center;gap:8px;border:1px solid var(--hairline);border-radius:10px;padding:7px 9px;font-size:14px;}
+  .sum-badge{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:'Barlow Semi Condensed',sans-serif;font-size:14px;}
+  .sum-badge.s{background:var(--accessible);} .sum-badge.z{background:var(--accent);}
+  .sum-badge.p{background:#ff9f00;font-size:12px;}
+  .sum-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .sum-text.empty{color:var(--ink-soft);font-style:italic;}
+  .sum-x{border:none;background:none;font-size:15px;color:var(--ink-soft);padding:2px 4px;cursor:pointer;}
+
+  /* Verzeichnis Orte & Wege */
+  .dir-section{margin-top:18px;border-top:1px solid var(--hairline);padding-top:12px;}
+  .dir-title{margin:0 0 8px 0;font-family:'Barlow Semi Condensed',sans-serif;font-size:18px;}
+  .dir-tabs{display:flex;gap:6px;margin-bottom:8px;}
+  .dir-tab{flex:1;padding:7px;border:1px solid var(--hairline);border-radius:8px;background:none;font:inherit;font-size:13px;cursor:pointer;color:var(--ink);}
+  .dir-tab.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .dir-list{margin-top:8px;}
+  .dir-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--hairline);}
+  .dir-main{flex:1;min-width:0;}
+  .dir-name{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .dir-sub{font-size:11.5px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .dir-btns{display:flex;gap:4px;flex-shrink:0;}
+  .dir-btn{min-width:34px;height:32px;padding:0 7px;border:1px solid var(--hairline);border-radius:8px;background:var(--panel);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink);}
+  .dir-btn.on-s{background:var(--accessible);border-color:var(--accessible);color:#fff;}
+  .dir-btn.on-z{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .dir-btn.on-p{background:#ff9f00;border-color:#ff9f00;color:#fff;}
+  .dir-empty{color:var(--ink-soft);font-style:italic;font-size:13px;padding:8px 0;}
+
   details.legend-details{margin-top:16px;}
   details.legend-details summary{
     cursor:pointer;
@@ -421,11 +481,32 @@
     stroke-width:1.5;
     stroke-dasharray:2,2;
   }
+  .node-kind-icon{
+    font-size:12.5px;
+    pointer-events:none;
+  }
   .node-label-hidden{
     fill:var(--ink-soft);
     font-style:italic;
     font-size:11px;
   }
+  .node-circle.route-start{stroke:#fff;stroke-width:3;}
+  .node-circle.route-end{stroke:#fff;stroke-width:3;}
+  .route-ring{fill:none;stroke-width:3;pointer-events:none;}
+  .route-ring-start{stroke:var(--accessible);}
+  .route-ring-end{stroke:var(--accent);}
+  .route-letter{
+    font-family:'Barlow Semi Condensed',sans-serif;
+    font-weight:700;font-size:16px;fill:#fff;pointer-events:none;
+  }
+  .route-pill{pointer-events:none;}
+  .route-pill-start{fill:var(--accessible);}
+  .route-pill-end{fill:var(--accent);}
+  .route-pill-text{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:700;font-size:11px;letter-spacing:0.6px;fill:#fff;pointer-events:none;
+  }
+  .route-mark-label{font-weight:700;font-size:14px;}
   .route-tag{
     font-family:'IBM Plex Mono',monospace;
     font-weight:700;
@@ -666,6 +747,29 @@
     animation:navPulse 1.4s ease-out infinite;
     pointer-events:none;
   }
+  .required-glow{
+    fill:none;stroke:#ff9f00;stroke-width:19;
+    stroke-linecap:round;stroke-linejoin:round;opacity:0.95;pointer-events:none;
+  }
+  .required-glow.on-route{stroke-width:27;}
+  .required-glow.required-glow-nav{stroke-width:23;opacity:0.4;}
+  .flash-ring{
+    fill:none;stroke:#ff9f00;stroke-width:4;
+    transform-box:fill-box;transform-origin:center;
+    animation:flashRing 1s ease-out infinite;pointer-events:none;
+  }
+  .flash-ring-2{animation-delay:0.5s;}
+  .flash-blink{
+    fill:none;stroke:#ff9f00;stroke-width:5;
+    animation:flashBlink 0.5s ease-in-out infinite;pointer-events:none;
+  }
+  .flash-edge{
+    fill:none;stroke:#ff9f00;stroke-width:14;
+    stroke-linecap:round;stroke-linejoin:round;
+    animation:flashBlink 0.5s ease-in-out infinite;pointer-events:none;
+  }
+  @keyframes flashRing{ 0%{transform:scale(0.6);opacity:1;} 100%{transform:scale(2.4);opacity:0;} }
+  @keyframes flashBlink{ 0%,100%{opacity:0.95;} 50%{opacity:0.1;} }
   @keyframes navPulse{
     0%{transform:scale(0.6);opacity:0.9;}
     100%{transform:scale(1.8);opacity:0;}
@@ -739,8 +843,16 @@
     <label>Koordinaten (aus Google Maps kopiert)</label>
     <input type="text" id="nodeCoords" placeholder="49.8103, 12.1497">
     <div class="hint">In Google Maps mit Rechtsklick auf den Punkt die Koordinaten kopieren und hier direkt einfügen.</div>
-    <div class="checkrow"><input type="checkbox" id="nodeHidden"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Unsichtbarer Verbindungsknoten (kein eigener Ort)</label></div>
-    <div class="hint">Für Stellen, an denen sich innerhalb eines Weges nur die Eigenschaften ändern (z. B. Oberfläche, oder Steig→Weg), ohne dass dort ein echter, für Nutzer:innen sichtbarer Punkt liegt.</div>
+    <label>Knotenart</label>
+    <select id="nodeKind">
+      <option value="regular">Regulärer Knoten</option>
+      <option value="zoigl">🍺 Zoigl</option>
+      <option value="wirtshaus">🍽️ Wirtshaus</option>
+      <option value="uebernachtung">🛏️ Übernachtung</option>
+      <option value="sehenswuerdigkeit">⭐ Sehenswürdigkeit</option>
+      <option value="hidden">Unsichtbarer Verbindungsknoten</option>
+    </select>
+    <div class="hint">„Unsichtbar“ ist für Stellen, an denen sich innerhalb eines Weges nur die Eigenschaften ändern (z. B. Oberfläche, oder Steig→Weg), ohne dass dort ein echter, für Nutzer:innen sichtbarer Punkt liegt.</div>
     <button class="btn-ghost" style="width:100%;margin-top:8px;" id="addNode">+ Knoten anlegen</button>
     <button class="btn-ghost" style="width:100%;margin-top:6px;display:none;" id="repositionNode">📍 Position aus Koordinaten neu schätzen</button>
     <button class="btn-ghost" style="width:100%;margin-top:6px;display:none;" id="cancelNodeEdit">Bearbeitung abbrechen</button>
@@ -816,13 +928,25 @@
 <div class="map-hint" id="mapHint" style="display:none;"></div>
 <div class="route-corner" id="routeCorner" style="display:none;"></div>
 <div class="path-info" id="pathInfo" style="display:none;"></div>
+<div class="filter-panel" id="filterPanel" style="display:none;">
+  <div class="filter-head"><span>Kartenfilter</span><button class="sheet-close" id="filterClose">✕</button></div>
+  <div class="filter-group">Knoten anzeigen</div>
+  <div id="filterKinds"></div>
+  <div class="filter-group">Beschriftung</div>
+  <label class="filter-row"><input type="checkbox" id="filterNodeNames"> Knotennamen</label>
+  <label class="filter-row"><input type="checkbox" id="filterEdgeNames"> Wegenamen</label>
+  <button class="btn-ghost btn-small" id="filterAll" style="width:100%;margin-top:8px;">Alles anzeigen</button>
+  <div class="hint" style="margin-top:6px;">Start, Ziel und das aktuelle Navigationsziel bleiben immer sichtbar. Die Routenberechnung ist vom Filter nicht betroffen.</div>
+</div>
 <div class="zoom-controls" id="zoomControls">
+  <button id="filterBtn" title="Kartenfilter"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
   <button id="navStart" title="Live-Navigation starten" style="display:none;">➤</button>
   <button id="locateMe" title="Meinen Standort als Start verwenden">📍</button>
   <button id="zoomIn" title="Vergrößern">+</button>
   <button id="zoomOut" title="Verkleinern">−</button>
   <button id="zoomFitRoute" title="Gesamte Route anzeigen" style="display:none;">⛶</button>
   <button id="zoomReset" title="Gesamte Karte anzeigen">⤢</button>
+  <button id="resetAll" title="Auswahl zurücksetzen und auf meinen Standort zentrieren">↺</button>
 </div>
 <div class="nav-card" id="navCard" style="display:none;">
   <svg class="nav-arrow" id="navArrow" viewBox="0 0 140 140">
@@ -840,7 +964,7 @@
     </div>
   </div>
 </div>
-<button class="fab" id="openSheet"><span class="dot" id="fabDot"></span><span class="fab-text">Start wählen</span></button>
+<button class="fab" id="openSheet"><span class="dot" id="fabDot"></span><span class="fab-text">Route planen</span></button>
 
 <div class="sheet-backdrop" id="sheetBackdrop"></div>
 <div class="sheet" id="routeSheet">
@@ -849,17 +973,24 @@
     <h2>Route planen</h2>
     <button class="sheet-close" id="closeSheet">✕</button>
   </div>
-  <div class="hint">Start und Ziel lassen sich direkt auf der Karte antippen (grüner Punkt = Start, roter Punkt = Ziel). Wege/Steige antippen, um sie als Pflichtabschnitt (★) einzuplanen. Die Auswahllisten unten dienen nur als Alternative.</div>
-  <label>Von</label>
-  <select id="routeFrom"></select>
-  <label>Nach</label>
-  <select id="routeTo"></select>
+  <div class="hint">Start und Ziel auf der Karte antippen, Wege/Steige antippen, um sie als Pflichtabschnitt (★) einzuplanen. Oder unten unter „Orte &amp; Wege“ suchen und dort auswählen.</div>
+  <div id="routeSummary" class="route-summary"></div>
   <div class="checkrow"><input type="checkbox" id="prefAccess"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Nur barrierefreie Wege</label></div>
   <div class="checkrow"><input type="checkbox" id="avoidSteep"><label style="margin:0;font-family:inherit;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Steige vermeiden</label></div>
   <button class="btn-primary" id="calcRoute">Route berechnen</button>
   <button class="btn-ghost" style="width:100%;margin-top:8px;" id="resetRoute">Auswahl zurücksetzen</button>
   <div class="result" id="routeResult" style="display:none;"></div>
   <button class="btn-ghost" id="sheetNavigate" style="width:100%;margin-top:8px;display:none;">🧭 In Google Maps öffnen</button>
+
+  <div class="dir-section">
+    <h3 class="dir-title">Orte &amp; Wege</h3>
+    <div class="dir-tabs">
+      <button class="dir-tab active" data-tab="orte">Orte</button>
+      <button class="dir-tab" data-tab="wege">Wege &amp; Steige</button>
+    </div>
+    <input type="text" id="dirSearch" placeholder="Suchen…" autocomplete="off">
+    <div id="dirList" class="dir-list"></div>
+  </div>
 
   <details class="legend-details">
     <summary>Zeichenerklärung anzeigen</summary>
@@ -982,6 +1113,45 @@ function seedData(){
 // ---------- persistence ----------
 const STORAGE_KEY = 'windischeschenbach-wegenetz';
 const SCHEMA_VERSION = 1;
+
+// Knotenarten (zusätzlich zu "unsichtbar", das weiterhin über n.hidden läuft)
+const NODE_KINDS = {
+  regular:           { label:'Regulärer Knoten',  icon:''   },
+  zoigl:             { label:'Zoigl',             icon:'🍺' },
+  wirtshaus:         { label:'Wirtshaus',         icon:'🍽️' },
+  uebernachtung:     { label:'Übernachtung',      icon:'🛏️' },
+  sehenswuerdigkeit: { label:'Sehenswürdigkeit',  icon:'⭐' },
+};
+function nodeKindIcon(n){
+  if(!n || n.hidden) return '';
+  return (NODE_KINDS[n.kind] || NODE_KINDS.regular).icon;
+}
+// ---------- Kartenfilter in der Benutzeransicht ----------
+const VIEW_FILTER_KEY = 'wegsteig-view-filter';
+function defaultViewFilter(){
+  const kinds = {}; Object.keys(NODE_KINDS).forEach(k=>kinds[k]=true);
+  return { kinds, nodeNames:true, edgeNames:true };
+}
+let viewFilter = defaultViewFilter();
+try{
+  const saved = JSON.parse(localStorage.getItem(VIEW_FILTER_KEY) || 'null');
+  if(saved && typeof saved==='object'){
+    Object.keys(NODE_KINDS).forEach(k=>{ if(saved.kinds && typeof saved.kinds[k]==='boolean') viewFilter.kinds[k]=saved.kinds[k]; });
+    if(typeof saved.nodeNames==='boolean') viewFilter.nodeNames = saved.nodeNames;
+    if(typeof saved.edgeNames==='boolean') viewFilter.edgeNames = saved.edgeNames;
+  }
+}catch(e){ /* kein Speicher verfügbar: Standard verwenden */ }
+function saveViewFilter(){ try{ localStorage.setItem(VIEW_FILTER_KEY, JSON.stringify(viewFilter)); }catch(e){} }
+function viewFilterActive(){
+  return !viewFilter.nodeNames || !viewFilter.edgeNames || Object.values(viewFilter.kinds).some(v=>!v);
+}
+// Start, Ziel und aktuelles Navigationsziel bleiben immer sichtbar
+function nodePassesViewFilter(n, navTargetId){
+  if(n.id===routeFromId || n.id===routeToId || n.id===navTargetId) return true;
+  return viewFilter.kinds[NODE_KINDS[n.kind] ? n.kind : 'regular'] !== false;
+}
+
+function nodeKindSelectValue(n){ return n.hidden ? 'hidden' : (NODE_KINDS[n.kind] ? n.kind : 'regular'); }
 const BACKUP_INDEX_KEY = 'wegenetz-backups-index';
 const BACKUP_PREFIX = 'wegenetz-backup-';
 const MAX_BACKUPS = 6;
@@ -1003,6 +1173,7 @@ function migrateState(raw){
       gx: Number.isFinite(n.gx) ? n.gx : 0,
       gy: Number.isFinite(n.gy) ? n.gy : 0,
       hidden: !!n.hidden,
+      kind: NODE_KINDS[n.kind] ? n.kind : 'regular',
     }));
   const nodeIds = new Set(nodes.map(n=>n.id));
 
@@ -1255,6 +1426,15 @@ function renderMap(){
     const isRoute = highlightedEdgeIds.has(edge.id);
     const isRequired = requiredEdgeIds.has(edge.id);
 
+    // Pflichtwege: orangefarbener Saum unter der Linie – unter dem Routen-Pink, damit er
+    // als Rand sichtbar bleibt (bei laufender Navigation dezenter)
+    if(isRequired && !editing){
+      let cls = 'required-glow';
+      if(isRoute) cls += ' on-route';
+      if(nav.active) cls += ' required-glow-nav';
+      svg.appendChild(el('path',{d, class: cls}));
+    }
+
     if(isRoute){
       const glow = el('path',{d, fill:'none', stroke:'var(--route-highlight)', 'stroke-width':17, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity:0.6, class:'route-glow'});
       svg.appendChild(glow);
@@ -1271,11 +1451,6 @@ function renderMap(){
         const p2 = el('path',{d, fill:'none', stroke:'#ffffff', 'stroke-width':2, 'stroke-dasharray':'1,9', 'stroke-linecap':'round'});
         svg.appendChild(p2);
       }
-    }
-
-    if(isRequired){
-      const req = el('path',{d, fill:'none', stroke:'var(--required)', 'stroke-width':3, 'stroke-dasharray':'1,7', 'stroke-linecap':'round'});
-      svg.appendChild(req);
     }
 
     if(editing && selectedEdgeId===edge.id){
@@ -1321,8 +1496,14 @@ function renderMap(){
       });
       svg.appendChild(hit);
     } else if(edge.type!=='strasse'){
-      const hit = el('path',{d, fill:'none', stroke:'transparent', 'stroke-width':18, 'stroke-linecap':'round', 'stroke-linejoin':'round', style:'cursor:pointer;'});
-      hit.addEventListener('click', ()=>{ toggleRequiredEdge(edge.id); showPathInfo(edge); });
+      if(flashTarget && flashTarget.type==='edge' && flashTarget.id===edge.id){
+        svg.appendChild(el('path',{d, class:'flash-edge'}));
+      }
+      const hit = el('path',{d, 'data-edge-id':edge.id, fill:'none', stroke:'transparent', 'stroke-width':18, 'stroke-linecap':'round', 'stroke-linejoin':'round', style:'cursor:pointer;'});
+      hit.addEventListener('click', ()=>{
+        if(!nav.active) toggleRequiredEdge(edge.id); // während der Navigation nur Infos zeigen
+        showPathInfo(edge);
+      });
       svg.appendChild(hit);
     }
 
@@ -1333,7 +1514,7 @@ function renderMap(){
       const mx = (segs[mIdx].p1[0]+segs[mIdx].p2[0])/2;
       const my = (segs[mIdx].p1[1]+segs[mIdx].p2[1])/2;
       const labelParts = [];
-      if(edge.type!=='strasse' && edge.name) labelParts.push(edge.name);
+      if(edge.type!=='strasse' && edge.name && (editing || viewFilter.edgeNames)) labelParts.push(edge.name);
       labelParts.push(edge.timeMin+' min');
       if(edge.accessible) labelParts.push('♿');
       if(edge.steep) labelParts.push('▲');
@@ -1365,12 +1546,20 @@ function renderMap(){
   const selectedEdgeObj = (editing && selectedEdgeId) ? state.edges.find(e=>e.id===selectedEdgeId) : null;
   const editorNodeLabels = editing ? disambiguationLabels() : null;
   const navTargetId = (!editing && nav.active && !nav.done) ? nav.targets[nav.idx] : null;
+  const markGroups = [];
   state.nodes.forEach(n=>{
+    if(!editing && flashTarget && flashTarget.type==='node' && flashTarget.id===n.id){
+      const fp = pos[n.id];
+      svg.appendChild(el('circle',{cx:fp.x, cy:fp.y, r:16, class:'flash-ring'}));
+      svg.appendChild(el('circle',{cx:fp.x, cy:fp.y, r:16, class:'flash-ring flash-ring-2'}));
+      svg.appendChild(el('circle',{cx:fp.x, cy:fp.y, r:17, class:'flash-blink'}));
+    }
     if(n.id===navTargetId){
       // pulsierender Ring um den aktuellen Navigationspunkt (auch bei unsichtbaren Zwischenknoten)
       svg.appendChild(el('circle',{cx:pos[n.id].x, cy:pos[n.id].y, r:16, class:'nav-pulse'}));
     }
     if(n.hidden && !editing) return; // invisible connector nodes: not shown/clickable to end users
+    if(!editing && !nodePassesViewFilter(n, navTargetId)) return; // per Filter ausgeblendet
     const p = pos[n.id];
     const g = el('g',{});
     let cls = 'node-circle';
@@ -1380,21 +1569,40 @@ function renderMap(){
     if(selectedEdgeObj && (n.id===selectedEdgeObj.from || n.id===selectedEdgeObj.to)) cls += ' edge-endpoint';
     if(!editing && n.id===routeFromId) cls += ' route-start';
     if(!editing && n.id===routeToId) cls += ' route-end';
-    const r = n.hidden ? 5 : 9;
+    const icon = nodeKindIcon(n);
+    if(icon) cls += ' node-poi';
+    // Start/Ziel: großer farbiger Punkt mit Buchstabe, äußerer Ring und Schild darüber
+    const mark = editing ? null : (n.id===routeFromId ? 'start' : (n.id===routeToId ? 'end' : null));
+    const r = mark ? 14 : (n.hidden ? 5 : (icon ? 12 : 9));
+    if(mark){
+      g.appendChild(el('circle',{cx:p.x, cy:p.y, r:19, class:'route-ring route-ring-'+mark}));
+    }
     const circle = el('circle',{cx:p.x, cy:p.y, r, class:cls, 'data-id':n.id, style:'cursor:pointer;'});
     g.appendChild(circle);
-    if(!editing && n.id===routeFromId){
-      const tag = el('text',{x:p.x, y:p.y-15, class:'route-tag', 'text-anchor':'middle'}); tag.textContent='S'; g.appendChild(tag);
+    if(mark){
+      const letter = el('text',{x:p.x, y:p.y+5.5, class:'route-letter', 'text-anchor':'middle'});
+      letter.textContent = mark==='start' ? 'S' : 'Z';
+      g.appendChild(letter);
+      const word = mark==='start' ? 'START' : 'ZIEL';
+      const w = word.length*7.4 + 14, top = p.y - 44;
+      g.appendChild(el('rect',{x:p.x-w/2, y:top, width:w, height:18, rx:9, class:'route-pill route-pill-'+mark}));
+      g.appendChild(el('path',{d:`M${p.x-5},${top+17.5} L${p.x},${top+23} L${p.x+5},${top+17.5} Z`, class:'route-pill route-pill-'+mark}));
+      const t = el('text',{x:p.x, y:top+13, class:'route-pill-text', 'text-anchor':'middle'});
+      t.textContent = word;
+      g.appendChild(t);
+    } else if(icon){
+      const ic = el('text',{x:p.x, y:p.y+4.5, class:'node-kind-icon', 'text-anchor':'middle'});
+      ic.textContent = icon;
+      g.appendChild(ic);
     }
-    if(!editing && n.id===routeToId){
-      const tag = el('text',{x:p.x, y:p.y-15, class:'route-tag', 'text-anchor':'middle'}); tag.textContent='Z'; g.appendChild(tag);
-    }
-    {
-      const label = el('text',{x:p.x+13, y:p.y+4, class:'node-label map-label'+(n.hidden?' node-label-hidden':'')});
-      label.textContent = editing ? editorNodeLabels[n.id] + (n.hidden ? ' (unsichtbar)' : '') : n.name;
+    if(editing || viewFilter.nodeNames){
+      const label = el('text',{x:p.x+(mark ? 23 : (icon ? 16 : 13)), y:p.y+4, class:'node-label map-label'+(n.hidden?' node-label-hidden':'')+(mark?' route-mark-label':'')});
+      label.textContent = editing ? editorNodeLabels[n.id] + (n.hidden ? ' (unsichtbar)' : '')
+                                  : ((mark && icon) ? icon + ' ' : '') + n.name;
       g.appendChild(label);
     }
-    svg.appendChild(g);
+    // Start/Ziel zuletzt zeichnen, damit nichts darüber liegt
+    if(mark) markGroups.push(g); else svg.appendChild(g);
 
     if(editing){
       circle.addEventListener('pointerdown', (ev)=>{ ev.stopPropagation(); startDrag(ev, n.id, minGx, minGy); });
@@ -1413,6 +1621,8 @@ function renderMap(){
     }
   });
 
+  markGroups.forEach(g=>svg.appendChild(g));
+
   // Geometrie merken, damit der eigene Standort bei jedem GPS-Update
   // verschoben werden kann, ohne die ganze Karte neu zu zeichnen
   lastMapGeom = { pos, realPointsFor, buildSegments, minGx, minGy };
@@ -1428,6 +1638,16 @@ function renderMap(){
 }
 
 let lastMapGeom = null;
+// "Auf der Karte zeigen": Knoten oder Weg blinkt ein paar Sekunden
+let flashTarget = null; // { type:'node'|'edge', id }
+let flashTimer = null;
+const FLASH_MS = 4000;
+function flashOnMap(type, id){
+  flashTarget = { type, id };
+  clearTimeout(flashTimer);
+  renderMap();
+  flashTimer = setTimeout(()=>{ flashTarget = null; renderMap(); }, FLASH_MS);
+}
 const USER_MARKER_MAX_M = 2000;
 
 // bestimmt, wo der eigene Standort auf der Schemakarte liegt (in Pixeln)
@@ -1607,31 +1827,32 @@ function disambiguationLabels(){
 function renderSelects(){
   const editorLabels = disambiguationLabels();
   function publicOptionFor(n){
-    return `<option value="${n.id}">${n.name}</option>`;
+    const ic = nodeKindIcon(n);
+    return `<option value="${n.id}">${ic ? ic + ' ' : ''}${n.name}</option>`;
   }
   function editorOptionFor(n){
     return `<option value="${n.id}">${editorLabels[n.id]}${n.hidden ? ' [unsichtbar]' : ''}</option>`;
   }
-  const publicOpts = state.nodes.filter(n=>!n.hidden).map(publicOptionFor).join('');
   const allOpts = state.nodes.map(editorOptionFor).join('');
-  ['routeFrom','routeTo'].forEach(id=>{
-    const el = document.getElementById(id);
-    const prev = el.value;
-    el.innerHTML = publicOpts;
-    if(prev) el.value = prev;
-  });
   ['edgeFrom','edgeTo'].forEach(id=>{
     const el = document.getElementById(id);
     const prev = el.value;
     el.innerHTML = allOpts;
     if(prev) el.value = prev;
   });
-  document.getElementById('routeFrom').value = routeFromId || '';
-  document.getElementById('routeTo').value = routeToId || '';
 }
 
 // ---------- routing: click-to-select on the map ----------
+// Während einer laufenden Navigation dürfen Start/Ziel/Pflichtwege nicht
+// versehentlich per Antippen geändert werden (das würde die Navigation umwerfen)
+function navLocksSelection(){
+  if(!nav.active) return false;
+  showToast('Während der Navigation gesperrt – zum Ändern erst „✕ Ende“ tippen.');
+  return true;
+}
+
 function handleNodeClickForRouting(nodeId){
+  if(navLocksSelection()) return;
   if(routeFromId && routeToId){
     routeFromId = nodeId; routeToId = null;
   } else if(!routeFromId){
@@ -1648,6 +1869,7 @@ function handleNodeClickForRouting(nodeId){
 }
 
 function toggleRequiredEdge(edgeId){
+  if(navLocksSelection()) return;
   if(requiredEdgeIds.has(edgeId)) requiredEdgeIds.delete(edgeId);
   else requiredEdgeIds.add(edgeId);
   clearComputedRoute();
@@ -1692,15 +1914,19 @@ function updateFabLabel(){
   const textEl = fab.querySelector('.fab-text');
   const hint = document.getElementById('mapHint');
   let text, hintText;
-  if(!routeFromId){ text = 'Start wählen'; hintText = 'Startpunkt auf der Karte antippen.'; }
-  else if(!routeToId){ text = 'Ziel wählen'; hintText = 'Zielpunkt auf der Karte antippen.'; }
-  else { text = 'Route'; hintText = 'Optional: Wege/Steige antippen, um sie einzuplanen — dann auf „Route" tippen.'; }
+  text = 'Route planen';
+  if(!routeFromId) hintText = 'Startpunkt auf der Karte antippen';
+  else if(!routeToId) hintText = 'Zielpunkt auf der Karte antippen';
+  else hintText = 'Optional Wege/Steige antippen';
   if(textEl) textEl.textContent = text;
   if(hint){
-    hint.textContent = hintText;
+    // Hinweis endet jeweils mit "oder ↓" – zeigt auf den Knopf "Route planen" darunter
+    hint.innerHTML = `${hintText} <span style="white-space:nowrap;">oder <span class="hint-arrow">↓</span></span>`;
     hint.style.display = (currentRoutes.length || nav.active) ? 'none' : 'block';
   }
   fab.style.display = nav.active ? 'none' : '';
+  renderRouteSummary();
+  renderDirectory();
   const navBtn = document.getElementById('navStart');
   if(navBtn) navBtn.style.display = (routeFromId && !nav.active) ? 'block' : 'none';
 }
@@ -1713,8 +1939,10 @@ function renderNodeTable(){
   const visibleNodes = filter ? state.nodes.filter(n => n.name.toLowerCase().includes(filter)) : state.nodes;
   visibleNodes.forEach(n=>{
     const tr = document.createElement('tr');
-    const tag = n.hidden ? ' <span style="color:var(--ink-soft);font-size:10px;">(unsichtbar)</span>' : '';
-    tr.innerHTML = `<td>${labels[n.id]}${tag}</td><td style="white-space:nowrap;">
+    const kindName = n.hidden ? 'unsichtbar' : (n.kind && n.kind!=='regular' ? NODE_KINDS[n.kind].label : '');
+    const tag = (nodeKindIcon(n) ? nodeKindIcon(n) + ' ' : '') +
+                (kindName ? ` <span style="color:var(--ink-soft);font-size:10px;">(${kindName})</span>` : '');
+    tr.innerHTML = `<td>${labels[n.id]} ${tag}</td><td style="white-space:nowrap;">
       <button class="del-btn edit-node-btn" data-id="${n.id}" title="Bearbeiten" style="font-size:11px;">✎</button>
       <button class="del-btn toggle-hidden-btn" data-id="${n.id}" title="Sichtbarkeit umschalten" style="font-size:11px;color:var(--ink-soft);">${n.hidden ? '👁' : '🚫'}</button>
       <button class="del-btn" data-id="${n.id}">✕</button></td>`;
@@ -2197,13 +2425,13 @@ function fitRouteIntoView(){
 }
 
 function computeAndShowRoute(){
-  const from = document.getElementById('routeFrom').value;
-  const to = document.getElementById('routeTo').value;
+  const from = routeFromId;
+  const to = routeToId;
   const onlyAccessible = document.getElementById('prefAccess').checked;
   const avoidSteep = document.getElementById('avoidSteep').checked;
   const box = document.getElementById('routeResult');
   box.style.display='block';
-  if(!from || !to){ box.innerHTML = 'Bitte Start und Ziel wählen (auf der Karte antippen oder über die Listen).'; openSheet(); return; }
+  if(!from || !to){ box.innerHTML = 'Bitte Start und Ziel wählen (auf der Karte antippen oder unter „Orte &amp; Wege“).'; openSheet(); return; }
   if(from===to){ box.innerHTML = 'Start und Ziel sind identisch.'; highlightedEdgeIds=new Set(); renderMap(); openSheet(); return; }
   routeFromId = from; routeToId = to;
   currentRoutes = findRoutesWithAlternatives(from, to, {onlyAccessible, avoidSteep}, 2);
@@ -2220,8 +2448,6 @@ function computeAndShowRoute(){
 
 document.getElementById('calcRoute').addEventListener('click', computeAndShowRoute);
 
-document.getElementById('routeFrom').addEventListener('change', (e)=>{ routeFromId = e.target.value || null; renderMap(); });
-document.getElementById('routeTo').addEventListener('change', (e)=>{ routeToId = e.target.value || null; renderMap(); });
 document.getElementById('resetRoute').addEventListener('click', resetRouteSelection);
 document.getElementById('sheetNavigate').addEventListener('click', openCurrentRouteInGoogleMaps);
 
@@ -2307,7 +2533,7 @@ function startEditNode(id){
   editingNodeId = id;
   document.getElementById('nodeName').value = n.name;
   document.getElementById('nodeCoords').value = `${n.lat}, ${n.lng}`;
-  document.getElementById('nodeHidden').checked = !!n.hidden;
+  document.getElementById('nodeKind').value = nodeKindSelectValue(n);
   document.getElementById('addNode').textContent = '✓ Änderungen speichern';
   document.getElementById('cancelNodeEdit').style.display = 'block';
   document.getElementById('repositionNode').style.display = 'block';
@@ -2318,7 +2544,7 @@ function cancelNodeEdit(){
   editingNodeId = null;
   document.getElementById('nodeName').value = '';
   document.getElementById('nodeCoords').value = '';
-  document.getElementById('nodeHidden').checked = false;
+  document.getElementById('nodeKind').value = 'regular';
   document.getElementById('addNode').textContent = '+ Knoten anlegen';
   document.getElementById('cancelNodeEdit').style.display = 'none';
   document.getElementById('repositionNode').style.display = 'none';
@@ -2464,21 +2690,23 @@ function estimateRawGrid(lat, lng, excludeId){
 document.getElementById('addNode').addEventListener('click', ()=>{
   const name = document.getElementById('nodeName').value.trim();
   const coords = parseCoords(document.getElementById('nodeCoords').value);
-  const hidden = document.getElementById('nodeHidden').checked;
+  const kindSel = document.getElementById('nodeKind').value;
+  const hidden = kindSel==='hidden';
+  const kind = hidden ? 'regular' : kindSel;
   if(!name || !coords){ showToast('Bitte Name und Koordinaten im Format "49.8103, 12.1497" angeben.'); return; }
   if(editingNodeId){
     const n = nodeById(editingNodeId);
-    if(n){ n.name=name; n.lat=coords.lat; n.lng=coords.lng; n.hidden=hidden; }
+    if(n){ n.name=name; n.lat=coords.lat; n.lng=coords.lng; n.hidden=hidden; n.kind=kind; }
     cancelNodeEdit();
     showToast('Knoten aktualisiert.');
   } else {
     const id = 'n' + Date.now();
     const est = estimateGridPosition(coords.lat, coords.lng, null);
     const { gx, gy } = est || getViewportCenterGrid();
-    state.nodes.push({id, name, lat:coords.lat, lng:coords.lng, gx, gy, hidden});
+    state.nodes.push({id, name, lat:coords.lat, lng:coords.lng, gx, gy, hidden, kind});
     document.getElementById('nodeName').value='';
     document.getElementById('nodeCoords').value='';
-    document.getElementById('nodeHidden').checked=false;
+    document.getElementById('nodeKind').value='regular';
     selectedNodeId = id;
     save(); render();
     centerNodeInView(id);
@@ -2606,9 +2834,12 @@ document.getElementById('toast').addEventListener('click', ()=>{
   clearTimeout(toastTimer);
 });
 
-function showConfirm(message){
+function showConfirm(message, labels){
   return new Promise(resolve=>{
     document.getElementById('confirmMessage').textContent = message;
+    // optionale eigene Knopf-Beschriftungen (z. B. wenn "Abbrechen" missverständlich wäre)
+    document.getElementById('confirmYes').textContent = (labels && labels.yes) || 'Bestätigen';
+    document.getElementById('confirmNo').textContent = (labels && labels.no) || 'Abbrechen';
     document.getElementById('confirmBackdrop').style.display='block';
     document.getElementById('confirmCard').style.display='block';
     const yes = document.getElementById('confirmYes');
@@ -2644,6 +2875,7 @@ function closeEditorGate(){
 function enterEditingMode(){
   if(nav.active) stopNavigation();
   stopLocationWatch();
+  document.getElementById('filterPanel').style.display = 'none';
   editing = true;
   closeSheet();
   resetMapZoom();
@@ -2898,6 +3130,223 @@ function locateAndSetStart(){
 }
 document.getElementById('locateMe').addEventListener('click', locateAndSetStart);
 
+// ---------- Auswahl per Verzeichnis (Orte & Wege) ----------
+function escapeHtml(t){
+  return String(t).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function selectionChanged(){
+  clearComputedRoute();
+  renderSelects();
+  updateFabLabel();
+  renderMap();
+}
+function setRouteStart(id){
+  if(navLocksSelection()) return;
+  if(routeToId===id) routeToId = null;
+  routeFromId = (routeFromId===id) ? null : id; // nochmal tippen = wieder abwählen
+  selectionChanged();
+}
+function setRouteEnd(id){
+  if(navLocksSelection()) return;
+  if(routeFromId===id) routeFromId = null;
+  routeToId = (routeToId===id) ? null : id;
+  selectionChanged();
+}
+const EDGE_TYPE_LABEL = { weg:'Weg', steig:'Steig', strasse:'Straße' };
+function edgeTitle(e){ return e.name || EDGE_TYPE_LABEL[e.type] || 'Weg'; }
+
+function renderRouteSummary(){
+  const box = document.getElementById('routeSummary');
+  if(!box) return;
+  const nameOf = id => { const n = nodeById(id); if(!n) return '?'; const ic = nodeKindIcon(n); return escapeHtml((ic ? ic+' ' : '') + n.name); };
+  let html = '';
+  html += routeFromId
+    ? `<div class="sum-row"><span class="sum-badge s">S</span><span class="sum-text">${nameOf(routeFromId)}</span><button class="sum-x" data-clear="start" title="Start entfernen">✕</button></div>`
+    : `<div class="sum-row"><span class="sum-badge s">S</span><span class="sum-text empty">Start: auf der Karte antippen</span></div>`;
+  html += routeToId
+    ? `<div class="sum-row"><span class="sum-badge z">Z</span><span class="sum-text">${nameOf(routeToId)}</span><button class="sum-x" data-clear="end" title="Ziel entfernen">✕</button></div>`
+    : `<div class="sum-row"><span class="sum-badge z">Z</span><span class="sum-text empty">Ziel: auf der Karte antippen</span></div>`;
+  requiredEdgeIds.forEach(eid=>{
+    const e = state.edges.find(x=>x.id===eid);
+    if(!e) return;
+    const a = nodeById(e.from), b = nodeById(e.to);
+    html += `<div class="sum-row"><span class="sum-badge p">★</span><span class="sum-text">${escapeHtml(edgeTitle(e))} <span style="color:var(--ink-soft);font-size:12px;">${escapeHtml((a?a.name:'?')+' ↔ '+(b?b.name:'?'))}</span></span><button class="sum-x" data-clear-edge="${e.id}" title="Pflichtweg entfernen">✕</button></div>`;
+  });
+  box.innerHTML = html;
+  box.querySelectorAll('[data-clear="start"]').forEach(b=>b.addEventListener('click', ()=>setRouteStart(routeFromId)));
+  box.querySelectorAll('[data-clear="end"]').forEach(b=>b.addEventListener('click', ()=>setRouteEnd(routeToId)));
+  box.querySelectorAll('[data-clear-edge]').forEach(b=>b.addEventListener('click', ()=>toggleRequiredEdge(b.getAttribute('data-clear-edge'))));
+}
+
+let dirTab = 'orte';
+function renderDirectory(){
+  const list = document.getElementById('dirList');
+  if(!list) return;
+  const KIND_ORDER = Object.keys(NODE_KINDS);
+  const q = document.getElementById('dirSearch').value.trim().toLowerCase();
+  let html = '';
+  if(dirTab==='orte'){
+    // Orte: sichtbare Knoten, nach Art und Name sortiert; darunter die anliegenden Wege (hilft bei gleichnamigen Orten)
+    const nodes = state.nodes.filter(n=>!n.hidden && (!q || n.name.toLowerCase().includes(q)))
+      .sort((a,b)=> (KIND_ORDER.indexOf(a.kind||'regular') - KIND_ORDER.indexOf(b.kind||'regular')) || a.name.localeCompare(b.name,'de'));
+    nodes.forEach(n=>{
+      const ic = nodeKindIcon(n);
+      const trails = [...new Set(state.edges.filter(e=>(e.from===n.id||e.to===n.id) && e.type!=='strasse' && e.name).map(e=>e.name))];
+      const kindLabel = n.kind && n.kind!=='regular' ? NODE_KINDS[n.kind].label : '';
+      const sub = [kindLabel, trails.length ? 'an: '+trails.join(', ') : ''].filter(Boolean).join(' · ');
+      html += `<div class="dir-row">
+        <div class="dir-main"><div class="dir-name">${ic ? ic+' ' : ''}${escapeHtml(n.name)}</div>${sub ? `<div class="dir-sub">${escapeHtml(sub)}</div>` : ''}</div>
+        <div class="dir-btns">
+          <button class="dir-btn ${routeFromId===n.id?'on-s':''}" data-act="start" data-id="${n.id}" title="Als Startpunkt wählen">Start</button>
+          <button class="dir-btn ${routeToId===n.id?'on-z':''}" data-act="end" data-id="${n.id}" title="Als Ziel wählen">Ziel</button>
+          <button class="dir-btn" data-act="shownode" data-id="${n.id}" title="Auf der Karte zeigen">◎</button>
+        </div></div>`;
+    });
+    if(!nodes.length) html = `<div class="dir-empty">Keine Orte gefunden.</div>`;
+  } else {
+    // Wege & Steige (Verbindungsstraßen sind nur Verbindungsstücke und fehlen hier)
+    const edges = state.edges.filter(e=>e.type!=='strasse').filter(e=>{
+      if(!q) return true;
+      const a = nodeById(e.from), b = nodeById(e.to);
+      return [e.name, a&&a.name, b&&b.name].some(t=>t && t.toLowerCase().includes(q));
+    }).sort((x,y)=> edgeTitle(x).localeCompare(edgeTitle(y),'de'));
+    edges.forEach(e=>{
+      const a = nodeById(e.from), b = nodeById(e.to);
+      const props = [EDGE_TYPE_LABEL[e.type], e.timeMin+' min', e.surface, e.accessible?'♿':'', e.steep?'▲ steil':''].filter(Boolean).join(' · ');
+      const on = requiredEdgeIds.has(e.id);
+      html += `<div class="dir-row">
+        <div class="dir-main"><div class="dir-name">${escapeHtml(edgeTitle(e))}</div>
+          <div class="dir-sub">${escapeHtml((a?a.name:'?')+' ↔ '+(b?b.name:'?'))}</div>
+          <div class="dir-sub">${escapeHtml(props)}</div></div>
+        <div class="dir-btns">
+          <button class="dir-btn ${on?'on-p':''}" data-act="req" data-id="${e.id}" title="Soll unbedingt dabei sein">${on?'★ dabei':'☆ dabei'}</button>
+          <button class="dir-btn" data-act="showedge" data-id="${e.id}" title="Auf der Karte zeigen">◎</button>
+        </div></div>`;
+    });
+    if(!edges.length) html = `<div class="dir-empty">Keine Wege gefunden.</div>`;
+  }
+  list.innerHTML = html;
+  list.querySelectorAll('.dir-btn').forEach(b=>b.addEventListener('click', ()=>{
+    const id = b.getAttribute('data-id'), act = b.getAttribute('data-act');
+    if(act==='start') setRouteStart(id);
+    else if(act==='end') setRouteEnd(id);
+    else if(act==='req') toggleRequiredEdge(id);
+    else if(act==='shownode') showNodeOnMap(id);
+    else if(act==='showedge') showEdgeOnMap(id);
+  }));
+}
+
+function showNodeOnMap(id){
+  closeSheet();
+  if(!document.querySelector(`#map circle[data-id="${id}"]`)){
+    showToast('Dieser Ort ist gerade per Kartenfilter ausgeblendet.');
+    return;
+  }
+  flashOnMap('node', id);
+  centerNodeInView(id);
+}
+function showEdgeOnMap(id){
+  const e = state.edges.find(x=>x.id===id);
+  if(!e) return;
+  closeSheet();
+  showPathInfo(e);
+  flashOnMap('edge', id);
+  requestAnimationFrame(()=>{
+    const hit = document.querySelector(`#map path[data-edge-id="${id}"]`);
+    if(!hit) return;
+    const r = hit.getBoundingClientRect();
+    const w = document.getElementById('mapWrap').getBoundingClientRect();
+    document.getElementById('mapWrap').scrollBy({ left:(r.left+r.width/2)-(w.left+w.width/2), top:(r.top+r.height/2)-(w.top+w.height/2), behavior:'smooth' });
+  });
+}
+
+document.querySelectorAll('.dir-tab').forEach(t=>t.addEventListener('click', ()=>{
+  dirTab = t.getAttribute('data-tab');
+  document.querySelectorAll('.dir-tab').forEach(x=>x.classList.toggle('active', x===t));
+  renderDirectory();
+}));
+document.getElementById('dirSearch').addEventListener('input', renderDirectory);
+
+// ---------- Reset: Start/Ziel/Wege zurücksetzen, Karte auf eigenen Standort ----------
+function centerUserInView(){
+  requestAnimationFrame(()=>{
+    const m = document.getElementById('userMarker');
+    const mapWrap = document.getElementById('mapWrap');
+    if(!m || m.style.display==='none') return;
+    const r = m.querySelector('.user-dot').getBoundingClientRect();
+    const w = mapWrap.getBoundingClientRect();
+    mapWrap.scrollBy({ left: (r.left+r.width/2) - (w.left+w.width/2),
+                       top:  (r.top+r.height/2) - (w.top+w.height/2), behavior:'smooth' });
+  });
+}
+
+function centerOnUserOrExplain(){
+  updateUserMarker();
+  if(lastMarkerPx){ centerUserInView(); return; }
+  showToast('Du bist außerhalb des Wegenetzes – Gesamtkarte wird angezeigt.');
+  fitWholeMapIntoView();
+}
+
+async function resetAll(){
+  if(nav.active){
+    const ok = await showConfirm('Es läuft gerade eine Navigation. Wirklich beenden und alles zurücksetzen?',
+                                 { yes:'Ja, beenden', no:'Weiter navigieren' });
+    if(!ok) return;
+  }
+  // markierte Start-/Zielpunkte und Wege (Pflichtwege + berechnete Route) zurücksetzen;
+  // läuft eine Navigation, endet sie dabei mit
+  resetRouteSelection();
+  hidePathInfo();
+  closeSheet();
+  if(nav.pos){ centerOnUserOrExplain(); return; }
+  // Standort noch nicht bekannt -> jetzt ermitteln
+  if(!navigator.geolocation){ showToast('Auswahl zurückgesetzt. Standortbestimmung wird nicht unterstützt.'); return; }
+  showToast('Auswahl zurückgesetzt – Standort wird ermittelt…');
+  navigator.geolocation.getCurrentPosition(
+    (p)=>{
+      const c = p.coords;
+      nav.pos = { lat:c.latitude, lng:c.longitude, acc:c.accuracy };
+      startLocationWatch(); // laufende Verfolgung (wieder) anstoßen
+      centerOnUserOrExplain();
+    },
+    (err)=>{
+      let msg = 'Standort konnte nicht ermittelt werden.';
+      if(err.code===1) msg = 'Standortzugriff verweigert (z. B. in der Vorschau oder in den Einstellungen).';
+      else if(err.code===3) msg = 'Zeitüberschreitung bei der Standortbestimmung.';
+      showToast(msg);
+    },
+    { enableHighAccuracy:true, timeout:10000, maximumAge:5000 }
+  );
+}
+document.getElementById('resetAll').addEventListener('click', resetAll);
+
+function renderFilterPanel(){
+  const box = document.getElementById('filterKinds');
+  box.innerHTML = Object.entries(NODE_KINDS).map(([k,v])=>
+    `<label class="filter-row"><input type="checkbox" data-kind="${k}" ${viewFilter.kinds[k]?'checked':''}> ${v.icon ? v.icon+' ' : ''}${k==='regular' ? 'Reguläre Knoten' : v.label}</label>`
+  ).join('');
+  box.querySelectorAll('input').forEach(cb=> cb.addEventListener('change', ()=>{
+    viewFilter.kinds[cb.getAttribute('data-kind')] = cb.checked; applyViewFilter();
+  }));
+  document.getElementById('filterNodeNames').checked = viewFilter.nodeNames;
+  document.getElementById('filterEdgeNames').checked = viewFilter.edgeNames;
+}
+function applyViewFilter(){
+  saveViewFilter();
+  document.getElementById('filterBtn').classList.toggle('active', viewFilterActive());
+  renderMap();
+}
+document.getElementById('filterBtn').addEventListener('click', ()=>{
+  const p = document.getElementById('filterPanel');
+  if(p.style.display==='none'){ renderFilterPanel(); p.style.display='block'; }
+  else p.style.display='none';
+});
+document.getElementById('filterClose').addEventListener('click', ()=>{ document.getElementById('filterPanel').style.display='none'; });
+document.getElementById('filterNodeNames').addEventListener('change', e=>{ viewFilter.nodeNames = e.target.checked; applyViewFilter(); });
+document.getElementById('filterEdgeNames').addEventListener('change', e=>{ viewFilter.edgeNames = e.target.checked; applyViewFilter(); });
+document.getElementById('filterAll').addEventListener('click', ()=>{ viewFilter = defaultViewFilter(); renderFilterPanel(); applyViewFilter(); });
+document.getElementById('filterBtn').classList.toggle('active', viewFilterActive());
+
 // ---------- Live-Navigation: Pfeil mit Richtung + Entfernung zum nächsten Knoten ----------
 // Ablauf: Ist eine Route berechnet, führt die Navigation nacheinander über alle
 // Knoten der Route (erst zum Startpunkt, dann weiter). Ist nur ein Start gewählt,
@@ -2934,7 +3383,7 @@ function formatDistance(m){
 function navTargetLabel(idx){
   const n = nodeById(nav.targets[idx]);
   if(!n) return '?';
-  if(!n.hidden) return n.name;
+  if(!n.hidden){ const ic = nodeKindIcon(n); return (ic ? ic + ' ' : '') + n.name; }
   // unsichtbarer Zwischenknoten: Richtung des nächsten echten Ortes mit angeben
   const next = nav.targets.slice(idx+1).map(nodeById).find(x=>x && !x.hidden);
   return next ? 'Wegpunkt → ' + next.name : 'Wegpunkt';
