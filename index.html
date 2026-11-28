@@ -1217,6 +1217,11 @@ function migrateState(raw){
 // eine Sicherung angelegt). Sonst bleibt der lokale Arbeitsstand erhalten.
 const PUBLISHED_FILE = 'wegenetz.json';
 const PUBLISHED_BASIS_KEY = 'windischeschenbach-wegenetz-basis';
+// Datenformat der App. Bei jeder Erweiterung der Daten (neue Felder wie z. B.
+// Knotenarten) hochzählen! Ein Gerät, das die wegenetz.json mit einer älteren
+// App-Version übernommen hat, hat neue Felder dabei verloren — durch den
+// Vergleich mit dem Format wird die wegenetz.json dann einmal neu übernommen.
+const DATA_FORMAT = 2;
 function hashText(t){
   let h = 5381;
   for(let i=0;i<t.length;i++){ h = ((h<<5)+h + t.charCodeAt(i)) | 0; }
@@ -1241,7 +1246,8 @@ async function load(){
       const b = await window.storage.get(PUBLISHED_BASIS_KEY, true);
       if(b && b.value) basis = b.value;
     }catch(e){ /* noch kein Eintrag */ }
-    if(basis !== pub.hash){
+    const pubBasis = DATA_FORMAT + '|' + pub.hash;
+    if(basis !== pubBasis){
       // neuer veröffentlichter Stand: lokalen Stand zuerst sichern, dann übernehmen
       try{
         const old = await window.storage.get(STORAGE_KEY, true);
@@ -1254,7 +1260,7 @@ async function load(){
       }catch(e){ /* nichts zu sichern */ }
       state = pub.state;
       await save();
-      try{ await window.storage.set(PUBLISHED_BASIS_KEY, pub.hash, true); }catch(e){}
+      try{ await window.storage.set(PUBLISHED_BASIS_KEY, pubBasis, true); }catch(e){}
       return;
     }
   }
