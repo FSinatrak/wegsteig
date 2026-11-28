@@ -315,7 +315,8 @@
   .sum-badge.s{background:var(--accessible);} .sum-badge.z{background:var(--accent);}
   .sum-badge.p{background:#ff9f00;font-size:12px;}
   .sum-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .sum-text.empty{color:var(--ink-soft);font-style:italic;}
+  .sum-text.empty{color:var(--ink-soft);font-style:italic;white-space:normal;}
+  .sum-link{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:2px;}
   .sum-x{border:none;background:none;font-size:15px;color:var(--ink-soft);padding:2px 4px;cursor:pointer;}
 
   /* Verzeichnis Orte & Wege */
@@ -3181,10 +3182,10 @@ function renderRouteSummary(){
   let html = '';
   html += routeFromId
     ? `<div class="sum-row"><span class="sum-badge s">S</span><span class="sum-text">${nameOf(routeFromId)}</span><button class="sum-x" data-clear="start" title="Start entfernen">✕</button></div>`
-    : `<div class="sum-row"><span class="sum-badge s">S</span><span class="sum-text empty">Start: auf der Karte antippen</span></div>`;
+    : `<div class="sum-row"><span class="sum-badge s">S</span><span class="sum-text empty">Start: <a href="#" class="sum-link" data-go="map">auf der Karte antippen</a> oder <a href="#" class="sum-link" data-go="list">unten wählen</a></span></div>`;
   html += routeToId
     ? `<div class="sum-row"><span class="sum-badge z">Z</span><span class="sum-text">${nameOf(routeToId)}</span><button class="sum-x" data-clear="end" title="Ziel entfernen">✕</button></div>`
-    : `<div class="sum-row"><span class="sum-badge z">Z</span><span class="sum-text empty">Ziel: auf der Karte antippen</span></div>`;
+    : `<div class="sum-row"><span class="sum-badge z">Z</span><span class="sum-text empty">Ziel: <a href="#" class="sum-link" data-go="map">auf der Karte antippen</a> oder <a href="#" class="sum-link" data-go="list">unten wählen</a></span></div>`;
   requiredEdgeIds.forEach(eid=>{
     const e = state.edges.find(x=>x.id===eid);
     if(!e) return;
@@ -3195,6 +3196,15 @@ function renderRouteSummary(){
   box.querySelectorAll('[data-clear="start"]').forEach(b=>b.addEventListener('click', ()=>setRouteStart(routeFromId)));
   box.querySelectorAll('[data-clear="end"]').forEach(b=>b.addEventListener('click', ()=>setRouteEnd(routeToId)));
   box.querySelectorAll('[data-clear-edge]').forEach(b=>b.addEventListener('click', ()=>toggleRequiredEdge(b.getAttribute('data-clear-edge'))));
+  // "auf der Karte antippen" -> Menü schließen; "unten wählen" -> zum Verzeichnis Orte scrollen
+  box.querySelectorAll('[data-go="map"]').forEach(a=>a.addEventListener('click', ev=>{ ev.preventDefault(); closeSheet(); }));
+  box.querySelectorAll('[data-go="list"]').forEach(a=>a.addEventListener('click', ev=>{
+    ev.preventDefault();
+    dirTab = 'orte';
+    document.querySelectorAll('.dir-tab').forEach(x=>x.classList.toggle('active', x.getAttribute('data-tab')==='orte'));
+    renderDirectory();
+    document.querySelector('.dir-section').scrollIntoView({ behavior:'smooth', block:'start' });
+  }));
 }
 
 let dirTab = 'orte';
