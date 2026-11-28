@@ -135,23 +135,23 @@
     },
     {
       "id": "n1788120275500",
-      "name": "Schwanerweg",
+      "name": "Gasthof Weißer Schwan",
       "lat": 49.803000554563845,
       "lng": 12.155803893907175,
       "gx": 8,
       "gy": -4,
       "hidden": false,
-      "kind": "regular"
+      "kind": "wirtshaus"
     },
     {
       "id": "n1788120421096",
-      "name": "An der alten Post",
+      "name": "Zum Posterer",
       "lat": 49.8031801258658,
       "lng": 12.156271085708239,
       "gx": 9.5,
       "gy": -5.5,
       "hidden": false,
-      "kind": "regular"
+      "kind": "zoigl"
     },
     {
       "id": "n1788120569710",
@@ -892,6 +892,56 @@
       "gy": -7,
       "hidden": false,
       "kind": "zoigl"
+    },
+    {
+      "id": "n1795854931524",
+      "name": "Gasthof Weißer Schwan",
+      "lat": 49.802756461753,
+      "lng": 12.156224797568314,
+      "gx": 8.5,
+      "gy": -4.5,
+      "hidden": false,
+      "kind": "uebernachtung"
+    },
+    {
+      "id": "n1795855142395",
+      "name": "beim Gloser",
+      "lat": 49.802453622138245,
+      "lng": 12.155824060152737,
+      "gx": 7,
+      "gy": -2,
+      "hidden": false,
+      "kind": "zoigl"
+    },
+    {
+      "id": "n1795855287600",
+      "name": "Wolframstubn",
+      "lat": 49.80203756439182,
+      "lng": 12.155180428565622,
+      "gx": 5.5,
+      "gy": 0.5,
+      "hidden": false,
+      "kind": "zoigl"
+    },
+    {
+      "id": "n1795855413861",
+      "name": "Schloßhof",
+      "lat": 49.80150736492024,
+      "lng": 12.15340237033411,
+      "gx": 1,
+      "gy": 3,
+      "hidden": false,
+      "kind": "zoigl"
+    },
+    {
+      "id": "n1795855449086",
+      "name": "Schloßhof",
+      "lat": 49.80136497363291,
+      "lng": 12.153503623733798,
+      "gx": 1,
+      "gy": 3.5,
+      "hidden": false,
+      "kind": "uebernachtung"
     }
   ],
   "edges": [
@@ -1070,8 +1120,8 @@
       "type": "strasse",
       "name": "Lehnerberg",
       "from": "n1788119726045",
-      "to": "n1788119563821",
-      "timeMin": 2,
+      "to": "n1795855142395",
+      "timeMin": 1,
       "accessible": true,
       "steep": true,
       "surface": "Asphalt",
@@ -1109,7 +1159,7 @@
       "type": "weg",
       "name": "Schwanerweg",
       "from": "n1788120275500",
-      "to": "n1788120421096",
+      "to": "n1795854931524",
       "timeMin": 1,
       "accessible": true,
       "steep": false,
@@ -1278,7 +1328,7 @@
       "type": "weg",
       "name": "Braugasse",
       "from": "n1788153164420",
-      "to": "n1788153396935",
+      "to": "n1795855287600",
       "timeMin": 1,
       "accessible": true,
       "steep": false,
@@ -1981,23 +2031,14 @@
       "id": "e1795341064766",
       "type": "strasse",
       "name": "Schlosshof",
-      "from": "n1795340874743",
-      "to": "n1795341001371",
-      "timeMin": 2,
+      "from": "n1795855413861",
+      "to": "n1795855449086",
+      "timeMin": 1,
       "accessible": true,
       "steep": false,
       "surface": "Asphalt",
       "info": "",
-      "points": [
-        {
-          "gx": 3,
-          "gy": 3
-        },
-        {
-          "gx": -1,
-          "gy": 3
-        }
-      ]
+      "points": []
     },
     {
       "id": "e1795341461284",
@@ -2644,6 +2685,76 @@
       "surface": "Pflaster",
       "info": "",
       "points": []
+    },
+    {
+      "id": "e1795855036287",
+      "type": "weg",
+      "name": "Schwanerweg",
+      "from": "n1788120421096",
+      "to": "n1795854931524",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795855224615",
+      "type": "strasse",
+      "name": "Lehnerberg",
+      "from": "n1788119563821",
+      "to": "n1795855142395",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": true,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795855359082",
+      "type": "weg",
+      "name": "Braugasse",
+      "from": "n1788153396935",
+      "to": "n1795855287600",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Pflaster",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795855613778",
+      "type": "strasse",
+      "name": "",
+      "from": "n1795855413861",
+      "to": "n1795340874743",
+      "timeMin": 1,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": []
+    },
+    {
+      "id": "e1795855660157",
+      "type": "strasse",
+      "name": "",
+      "from": "n1795855413861",
+      "to": "n1795341001371",
+      "timeMin": 2,
+      "accessible": true,
+      "steep": false,
+      "surface": "Asphalt",
+      "info": "",
+      "points": [
+        {
+          "gx": -1,
+          "gy": 3
+        }
+      ]
     }
   ]
 }
